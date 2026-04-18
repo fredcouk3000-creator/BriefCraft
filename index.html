@@ -1086,15 +1086,15 @@ statS:'McKinsey Operations Excellence Report.',
 supply:['All same inputs as a standard SOP'],
 del:'An interactive HTML SOP with expandable numbered steps, a decision tree visual, escalation callouts, and mobile-responsive layout. Delivered as a single .html file.'},
 
-{id:'speech',n:'Wedding and Occasion Speech',cat:'communications',catL:'Professional Communications',
+{id:'speech',n:'Occasion and Event Speech Writing',cat:'communications',catL:'Professional Communications',
 icon:`<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>`,
 p:29,fr:'$75-$250',t:'6-12 hours',
 tag:'Say something they will remember forever.',
-desc:'Most people dread giving a speech, not because they lack things to say, but because they cannot find the right way to say them. A great wedding toast or occasion speech opens with something that commands the room, tells a specific story, builds to an emotional peak, and closes with a line that stays with people long after the event. We write speeches that get quoted for years.',
-who:['Best man and maid of honor preparing for a wedding toast','Fathers, mothers, and family members speaking at weddings','Colleagues giving retirement or achievement speeches','Parents speaking at a graduation','Anyone who has ever stood at a microphone and panicked'],
+desc:'Most people dread giving a speech, not because they lack things to say, but because they cannot find the right way to say them. A great occasion speech opens with something that commands the room, tells a specific story, builds to an emotional peak, and closes with a line that stays with people long after the event. We write speeches that get quoted for years.',
+who:['Best man and maid of honor preparing for a toast','Fathers, mothers, and family members speaking at occasions','Colleagues giving retirement or achievement speeches','Parents speaking at a graduation','Anyone who has ever stood at a microphone and panicked'],
 stat:'89%',statL:'Rate a memorable speech as the event highlight',
-statB:'89% of wedding guests say a memorable speech or toast was their personal highlight of the reception. Speeches with at least two specific stories are rated 4 times more memorable than generic tributes.',
-statS:'The Knot Wedding Survey. WeddingWire Guest Experience Report.',
+statB:'89% of event guests say a memorable speech or toast was their personal highlight of the occasion. Speeches with at least two specific stories are rated 4 times more memorable than generic tributes.',
+statS:'The Knot Event Survey. WeddingWire Guest Experience Report.',
 supply:['Speech type and your relationship to the person','Tone preference: funny and warm, heartfelt, elegant, or mixed','Target length: 2 minutes, 3 minutes, or 5 minutes','Story 1: a specific memory described in detail','Story 2: a second specific memory','5 qualities you want to highlight about this person','Anything to avoid'],
 del:'A fully written speech in your voice, timed to hit your target length exactly, with the right emotional beats and a closing line worth quoting.'},
 
@@ -1475,7 +1475,7 @@ function renderHome(){
           </div>
           <div class="hero-proof">
             <div class="hp-card"><span class="hp-icon">&#128230;</span><div class="hp-num">40+</div><div class="hp-lbl">Professional Services</div><div class="hp-body">From resumes to product prototypes. One specialist team handles it all.</div></div>
-            <div class="hp-card"><span class="hp-icon">&#9889;</span><div class="hp-num">24hrs</div><div class="hp-lbl">Average Delivery Time</div><div class="hp-body">Most orders arrive before your next business day. Guaranteed.</div></div>
+            <div class="hp-card"><span class="hp-icon">&#9889;</span><div class="hp-num">36hrs</div><div class="hp-lbl">Average Delivery Time</div><div class="hp-body">Most orders arrive before your next business day. Guaranteed.</div></div>
             <div class="hp-card"><span class="hp-icon">&#128176;</span><div class="hp-num">$19</div><div class="hp-lbl">Starting Price</div><div class="hp-body">15 to 25 percent of what agencies charge for the same work.</div></div>
             <div class="hp-card"><span class="hp-icon">&#10022;</span><div class="hp-num">100%</div><div class="hp-lbl">Satisfaction Guaranteed</div><div class="hp-body">We revise every deliverable until you are proud to use it.</div></div>
           </div>
@@ -2328,6 +2328,94 @@ function filterOrders(status, btn) {
 updateNavUser();
 updateCartBadge();
 
+
 </script>
+
+<!-- WHATSAPP FLOATING BUTTON -->
+<style>
+.wa-bubble{
+  position:fixed;bottom:28px;right:28px;z-index:2000;
+  display:flex;flex-direction:column;align-items:flex-end;gap:10px;
+}
+.wa-tooltip{
+  background:#1C2B4A;color:#fff;
+  font-family:'Outfit',sans-serif;font-size:13px;font-weight:500;
+  padding:10px 16px;border-radius:10px;line-height:1.5;
+  max-width:220px;text-align:right;
+  box-shadow:0 4px 20px rgba(0,0,0,.18);
+  position:relative;
+  animation:waPop .3s ease;
+}
+.wa-tooltip::after{
+  content:'';position:absolute;bottom:-7px;right:18px;
+  width:14px;height:8px;
+  background:#1C2B4A;
+  clip-path:polygon(0 0,100% 0,50% 100%);
+}
+.wa-btn{
+  width:58px;height:58px;border-radius:50%;
+  background:#25D366;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 24px rgba(37,211,102,.45);
+  cursor:pointer;border:none;
+  transition:transform .2s, box-shadow .2s;
+  text-decoration:none;
+  animation:waPulse 2.5s ease-in-out infinite;
+}
+.wa-btn:hover{
+  transform:scale(1.08);
+  box-shadow:0 6px 32px rgba(37,211,102,.6);
+  animation:none;
+}
+.wa-btn svg{width:30px;height:30px;fill:#fff}
+@keyframes waPulse{
+  0%,100%{box-shadow:0 4px 24px rgba(37,211,102,.45)}
+  50%{box-shadow:0 4px 32px rgba(37,211,102,.75),0 0 0 8px rgba(37,211,102,.12)}
+}
+@keyframes waPop{
+  from{opacity:0;transform:translateY(6px)}
+  to{opacity:1;transform:translateY(0)}
+}
+@media(max-width:520px){
+  .wa-bubble{bottom:20px;right:16px}
+  .wa-tooltip{font-size:12px;max-width:180px}
+  .wa-btn{width:52px;height:52px}
+}
+</style>
+
+<div class="wa-bubble" id="waBubble">
+  <div class="wa-tooltip" id="waTooltip">
+    💬 Chat with us on WhatsApp.<br>Ask a question or get a quote instantly.
+  </div>
+  <a class="wa-btn"
+     href="https://wa.me/2349063765321?text=Hello%20BriefCraft%2C%20I%20have%20an%20inquiry%20about%20your%20services.%20Can%20you%20help%20me%3F"
+     target="_blank" rel="noopener" aria-label="Chat with BriefCraft on WhatsApp">
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+    </svg>
+  </a>
+</div>
+
+<script>
+// Auto-hide tooltip after 6 seconds
+setTimeout(function(){
+  var t = document.getElementById('waTooltip');
+  if(t){ t.style.transition='opacity .4s'; t.style.opacity='0'; setTimeout(function(){ t.style.display='none'; },400); }
+},6000);
+// Re-show tooltip on hover
+var btn = document.querySelector('.wa-btn');
+var tooltip = document.getElementById('waTooltip');
+if(btn && tooltip){
+  btn.addEventListener('mouseenter', function(){
+    tooltip.style.display='block';
+    tooltip.style.opacity='1';
+  });
+  btn.addEventListener('mouseleave', function(){
+    tooltip.style.opacity='0';
+    setTimeout(function(){ tooltip.style.display='none'; },400);
+  });
+}
+</script>
+
 </body>
 </html>
