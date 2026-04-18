@@ -7,17 +7,17 @@
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{
-  --green:#059669; --green-h:#047857; --green-dk:#065F46;
-  --green-lt:#ECFDF5; --green-mid:#D1FAE5; --green-bd:#A7F3D0;
-  --bg:#FFFFFF; --bg-2:#F9FAFB; --bg-3:#F3F4F6;
-  --dark:#0A0F0D; --dark-2:#111814;
-  --text:#0A0F0D; --text-2:#374151; --text-3:#6B7280; --text-4:#9CA3AF;
-  --border:#E5E7EB; --border-2:#D1D5DB;
+  --green:#C8962A; --green-h:#A67B22; --green-dk:#8B6719;
+  --green-lt:#FAF7F2; --green-mid:#EDE5D8; --green-bd:#D4C4A8;
+  --bg:#FFFFFF; --bg-2:#F4EFE6; --bg-3:#EDE5D8;
+  --dark:#1C2B4A; --dark-2:#142139;
+  --text:#1C2B4A; --text-2:#3D4E6B; --text-3:#6B7B9E; --text-4:#9BA8C0;
+  --border:#D4C4A8; --border-2:#C4B498;
   --r:10px; --r-lg:16px;
   --shadow-sm:0 1px 4px rgba(0,0,0,.05);
   --shadow:0 4px 20px rgba(0,0,0,.07);
   --shadow-lg:0 16px 48px rgba(0,0,0,.11);
-  --shadow-green:0 8px 32px rgba(16,185,129,.2);
+  --shadow-green:0 8px 32px rgba(200,150,42,.2);
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -75,13 +75,15 @@ img{max-width:100%}
 .hero-h1 .em{color:var(--green)}
 .hero-sub{font-family:'Outfit',sans-serif;font-size:clamp(15px,1.6vw,17px);color:var(--text-2);line-height:1.8;max-width:500px;margin-bottom:36px;font-weight:400}
 .hero-btns{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:56px}
-.hero-divider{width:48px;height:3px;background:var(--green);margin-bottom:28px}
-.hero-kpis{display:flex;gap:0;border-top:1px solid var(--border)}
-.hero-kpi{flex:1;padding:20px 0;border-right:1px solid var(--border)}
-.hero-kpi:last-child{border:none;padding-right:0}
-.hero-kpi:first-child{padding-left:0}
-.hero-kpi-num{font-family:'Unbounded',sans-serif;font-size:28px;font-weight:800;color:var(--text);letter-spacing:-.03em;line-height:1}
-.hero-kpi-label{font-family:'Outfit',sans-serif;font-size:11px;color:var(--text-4);margin-top:4px;font-weight:500}
+.hero-proof{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;margin-top:36px;box-shadow:0 4px 20px rgba(28,43,74,.08)}
+.hp-card{padding:22px 18px;border-right:1px solid var(--border);background:#fff;position:relative;transition:.2s}
+.hp-card:last-child{border:none}
+.hp-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--green)}
+.hp-card:hover{background:var(--bg-2)}
+.hp-icon{font-size:22px;margin-bottom:10px;display:block}
+.hp-num{font-family:'Unbounded',sans-serif;font-size:clamp(24px,2.8vw,38px);font-weight:900;color:var(--text);letter-spacing:-.04em;line-height:1;margin-bottom:4px}
+.hp-lbl{font-family:'Unbounded',sans-serif;font-size:8px;font-weight:600;color:var(--green);letter-spacing:.14em;text-transform:uppercase;margin-bottom:8px}
+.hp-body{font-family:'Outfit',sans-serif;font-size:11.5px;color:var(--text-3);line-height:1.65}
 .hero-right{position:relative;height:420px}
 .hc{position:absolute;background:#fff;border:1px solid var(--border);border-top:3px solid var(--green);border-radius:var(--r-lg);padding:20px 22px;width:230px;box-shadow:var(--shadow)}
 .hc-1{top:20px;right:20px;animation:fA 7s ease-in-out infinite}
@@ -96,11 +98,11 @@ img{max-width:100%}
 .hc-pill{font-family:'Outfit',sans-serif;font-size:10px;font-weight:600;color:var(--green-dk);background:var(--green-lt);padding:4px 10px;border-radius:20px}
 
 /* TRUST STRIP */
-.trust-strip{background:var(--bg-2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:0}
+.trust-strip{background:var(--bg-2);border-top:3px solid var(--green);border-bottom:1px solid rgba(200,150,42,.2);padding:0}
 .trust-inner{display:flex;align-items:stretch}
-.trust-item{flex:1;display:flex;align-items:center;gap:10px;padding:18px 20px;border-right:1px solid var(--border);font-family:'Outfit',sans-serif;font-size:13px}
+.trust-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:18px 12px;border-right:1px solid var(--border);font-family:'Outfit',sans-serif;font-size:13px;text-align:center}
 .trust-item:last-child{border:none}
-.trust-dot{width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0}
+.trust-icon{font-size:22px;margin-bottom:2px}
 .trust-label{font-weight:600;color:var(--text)}
 .trust-sub{color:var(--text-4)}
 
@@ -345,9 +347,9 @@ img{max-width:100%}
   .trust-item{flex:1 0 45%;border-right:none;border-bottom:1px solid var(--border)}
   .modal-body{padding:20px}
   .modal-foot{flex-direction:column;align-items:stretch}
-  .hero-kpis{flex-wrap:wrap;gap:0}
-  .hero-kpi{flex:0 0 50%;border-right:none;border-bottom:1px solid var(--border)}
-  .hero-kpi:nth-child(odd){border-right:1px solid var(--border)}
+  .hero-proof{grid-template-columns:repeat(2,1fr)}
+  .hp-card:nth-child(even){border-right:none}
+  .hp-card:nth-child(3),.hp-card:nth-child(4){border-top:1px solid var(--border)}
 }
 @media(max-width:520px){
   .cat-grid{grid-template-columns:1fr 1fr}
@@ -355,9 +357,173 @@ img{max-width:100%}
   .stat-grid{grid-template-columns:1fr}
   .footer-grid{grid-template-columns:1fr}
   .hero-h1{font-size:40px}
+  .hero-proof{grid-template-columns:1fr 1fr}
+  .hp-card{border-right:none;border-bottom:1px solid var(--border)}
+  .hp-card:last-child{border-bottom:none}
   .hiw-step-wrap{grid-template-columns:52px 1fr}
   .hiw-num{width:52px;height:52px;font-size:18px}
 }
+
+/* ===== V6 NEW FEATURES ===== */
+/* CART BUTTON */
+.cart-btn{position:relative;background:none;border:none;cursor:pointer;padding:8px;color:var(--text);display:flex;align-items:center;justify-content:center;border-radius:var(--r);transition:.15s;margin-right:2px}
+.cart-btn:hover{background:var(--bg-2);color:var(--green)}
+.cart-badge{position:absolute;top:2px;right:2px;background:var(--green);color:#fff;font-family:'Unbounded',sans-serif;font-size:8px;font-weight:700;min-width:16px;height:16px;border-radius:10px;display:none;align-items:center;justify-content:center;padding:0 3px}
+/* NAV USER */
+.nav-user-wrap{position:relative}
+.nav-user-btn{background:none;border:1.5px solid var(--border-2);border-radius:20px;padding:6px 14px 6px 10px;font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;color:var(--text);cursor:pointer;display:flex;align-items:center;gap:6px;transition:.15s}
+.nav-user-btn:hover{border-color:var(--green);color:var(--green)}
+.user-dropdown{position:absolute;top:calc(100% + 8px);right:0;background:#fff;border:1px solid var(--border);border-radius:var(--r-lg);box-shadow:var(--shadow-lg);min-width:210px;z-index:500;padding:8px 0;display:none}
+.user-dropdown.open{display:block}
+.ud-email{padding:10px 16px 8px;font-family:'Outfit',sans-serif;font-size:11px;color:var(--text-4);border-bottom:1px solid var(--border);margin-bottom:4px;word-break:break-all}
+.ud-item{padding:9px 16px;font-family:'Outfit',sans-serif;font-size:13px;font-weight:500;color:var(--text);cursor:pointer;transition:.1s}
+.ud-item:hover{background:var(--bg-2);color:var(--green)}
+.ud-logout{color:#ef4444}
+.ud-logout:hover{background:#fef2f2;color:#dc2626}
+/* CART PANEL */
+.cart-overlay{position:fixed;inset:0;background:rgba(28,43,74,.5);z-index:950;opacity:0;visibility:hidden;transition:.25s;backdrop-filter:blur(4px)}
+.cart-overlay.open{opacity:1;visibility:visible}
+.cart-panel{position:absolute;right:0;top:0;bottom:0;width:100%;max-width:460px;background:#fff;display:flex;flex-direction:column;transform:translateX(100%);transition:.3s cubic-bezier(.4,0,.2,1);box-shadow:-8px 0 48px rgba(28,43,74,.18)}
+.cart-overlay.open .cart-panel{transform:translateX(0)}
+.cart-hdr{background:var(--dark);padding:20px 24px;display:flex;align-items:flex-start;justify-content:space-between;flex-shrink:0}
+.cart-hdr-title{font-family:'Unbounded',sans-serif;font-size:16px;font-weight:700;color:#fff;letter-spacing:-.02em}
+.cart-hdr-sub{font-family:'Outfit',sans-serif;font-size:11px;color:rgba(255,255,255,.35);margin-top:4px}
+.cart-close{background:rgba(255,255,255,.1);border:none;color:rgba(255,255,255,.65);width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:.15s;line-height:1}
+.cart-close:hover{background:rgba(255,255,255,.2);color:#fff}
+.cart-body{flex:1;overflow-y:auto}
+.cart-empty{padding:48px 24px;text-align:center}
+.cart-empty-icon{font-size:44px;margin-bottom:14px;display:block}
+.cart-empty-title{font-family:'Unbounded',sans-serif;font-size:16px;font-weight:700;color:var(--text);margin-bottom:8px;letter-spacing:-.02em}
+.cart-empty-body{font-family:'Outfit',sans-serif;font-size:13px;color:var(--text-3);line-height:1.7;max-width:280px;margin:0 auto}
+.cart-item{border-bottom:1px solid var(--border);padding:16px 20px}
+.ci-row{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:8px}
+.ci-name{font-family:'Unbounded',sans-serif;font-size:12px;font-weight:600;color:var(--text);letter-spacing:-.01em;line-height:1.4}
+.ci-cat{font-family:'Outfit',sans-serif;font-size:11px;color:var(--text-4);margin-top:3px}
+.ci-price{font-family:'Unbounded',sans-serif;font-size:20px;font-weight:800;color:var(--green);letter-spacing:-.03em;flex-shrink:0}
+.ci-actions{display:flex;align-items:center;gap:8px;margin-top:6px;flex-wrap:wrap}
+.ci-brief-toggle{background:none;border:1.5px solid var(--border);border-radius:6px;padding:5px 12px;font-family:'Outfit',sans-serif;font-size:11px;font-weight:500;color:var(--text-3);cursor:pointer;transition:.15s;display:flex;align-items:center;gap:5px}
+.ci-brief-toggle:hover{border-color:var(--green);color:var(--green)}
+.ci-brief-ok{color:var(--green)}
+.ci-remove{background:none;border:none;font-family:'Outfit',sans-serif;font-size:11px;color:#ef4444;cursor:pointer;padding:2px 0}
+.ci-remove:hover{color:#dc2626}
+.ci-brief-body{display:none;margin-top:8px}
+.ci-brief-body.open{display:block}
+.ci-brief-ta{width:100%;border:1.5px solid var(--border);border-radius:6px;padding:8px 10px;font-family:'Outfit',sans-serif;font-size:12px;min-height:80px;resize:vertical;outline:none;transition:.15s;color:var(--text)}
+.ci-brief-ta:focus{border-color:var(--green)}
+.cart-foot{background:var(--bg-2);border-top:2px solid var(--green);padding:20px 24px;flex-shrink:0}
+.cart-total-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:3px}
+.cart-total-label{font-family:'Outfit',sans-serif;font-size:13px;color:var(--text-2)}
+.cart-total-val{font-family:'Unbounded',sans-serif;font-size:30px;font-weight:900;color:var(--text);letter-spacing:-.04em}
+.cart-note{font-family:'Outfit',sans-serif;font-size:11px;color:var(--text-4);margin-bottom:14px}
+/* CHECKOUT */
+.checkout-back{background:none;border:none;font-family:'Outfit',sans-serif;font-size:13px;color:var(--text-3);cursor:pointer;display:flex;align-items:center;gap:6px;padding:14px 20px;border-bottom:1px solid var(--border);width:100%;transition:.15s}
+.checkout-back:hover{color:var(--green)}
+.checkout-summary{padding:16px 20px;border-bottom:1px solid var(--border)}
+.cs-row{display:flex;align-items:center;justify-content:space-between;padding:4px 0;font-family:'Outfit',sans-serif;font-size:13px}
+.cs-name{color:var(--text-2)}
+.cs-price{font-weight:600;color:var(--text)}
+.cs-divider{border:none;border-top:1.5px solid var(--border);margin:8px 0}
+.cs-total-row{display:flex;align-items:center;justify-content:space-between;padding-top:4px}
+.cs-total-label{font-family:'Unbounded',sans-serif;font-size:11px;font-weight:700;color:var(--text)}
+.cs-total-price{font-family:'Unbounded',sans-serif;font-size:24px;font-weight:900;color:var(--green);letter-spacing:-.04em}
+.checkout-form{padding:16px 20px 20px}
+/* PAYMENT */
+.pay-screen{padding:20px 24px}
+.pay-ref{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--green);background:var(--green-lt);padding:5px 12px;border-radius:6px;display:inline-block;margin-bottom:14px;border:1px solid var(--green-bd)}
+.pay-total-num{font-family:'Unbounded',sans-serif;font-size:40px;font-weight:900;color:var(--text);letter-spacing:-.05em;line-height:1;margin-bottom:4px}
+.pay-sub{font-family:'Outfit',sans-serif;font-size:13px;color:var(--text-4);margin-bottom:20px}
+.pay-method{border:2px solid var(--border);border-radius:var(--r-lg);padding:18px 20px;margin-bottom:12px;cursor:pointer;transition:.2s;display:flex;align-items:center;gap:16px}
+.pay-method:hover{border-color:var(--green);background:var(--green-lt);transform:translateX(2px)}
+.pay-icon{width:46px;height:46px;border-radius:var(--r);background:var(--bg-2);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.pay-name{font-family:'Unbounded',sans-serif;font-size:13px;font-weight:700;color:var(--text);margin-bottom:3px;letter-spacing:-.01em}
+.pay-meta{font-family:'Outfit',sans-serif;font-size:11px;color:var(--text-4)}
+.pay-arrow{margin-left:auto;color:var(--green);flex-shrink:0}
+.pay-note{font-family:'Outfit',sans-serif;font-size:11px;color:var(--text-4);line-height:1.65;padding:12px 14px;background:var(--bg-2);border-radius:var(--r);margin-top:4px;border:1px solid var(--border)}
+/* ORDER SUCCESS (in cart) */
+.order-success{padding:28px 20px;text-align:center}
+.os-icon{font-size:52px;display:block;margin-bottom:14px}
+.os-title{font-family:'Unbounded',sans-serif;font-size:20px;font-weight:800;color:var(--text);margin-bottom:8px;letter-spacing:-.03em}
+.os-body{font-family:'Outfit',sans-serif;font-size:14px;color:var(--text-2);line-height:1.75;margin-bottom:14px}
+.os-ref{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--green);background:var(--green-lt);padding:8px 16px;border-radius:var(--r);display:inline-block;margin-bottom:16px;border:1px solid var(--green-bd)}
+.os-cd{font-family:'Unbounded',sans-serif;font-size:11px;font-weight:600;color:var(--green);letter-spacing:.05em;padding:9px 18px;border:1.5px solid var(--green-bd);border-radius:20px;display:inline-block;margin-bottom:20px}
+.os-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+/* LOGIN */
+.login-overlay{position:fixed;inset:0;background:rgba(28,43,74,.6);z-index:1200;display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;visibility:hidden;transition:.2s;backdrop-filter:blur(4px)}
+.login-overlay.open{opacity:1;visibility:visible}
+.login-box{background:#fff;border-radius:var(--r-lg);width:100%;max-width:420px;overflow:hidden;box-shadow:var(--shadow-lg);transform:scale(.97);transition:.22s}
+.login-overlay.open .login-box{transform:scale(1)}
+.login-hdr{background:var(--dark);padding:28px 32px;position:relative;overflow:hidden}
+.login-hdr::before{content:'';position:absolute;top:-60px;right:-60px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(200,150,42,.15) 0%,transparent 65%)}
+.login-title{font-family:'Unbounded',sans-serif;font-size:20px;font-weight:800;color:#fff;letter-spacing:-.03em;margin-bottom:8px;position:relative;z-index:1}
+.login-sub{font-family:'Outfit',sans-serif;font-size:13px;color:rgba(255,255,255,.4);line-height:1.65;position:relative;z-index:1}
+.login-body{padding:28px 32px}
+.login-note{font-family:'Outfit',sans-serif;font-size:11px;color:var(--text-4);line-height:1.65;padding:10px 14px;background:var(--bg-2);border-radius:var(--r);margin-top:14px;border:1px solid var(--border)}
+/* EDIT ORDER */
+.edit-overlay{position:fixed;inset:0;background:rgba(28,43,74,.65);z-index:1100;display:flex;align-items:flex-start;justify-content:center;padding:24px;overflow-y:auto;opacity:0;visibility:hidden;transition:.2s;backdrop-filter:blur(4px)}
+.edit-overlay.open{opacity:1;visibility:visible}
+.edit-box{background:#fff;border-radius:var(--r-lg);width:100%;max-width:680px;margin:auto;overflow:hidden;transform:translateY(16px);transition:.25s;box-shadow:var(--shadow-lg)}
+.edit-overlay.open .edit-box{transform:translateY(0)}
+.edit-hdr{background:var(--dark);padding:24px 28px;display:flex;align-items:flex-start;justify-content:space-between}
+.edit-cd{font-family:'Unbounded',sans-serif;font-size:9px;font-weight:600;color:var(--green);letter-spacing:.1em;background:rgba(200,150,42,.12);padding:4px 12px;border-radius:20px;margin-top:8px;display:inline-block}
+.edit-item{border-bottom:1px solid var(--border);padding:20px 24px}
+.edit-item-name{font-family:'Unbounded',sans-serif;font-size:13px;font-weight:700;color:var(--text);margin-bottom:3px;letter-spacing:-.01em}
+.edit-item-meta{font-family:'Outfit',sans-serif;font-size:12px;color:var(--text-4);margin-bottom:10px}
+/* DASHBOARD */
+.dash-hdr{background:var(--dark);padding:100px 0 48px;position:relative;overflow:hidden}
+.dash-hdr::before{content:'';position:absolute;top:-80px;right:-80px;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(200,150,42,.12) 0%,transparent 65%)}
+.dash-welcome{font-family:'Unbounded',sans-serif;font-size:clamp(22px,3.5vw,40px);font-weight:900;color:#fff;letter-spacing:-.04em;margin-bottom:8px;line-height:1.1}
+.dash-meta{font-family:'Outfit',sans-serif;font-size:14px;color:rgba(255,255,255,.4)}
+.dash-actions{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap}
+.dash-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:36px}
+.dash-stat{background:#fff;border:1px solid var(--border);border-radius:var(--r-lg);padding:24px;border-top:3px solid var(--green)}
+.dash-stat-num{font-family:'Unbounded',sans-serif;font-size:34px;font-weight:900;color:var(--text);letter-spacing:-.04em;line-height:1}
+.dash-stat-label{font-family:'Outfit',sans-serif;font-size:12px;color:var(--text-4);margin-top:6px;font-weight:500}
+.dash-section-title{font-family:'Unbounded',sans-serif;font-size:17px;font-weight:700;color:var(--text);letter-spacing:-.02em}
+.dash-tabs{display:flex;gap:6px;margin-bottom:20px;flex-wrap:wrap}
+.dash-tab{padding:7px 16px;border-radius:20px;font-family:'Outfit',sans-serif;font-size:12px;font-weight:500;border:1.5px solid var(--border);background:var(--bg);color:var(--text-3);cursor:pointer;transition:.15s}
+.dash-tab:hover{border-color:var(--green-bd);color:var(--green)}
+.dash-tab.active{background:var(--dark);color:#fff;border-color:var(--dark)}
+.dash-empty{text-align:center;padding:56px 24px;border:2px dashed var(--border);border-radius:var(--r-lg);background:var(--bg-2)}
+.dash-empty-icon{font-size:44px;margin-bottom:14px;display:block}
+.dash-empty-title{font-family:'Unbounded',sans-serif;font-size:16px;font-weight:700;color:var(--text);margin-bottom:8px;letter-spacing:-.02em}
+.dash-empty-body{font-family:'Outfit',sans-serif;font-size:13px;color:var(--text-3);line-height:1.7;max-width:340px;margin:0 auto 20px}
+.order-card{background:#fff;border:1px solid var(--border);border-radius:var(--r-lg);padding:20px 24px;margin-bottom:12px;transition:.2s}
+.order-card:hover{border-color:var(--green-bd);box-shadow:0 4px 20px rgba(200,150,42,.1)}
+.oc-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:8px;flex-wrap:wrap}
+.oc-ref{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--green);font-weight:600}
+.oc-date{font-family:'Outfit',sans-serif;font-size:11px;color:var(--text-4);margin-top:3px}
+.oc-total{font-family:'Unbounded',sans-serif;font-size:22px;font-weight:800;color:var(--text);letter-spacing:-.03em}
+.oc-services{font-family:'Outfit',sans-serif;font-size:13px;color:var(--text-2);margin-bottom:12px;line-height:1.6}
+.oc-foot{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.status-badge{padding:4px 12px;border-radius:20px;font-family:'Unbounded',sans-serif;font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase}
+.sb-editing{background:rgba(200,150,42,.1);color:var(--green-dk);border:1px solid var(--green-bd)}
+.sb-processing{background:rgba(28,43,74,.07);color:var(--dark);border:1px solid rgba(28,43,74,.15)}
+.sb-delivered{background:#DCFCE7;color:#166534;border:1px solid #BBF7D0}
+.sb-completed{background:var(--bg-2);color:var(--text-4);border:1px solid var(--border)}
+.oc-countdown{font-family:'Outfit',sans-serif;font-size:11px;color:var(--green);font-weight:600;margin-left:auto}
+.edit-order-btn{background:none;border:1.5px solid var(--green-bd);border-radius:6px;padding:5px 14px;font-family:'Unbounded',sans-serif;font-size:9px;font-weight:600;color:var(--green);cursor:pointer;letter-spacing:.06em;transition:.15s}
+.edit-order-btn:hover{background:var(--green);color:#fff;border-color:var(--green)}
+/* TOAST */
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(12px);background:var(--dark);color:#fff;font-family:'Outfit',sans-serif;font-size:13px;font-weight:500;padding:10px 22px;border-radius:24px;box-shadow:0 8px 32px rgba(28,43,74,.35);z-index:3000;opacity:0;transition:.25s;pointer-events:none;white-space:nowrap;border-left:3px solid var(--green)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+/* TESTIMONIALS 5-card layout */
+.t-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:calc(66.66% + 13px);margin:20px auto 0}
+@media(max-width:900px){.t-grid-2{max-width:100%}}
+@media(max-width:768px){
+  .hero-proof{grid-template-columns:1fr 1fr}
+  .hp-card:nth-child(even){border-right:none}
+  .hp-card:nth-child(3),.hp-card:nth-child(4){border-top:1px solid var(--border)}
+  .cart-panel{max-width:100%}
+  .dash-stats{grid-template-columns:1fr 1fr}
+  .t-grid-2{grid-template-columns:1fr;max-width:100%}
+}
+@media(max-width:520px){
+  .hero-proof{grid-template-columns:1fr}
+  .hp-card{border-right:none;border-top:1px solid var(--border)}
+  .hp-card:first-child{border-top:none}
+  .dash-stats{grid-template-columns:1fr}
+}
+
 </style>
 </head>
 <body>
@@ -376,6 +542,23 @@ img{max-width:100%}
         <button class="nav-link" onclick="showPage('about')">About</button>
         <button class="nav-link" onclick="showPage('contact')">Contact</button>
       </div>
+      <button class="cart-btn" id="cartBtn" onclick="openCart()" title="Your cart">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="20" height="20"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+        <span class="cart-badge" id="cartBadge">0</span>
+      </button>
+      <div class="nav-user-wrap" id="navUserWrap" style="display:none">
+        <button class="nav-user-btn" id="navUserBtn" onclick="toggleUserMenu()">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="15" height="15"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+          <span id="navUserName"></span>
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="12" height="12"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+        </button>
+        <div class="user-dropdown" id="userDropdown">
+          <div class="ud-email" id="navUserEmail"></div>
+          <div class="ud-item" onclick="showPage('dashboard');toggleUserMenu()">Dashboard</div>
+          <div class="ud-item ud-logout" onclick="logout()">Sign Out</div>
+        </div>
+      </div>
+      <button id="navLoginBtn" class="btn btn-outline btn-sm" onclick="openLogin()" style="font-size:12px;padding:8px 16px">Sign In</button>
       <button class="btn btn-green nav-cta btn-sm" onclick="showPage('services')">Browse Services</button>
       <div class="nav-hamburger" id="hamburger" onclick="toggleMobileMenu()">
         <span></span><span></span><span></span>
@@ -397,6 +580,7 @@ img{max-width:100%}
 <div id="page-how-it-works" class="page-section"></div>
 <div id="page-about" class="page-section"></div>
 <div id="page-contact" class="page-section"></div>
+<div id="page-dashboard" class="page-section"></div>
 
 <!-- SERVICE MODAL -->
 <div class="modal-overlay" id="serviceModal" onclick="closeModal('serviceModal',event)">
@@ -408,7 +592,8 @@ img{max-width:100%}
     <div class="modal-body" id="mBody"></div>
     <div class="modal-foot">
       <div class="mfp" id="mFootPrice"></div>
-      <button class="btn btn-green btn-lg" style="margin-left:auto" onclick="openOrder()">Order This Service</button>
+      <button class="btn btn-outline btn-lg" onclick="addToCart(curSvc&&curSvc.id)">+ Add to Cart</button>
+      <button class="btn btn-green btn-lg" style="margin-left:auto" onclick="openOrder()">Order Now</button>
     </div>
   </div>
 </div>
@@ -462,6 +647,63 @@ img{max-width:100%}
 </div>
 
 <!-- FOOTER -->
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- CART PANEL -->
+<div class="cart-overlay" id="cartOverlay" onclick="closeCartOverlay(event)">
+  <div class="cart-panel">
+    <div class="cart-hdr">
+      <div>
+        <div class="cart-hdr-title" id="cartHdrTitle">Your Cart</div>
+        <div class="cart-hdr-sub" id="cartSubtitle">0 items</div>
+      </div>
+      <button class="cart-close" onclick="closeCart()">&#215;</button>
+    </div>
+    <div class="cart-body" id="cartBody"></div>
+    <div class="cart-foot" id="cartFooter" style="display:none">
+      <div class="cart-total-row">
+        <span class="cart-total-label" id="cartCount">0 services</span>
+        <span class="cart-total-val" id="cartTotalVal">$0</span>
+      </div>
+      <div class="cart-note">Fixed pricing. No hidden fees. Editable for 2 hours after order.</div>
+      <button class="btn btn-green" style="width:100%;justify-content:center;padding:15px;font-size:14px" onclick="proceedToCheckout()">Proceed to Checkout</button>
+    </div>
+  </div>
+</div>
+
+<!-- LOGIN MODAL -->
+<div class="login-overlay" id="loginOverlay" onclick="closeLoginOverlay(event)">
+  <div class="login-box">
+    <div class="login-hdr">
+      <div class="login-title">Sign in to BriefCraft</div>
+      <div class="login-sub">Access your order dashboard, track deliveries, and edit recent briefs. No password required for this preview version.</div>
+    </div>
+    <div class="login-body">
+      <div class="form-group"><label class="form-label">Your Name <span style="color:#ef4444">*</span></label><input type="text" class="form-input" id="loginName" placeholder="First and last name"></div>
+      <div class="form-group"><label class="form-label">Email Address <span style="color:#ef4444">*</span></label><input type="email" class="form-input" id="loginEmail" placeholder="you@company.com"></div>
+      <button class="btn btn-green" style="width:100%;justify-content:center;padding:14px;margin-top:4px" onclick="submitLogin()">Continue to Dashboard</button>
+      <div class="login-note">This is a session-based login for the preview platform. Your email will not be shared. Full authentication will be available when the platform goes live.</div>
+    </div>
+  </div>
+</div>
+
+<!-- EDIT ORDER MODAL -->
+<div class="edit-overlay" id="editOverlay" onclick="closeEditOverlay(event)">
+  <div class="edit-box">
+    <div class="edit-hdr">
+      <div>
+        <div style="font-family:'Unbounded',sans-serif;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--green);margin-bottom:8px">Edit Your Order</div>
+        <div style="font-family:'Unbounded',sans-serif;font-size:18px;font-weight:700;color:#fff;letter-spacing:-.02em">Update briefs and details</div>
+        <div class="edit-cd" id="editCountdownBadge" data-editable-until="" data-ref="">Calculating edit window...</div>
+      </div>
+      <button class="modal-x" onclick="closeEdit()">&times;</button>
+    </div>
+    <div id="editOrderContent"></div>
+  </div>
+</div>
+
 <footer class="footer" id="siteFooter">
   <div class="container">
     <div class="footer-grid">
@@ -487,7 +729,7 @@ img{max-width:100%}
       </div>
       <div>
         <h4>Get Started</h4>
-        <div class="footer-lnk" onclick="showPage('services')">Browse All 41 Services</div>
+        <div class="footer-lnk" onclick="showPage('services')">Browse All 40+ Services</div>
         <div class="footer-lnk" onclick="showPage('services');filterCat('audits')">Audits</div>
         <div class="footer-lnk" onclick="showPage('services');filterCat('legal')">HR and Legal Docs</div>
         <div class="footer-lnk" onclick="showPage('services');filterCat('interactive')">Interactive Docs</div>
@@ -1035,6 +1277,7 @@ function showPage(id){
   else if(id==='how-it-works')renderHIW();
   else if(id==='about')renderAbout();
   else if(id==='contact')renderContact();
+  else if(id==='dashboard')renderDashboard();
 }
 
 function toggleMobileMenu(){document.getElementById('mobileMenu').classList.toggle('open');}
@@ -1177,12 +1420,11 @@ function renderHome(){
             <button class="btn btn-green btn-lg" onclick="showPage('services')">Browse All Services</button>
             <button class="btn btn-outline btn-lg" onclick="showPage('how-it-works')">See How It Works</button>
           </div>
-          <div class="hero-divider"></div>
-          <div class="hero-kpis">
-            <div class="hero-kpi"><div class="hero-kpi-num">41</div><div class="hero-kpi-label">Services</div></div>
-            <div class="hero-kpi"><div class="hero-kpi-num">24hrs</div><div class="hero-kpi-label">Most Deliveries</div></div>
-            <div class="hero-kpi"><div class="hero-kpi-num">$19</div><div class="hero-kpi-label">Starting From</div></div>
-            <div class="hero-kpi"><div class="hero-kpi-num">100%</div><div class="hero-kpi-label">Guaranteed</div></div>
+          <div class="hero-proof">
+            <div class="hp-card"><span class="hp-icon">&#128230;</span><div class="hp-num">40+</div><div class="hp-lbl">Professional Services</div><div class="hp-body">From resumes to product prototypes. One specialist team handles it all.</div></div>
+            <div class="hp-card"><span class="hp-icon">&#9889;</span><div class="hp-num">24hrs</div><div class="hp-lbl">Average Delivery Time</div><div class="hp-body">Most orders arrive before your next business day. Guaranteed.</div></div>
+            <div class="hp-card"><span class="hp-icon">&#128176;</span><div class="hp-num">$19</div><div class="hp-lbl">Starting Price</div><div class="hp-body">15 to 25 percent of what agencies charge for the same work.</div></div>
+            <div class="hp-card"><span class="hp-icon">&#10022;</span><div class="hp-num">100%</div><div class="hp-lbl">Satisfaction Guaranteed</div><div class="hp-body">We revise every deliverable until you are proud to use it.</div></div>
           </div>
         </div>
         <div class="hero-right">
@@ -1210,9 +1452,11 @@ function renderHome(){
   <div class="trust-strip">
     <div class="container" style="padding:0">
       <div class="trust-inner">
-        ${[['24-Hour Delivery','Most services'],['Specialist Team','Right expert every time'],['Works Anywhere','Every country and timezone'],['Fixed Pricing','No surprises, ever'],['Satisfaction Guaranteed','We will fix it if needed']].map(([l,s])=>`
-          <div class="trust-item"><div class="trust-dot"></div><span class="trust-label">${l}</span><span class="trust-sub">&nbsp;&mdash;&nbsp;${s}</span></div>
-        `).join('')}
+        <div class="trust-item"><div class="trust-icon">⚡</div><div class="trust-label">24-Hour Delivery</div><div class="trust-sub">Most services</div></div>
+        <div class="trust-item"><div class="trust-icon">👥</div><div class="trust-label">Specialist Team</div><div class="trust-sub">Right expert, every time</div></div>
+        <div class="trust-item"><div class="trust-icon">🌍</div><div class="trust-label">Global Clients</div><div class="trust-sub">Every country, every timezone</div></div>
+        <div class="trust-item"><div class="trust-icon">💰</div><div class="trust-label">Fixed Pricing</div><div class="trust-sub">No surprises, ever</div></div>
+        <div class="trust-item"><div class="trust-icon">✅</div><div class="trust-label">Satisfaction Guarantee</div><div class="trust-sub">We will fix it if needed</div></div>
       </div>
     </div>
   </div>
@@ -1246,7 +1490,7 @@ function renderHome(){
         <p style="color:rgba(255,255,255,.6)">No back-and-forth. No waiting. No uncertainty.</p>
       </div>
       <div class="steps">
-        ${[['01','Choose Your Service','Browse 41 services across 10 categories. Each service shows exactly what you receive, who it is for, and what it costs. No hidden fees.'],['02','Submit Your Brief','Fill in the order form with your details and goals. Upload supporting files if needed. The more context you give, the better the result.'],['03','Receive Your Deliverable','Your specialist completes the work. It goes through review. You receive it in your inbox. Most orders arrive within 24 hours.']].map(([n,t,b])=>`
+        ${[['01','Choose Your Service','Browse 40+ services across 10 categories. Each service shows exactly what you receive, who it is for, and what it costs. No hidden fees.'],['02','Submit Your Brief','Fill in the order form with your details and goals. Upload supporting files if needed. The more context you give, the better the result.'],['03','Receive Your Deliverable','Your specialist completes the work. It goes through review. You receive it in your inbox. Most orders arrive within 24 hours.']].map(([n,t,b])=>`
           <div class="step">
             <div class="step-num">${n}</div>
             <div class="step-title">${t}</div>
@@ -1267,7 +1511,7 @@ function renderHome(){
       </div>
       <div class="svcs-grid">${featured.map(s=>sCard(s)).join('')}</div>
       <div style="text-align:center;margin-top:48px">
-        <button class="btn btn-outline btn-lg" onclick="showPage('services')">View All 41 Services</button>
+        <button class="btn btn-outline btn-lg" onclick="showPage('services')">View All 40+ Services</button>
       </div>
     </div>
   </section>
@@ -1309,9 +1553,24 @@ function renderHome(){
       </div>
       <div class="t-grid">
         ${[
-          {t:'I submitted a brief on Tuesday evening and had a complete, investor-ready business plan in my inbox by Wednesday afternoon. I have paid agencies $1,200 for less thorough work. The quality genuinely surprised me.',n:'Aisha K.',r:'Founder, Lagos',i:'AK'},
+          {t:'I submitted a brief on a Tuesday evening and had a complete, investor-ready business plan in my inbox by Wednesday afternoon. I have paid agencies $1,200 for less thorough work. The quality genuinely surprised me.',n:'Aisha K.',r:'Founder, Chicago',i:'AK'},
           {t:'My LinkedIn profile had been the same for three years. Two weeks after the BriefCraft rewrite, I had four recruiter messages and two client inquiries from roles I actually wanted. Worth every cent of the $29.',n:'James O.',r:'Product Manager, London',i:'JO'},
           {t:'We needed a grant proposal for a foundation we had been targeting for two years. The proposal BriefCraft produced was the most thorough one we have ever submitted. We got the grant.',n:'Dr. Maria L.',r:'Executive Director, Cape Town',i:'ML'},
+        ].map(t=>`
+          <div class="t-card">
+            <div class="t-quote-mark">"</div>
+            <div class="t-text">${t.t}</div>
+            <div class="t-author">
+              <div class="t-av">${t.i}</div>
+              <div><div class="t-name">${t.n}</div><div class="t-role">${t.r}</div><div class="t-stars">★★★★★</div></div>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+      <div class="t-grid-2">
+        ${[
+          {t:'We had a promising SaaS idea and three weeks before an investor meeting. BriefCraft built us a fully clickable web app prototype in under 32 hours. We walked in with something investors could actually use. We closed a $250K pre-seed round.',n:'Marcus T.',r:'Co-Founder, Atlanta',i:'MT'},
+          {t:'I sent a BriefCraft interactive HTML proposal to a corporate client I had been chasing for six months. They called me the next morning. Said it was the most professional proposal they had received from any independent consultant. We signed the contract that Friday.',n:'Priya S.',r:'Strategy Consultant, Singapore',i:'PS'},
         ].map(t=>`
           <div class="t-card">
             <div class="t-quote-mark">"</div>
@@ -1379,7 +1638,7 @@ function renderServices(){
   });
   document.getElementById('page-services').innerHTML=`
     <div class="page-hdr">
-      <span class="page-hdr-eye">41 Professional Services</span>
+      <span class="page-hdr-eye">40+ Professional Services</span>
       <h1>Everything you need.<br>Done right.</h1>
       <p>Browse by category. Click any service for full details, the data behind it, and an instant order form.</p>
     </div>
@@ -1551,6 +1810,471 @@ function resetContact(){
 
 // INIT
 renderHome();
+
+// ===== V6: CART, LOGIN, DASHBOARD, EDIT ORDER =====
+
+const BC = { user:'bc_user_v6', cart:'bc_cart_v6', orders:'bc_orders_v6' };
+const STATUS_LABELS = {editing:'Edit Available',processing:'Processing',delivered:'Delivered',completed:'Completed'};
+
+// TOAST
+let _toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  if(!t) return;
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(_toastTimer);
+  _toastTimer = setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+// USER
+function getUser() { try { return JSON.parse(localStorage.getItem(BC.user)); } catch(e) { return null; } }
+function saveUser(u) { localStorage.setItem(BC.user, JSON.stringify(u)); }
+function logout() {
+  localStorage.removeItem(BC.user);
+  updateNavUser();
+  showToast('Signed out successfully');
+  if(curPage === 'dashboard') showPage('home');
+}
+
+// CART
+function getCart() { try { return JSON.parse(localStorage.getItem(BC.cart)) || []; } catch(e) { return []; } }
+function saveCart(items) { localStorage.setItem(BC.cart, JSON.stringify(items)); updateCartBadge(); }
+function addToCart(id) {
+  if(!id) return;
+  const s = SVCS.find(x => x.id === id);
+  if(!s) return;
+  const cart = getCart();
+  if(cart.find(x => x.id === id)) { showToast('Already in your cart'); closeModal('serviceModal'); return; }
+  cart.push({ id:s.id, name:s.n, price:s.p, cat:s.catL, t:s.t, brief:'' });
+  saveCart(cart);
+  showToast(s.n + ' added to cart');
+  closeModal('serviceModal');
+}
+function removeFromCart(id) { saveCart(getCart().filter(x => x.id !== id)); renderCartBody(); }
+function saveCartBrief(id, brief) {
+  const cart = getCart();
+  const item = cart.find(x => x.id === id);
+  if(item) { item.brief = brief; saveCart(cart); }
+}
+function cartTotal() { return getCart().reduce((t, x) => t + x.price, 0); }
+function updateCartBadge() {
+  const n = getCart().length;
+  const b = document.getElementById('cartBadge');
+  if(b) { b.textContent = n; b.style.display = n > 0 ? 'flex' : 'none'; }
+}
+
+// CART PANEL
+function openCart() {
+  document.getElementById('cartOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  document.getElementById('cartHdrTitle').textContent = 'Your Cart';
+  renderCartBody();
+}
+function closeCartOverlay(e) {
+  if(e && e.target !== document.getElementById('cartOverlay')) return;
+  closeCart();
+}
+function closeCart() {
+  document.getElementById('cartOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function renderCartBody() {
+  const cart = getCart();
+  const body = document.getElementById('cartBody');
+  const footer = document.getElementById('cartFooter');
+  const sub = document.getElementById('cartSubtitle');
+  const title = document.getElementById('cartHdrTitle');
+  if(!body) return;
+  title.textContent = 'Your Cart';
+  sub.textContent = cart.length === 0 ? 'Empty' : cart.length + ' item' + (cart.length > 1 ? 's' : '');
+
+  if(cart.length === 0) {
+    footer.style.display = 'none';
+    body.innerHTML = "<div class='cart-empty'><div class='cart-empty-icon'>&#128722;</div><div class='cart-empty-title'>Your cart is empty</div><div class='cart-empty-body'>Browse our 40+ professional services and add what you need. Your cart saves between sessions.</div><button class='btn btn-green' style='margin-top:20px' onclick='closeCart();showPage(&quot;services&quot;)'>Browse Services</button></div>";
+    return;
+  }
+
+  footer.style.display = '';
+  document.getElementById('cartCount').textContent = cart.length + ' service' + (cart.length > 1 ? 's' : '');
+  document.getElementById('cartTotalVal').textContent = '$' + cartTotal();
+
+  body.innerHTML = cart.map(item => `
+    <div class="cart-item">
+      <div class="ci-row">
+        <div>
+          <div class="ci-name">${item.name}</div>
+          <div class="ci-cat">${item.cat} &middot; ${item.t}</div>
+        </div>
+        <div class="ci-price">$${item.price}</div>
+      </div>
+      <div class="ci-actions">
+        <button class="ci-brief-toggle" id="ctog-${item.id}" onclick="toggleCartBrief('${item.id}')">
+          ${item.brief ? '<span class=\"ci-brief-ok\">&#10003;</span> Brief added' : '+ Add brief'}
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="11" height="11"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+        </button>
+        <button class="ci-remove" onclick="removeFromCart('${item.id}')">Remove</button>
+      </div>
+      <div class="ci-brief-body" id="cb-${item.id}">
+        <textarea class="ci-brief-ta" placeholder="Describe your requirements. You can also update this within the 2-hour edit window after ordering." oninput="saveCartBrief('${item.id}',this.value)">${item.brief}</textarea>
+      </div>
+    </div>`).join('');
+}
+
+function toggleCartBrief(id) {
+  const el = document.getElementById('cb-' + id);
+  if(el) { el.classList.toggle('open'); }
+}
+
+function proceedToCheckout() {
+  const cart = getCart();
+  if(cart.length === 0) return;
+  const user = getUser();
+  document.getElementById('cartHdrTitle').textContent = 'Checkout';
+  document.getElementById('cartSubtitle').textContent = cart.length + ' service' + (cart.length > 1 ? 's' : '') + ' &middot; $' + cartTotal();
+  document.getElementById('cartFooter').style.display = 'none';
+
+  document.getElementById('cartBody').innerHTML = `
+    <button class="checkout-back" onclick="renderCartBody()">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="13" height="13"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/></svg>
+      Back to Cart
+    </button>
+    <div class="checkout-summary">
+      <div style="font-family:'Unbounded',sans-serif;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-4);margin-bottom:10px">Order Summary</div>
+      ${cart.map(i => '<div class="cs-row"><span class="cs-name">' + i.name + '</span><span class="cs-price">$' + i.price + '</span></div>').join('')}
+      <hr class="cs-divider">
+      <div class="cs-total-row"><span class="cs-total-label">Total</span><span class="cs-total-price">$${cartTotal()}</span></div>
+    </div>
+    <div class="checkout-form">
+      <div style="font-family:'Unbounded',sans-serif;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-4);margin-bottom:14px">Your Details</div>
+      <div class="form-group"><label class="form-label">Name <span style="color:#ef4444">*</span></label><input type="text" class="form-input" id="coName" placeholder="Full name" value="${user ? user.name : ''}"></div>
+      <div class="form-group"><label class="form-label">Email <span style="color:#ef4444">*</span></label><input type="email" class="form-input" id="coEmail" placeholder="you@company.com" value="${user ? user.email : ''}"></div>
+      <div class="form-group"><label class="form-label">Country</label><input type="text" class="form-input" id="coCountry" placeholder="Where are you based?"></div>
+      <button class="btn btn-green" style="width:100%;justify-content:center;padding:15px;font-size:14px;margin-top:4px" onclick="goToPayment()">
+        Proceed to Payment &nbsp;&middot;&nbsp; $${cartTotal()}
+      </button>
+      <div style="text-align:center;margin-top:10px;font-family:'Outfit',sans-serif;font-size:11px;color:var(--text-4)">Order is editable for 2 hours after placement. Fixed pricing, no hidden fees.</div>
+    </div>`;
+}
+
+let _pendingOrder = null;
+function goToPayment() {
+  const name = (document.getElementById('coName') || {}).value && document.getElementById('coName').value.trim();
+  const email = (document.getElementById('coEmail') || {}).value && document.getElementById('coEmail').value.trim();
+  if(!name) { showToast('Please enter your name'); return; }
+  if(!email || !email.includes('@')) { showToast('Please enter a valid email'); return; }
+  const cart = getCart();
+  const ref = 'BC-' + Date.now().toString(36).toUpperCase().slice(-7);
+  _pendingOrder = { ref, items:[...cart.map(x=>({...x}))], customer:{name,email}, total:cartTotal(), created:Date.now(), editable_until:Date.now()+7200000, status:'editing' };
+
+  document.getElementById('cartHdrTitle').textContent = 'Secure Payment';
+  document.getElementById('cartSubtitle').textContent = 'Choose payment method';
+
+  document.getElementById('cartBody').innerHTML = `
+    <div class="pay-screen">
+      <div class="pay-ref">${ref}</div>
+      <div class="pay-total-num">$${cartTotal()}</div>
+      <div class="pay-sub">${cart.length} service${cart.length>1?'s':''} &middot; Specialists begin after edit window closes</div>
+      <div class="pay-method" onclick="confirmPayment('stripe')">
+        <div class="pay-icon">&#128179;</div>
+        <div style="flex:1">
+          <div class="pay-name">Pay with Stripe</div>
+          <div class="pay-meta">Credit / Debit card &middot; International &middot; Secure</div>
+        </div>
+        <div class="pay-arrow"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="18" height="18"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></div>
+      </div>
+      <div class="pay-method" onclick="confirmPayment('paystack')">
+        <div class="pay-icon">&#127758;</div>
+        <div style="flex:1">
+          <div class="pay-name">Pay with Paystack</div>
+          <div class="pay-meta">Nigeria, Ghana, Kenya, South Africa &amp; more</div>
+        </div>
+        <div class="pay-arrow"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="18" height="18"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></div>
+      </div>
+      <div class="pay-note">
+        Clicking either option creates your order immediately and starts your 2-hour edit window. Payment processing will be connected when the full platform goes live.
+      </div>
+    </div>`;
+}
+
+let _successCDInterval;
+function confirmPayment(method) {
+  if(!_pendingOrder) return;
+  const orders = getOrders();
+  orders.unshift(_pendingOrder);
+  saveOrders(orders);
+  saveCart([]);
+  updateCartBadge();
+  const o = _pendingOrder;
+  _pendingOrder = null;
+  if(!getUser()) saveUser({name:o.customer.name, email:o.customer.email, joined:Date.now()});
+  updateNavUser();
+
+  document.getElementById('cartHdrTitle').textContent = 'Order Placed';
+  document.getElementById('cartSubtitle').textContent = method === 'stripe' ? 'via Stripe' : 'via Paystack';
+
+  document.getElementById('cartBody').innerHTML = `
+    <div class="order-success">
+      <span class="os-icon">&#9989;</span>
+      <div class="os-title">Your brief is in good hands.</div>
+      <div class="os-body">Order created. Your specialists begin work after the 2-hour edit window closes. A confirmation will be sent to ${o.customer.email}.</div>
+      <div class="os-ref">${o.ref}</div>
+      <div class="os-cd" id="successCountdown">Calculating edit window...</div>
+      <div class="os-btns">
+        <button class="btn btn-green" onclick="closeCart();showPage('dashboard')">View Dashboard</button>
+        <button class="btn btn-outline" onclick="closeCart()">Close</button>
+      </div>
+    </div>`;
+
+  startCountdowns();
+  clearInterval(_successCDInterval);
+  _successCDInterval = setInterval(() => {
+    const el = document.getElementById('successCountdown');
+    if(!el) { clearInterval(_successCDInterval); return; }
+    const r = o.editable_until - Date.now();
+    el.textContent = r <= 0 ? 'Edit window closed' : 'Edit closes in: ' + formatCountdown(r);
+  }, 1000);
+}
+
+// ORDERS
+function getOrders() { try { return JSON.parse(localStorage.getItem(BC.orders)) || []; } catch(e) { return []; } }
+function saveOrders(o) { localStorage.setItem(BC.orders, JSON.stringify(o)); }
+function isEditable(order) { return order.status === 'editing' && Date.now() < order.editable_until; }
+
+// COUNTDOWN
+function formatCountdown(ms) {
+  if(ms <= 0) return '00:00:00';
+  const h = Math.floor(ms / 3600000);
+  const m = Math.floor((ms % 3600000) / 60000);
+  const s = Math.floor((ms % 60000) / 1000);
+  return String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+}
+
+let _cdInterval;
+function startCountdowns() {
+  clearInterval(_cdInterval);
+  _cdInterval = setInterval(() => {
+    document.querySelectorAll('[data-editable-until]').forEach(el => {
+      const until = parseInt(el.dataset.editableUntil);
+      if(!until) return;
+      const r = until - Date.now();
+      if(r <= 0) {
+        el.textContent = 'Edit window closed';
+        el.closest('.order-card') && el.closest('.order-card').querySelector('.edit-order-btn') && el.closest('.order-card').querySelector('.edit-order-btn').remove();
+        const ref = el.dataset.ref;
+        if(ref) {
+          const orders = getOrders();
+          const o = orders.find(x => x.ref === ref);
+          if(o && o.status === 'editing') { o.status = 'processing'; saveOrders(orders); }
+        }
+      } else {
+        el.textContent = 'Edit closes in: ' + formatCountdown(r);
+      }
+    });
+  }, 1000);
+}
+
+// LOGIN
+function openLogin() {
+  const el = document.getElementById('loginOverlay');
+  if(!el) return;
+  document.getElementById('loginName').value = '';
+  document.getElementById('loginEmail').value = '';
+  el.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  setTimeout(() => document.getElementById('loginName').focus(), 100);
+}
+function closeLoginOverlay(e) {
+  if(e && e.target !== document.getElementById('loginOverlay')) return;
+  closeLogin();
+}
+function closeLogin() {
+  document.getElementById('loginOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function submitLogin() {
+  const name = document.getElementById('loginName').value.trim();
+  const email = document.getElementById('loginEmail').value.trim();
+  if(!name) { showToast('Please enter your name'); return; }
+  if(!email || !email.includes('@')) { showToast('Please enter a valid email'); return; }
+  saveUser({ name, email, joined: Date.now() });
+  updateNavUser();
+  closeLogin();
+  showToast('Welcome, ' + name.split(' ')[0] + '. Your dashboard is ready.');
+  showPage('dashboard');
+}
+function updateNavUser() {
+  const user = getUser();
+  const wrap = document.getElementById('navUserWrap');
+  const loginBtn = document.getElementById('navLoginBtn');
+  if(!wrap || !loginBtn) return;
+  if(user) {
+    wrap.style.display = '';
+    loginBtn.style.display = 'none';
+    const nameEl = document.getElementById('navUserName');
+    const emailEl = document.getElementById('navUserEmail');
+    if(nameEl) nameEl.textContent = user.name.split(' ')[0];
+    if(emailEl) emailEl.textContent = user.email;
+  } else {
+    wrap.style.display = 'none';
+    loginBtn.style.display = '';
+  }
+}
+function toggleUserMenu() {
+  document.getElementById('userDropdown').classList.toggle('open');
+}
+document.addEventListener('click', e => {
+  const wrap = document.getElementById('navUserWrap');
+  const dd = document.getElementById('userDropdown');
+  if(wrap && dd && !wrap.contains(e.target)) dd.classList.remove('open');
+});
+
+// EDIT ORDER
+function openEditOrder(ref) {
+  const orders = getOrders();
+  const order = orders.find(o => o.ref === ref);
+  if(!order || !isEditable(order)) { showToast('Edit window has closed for this order'); return; }
+  const badge = document.getElementById('editCountdownBadge');
+  badge.dataset.editableUntil = order.editable_until;
+  badge.dataset.ref = ref;
+  document.getElementById('editOrderContent').innerHTML =
+    '<div style="padding:16px 24px;border-bottom:1px solid var(--border);background:var(--bg-2)">' +
+    '<div style="font-family:JetBrains Mono,monospace;font-size:13px;color:var(--green);font-weight:600">' + ref + '</div>' +
+    '<div style="font-family:Outfit,sans-serif;font-size:12px;color:var(--text-4);margin-top:3px">' + order.items.length + ' service' + (order.items.length > 1 ? 's' : '') + ' &middot; Total $' + order.total + '</div>' +
+    '</div>' +
+    order.items.map((item, idx) =>
+      '<div class="edit-item">' +
+      '<div class="edit-item-name">' + item.name + '</div>' +
+      '<div class="edit-item-meta">' + item.cat + ' &middot; $' + item.price + ' &middot; ' + item.t + ' delivery</div>' +
+      '<label class="form-label" style="margin-bottom:6px">Brief</label>' +
+      '<textarea class="form-textarea" id="edit-brief-' + idx + '" style="min-height:90px">' + (item.brief || '') + '</textarea>' +
+      '</div>'
+    ).join('') +
+    '<div style="padding:16px 24px;background:var(--bg-2);border-top:1px solid var(--border)">' +
+    `<button class="btn btn-green" style="width:100%;justify-content:center" onclick="saveEditOrder('${ref}')">` +
+    'Save Changes</button>' +
+    '<div style="text-align:center;margin-top:8px;font-family:Outfit,sans-serif;font-size:11px;color:var(--text-4)">Changes saved immediately. Edit window applies.</div>' +
+    '</div>';
+  document.getElementById('editOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  startCountdowns();
+}
+function closeEditOverlay(e) {
+  if(e && e.target !== document.getElementById('editOverlay')) return;
+  closeEdit();
+}
+function closeEdit() {
+  document.getElementById('editOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function saveEditOrder(ref) {
+  const orders = getOrders();
+  const order = orders.find(o => o.ref === ref);
+  if(!order) return;
+  order.items.forEach((item, idx) => {
+    const ta = document.getElementById('edit-brief-' + idx);
+    if(ta) item.brief = ta.value.trim();
+  });
+  saveOrders(orders);
+  closeEdit();
+  showToast('Order updated');
+  if(curPage === 'dashboard') renderDashboard();
+}
+
+// DASHBOARD
+function renderDashboard() {
+  const user = getUser();
+  const pg = document.getElementById('page-dashboard');
+  if(!pg) return;
+  if(!user) {
+    pg.innerHTML = '<div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--bg-2);padding:40px;text-align:center">' +
+      '<div style="font-size:44px;margin-bottom:16px">&#128274;</div>' +
+      '<h2 style="font-family:Unbounded,sans-serif;font-size:24px;font-weight:800;color:var(--text);margin-bottom:10px;letter-spacing:-.03em">Sign in to access your dashboard</h2>' +
+      '<p style="font-family:Outfit,sans-serif;font-size:14px;color:var(--text-3);max-width:360px;margin:0 auto 28px;line-height:1.75">Track orders, edit briefs within the 2-hour window, and browse services from your personal BriefCraft dashboard.</p>' +
+      '<button class="btn btn-green btn-lg" onclick="openLogin()">Sign In</button>' +
+      '</div>';
+    return;
+  }
+  const orders = getOrders();
+  const totalSpent = orders.reduce((t, o) => t + o.total, 0);
+  const active = orders.filter(o => o.status === 'editing' || o.status === 'processing').length;
+
+  pg.innerHTML =
+    '<div class="dash-hdr"><div class="container" style="position:relative;z-index:1">' +
+    '<div class="eyebrow-white" style="margin-bottom:12px">Your Dashboard</div>' +
+    '<div class="dash-welcome">Welcome back, ' + user.name.split(' ')[0] + '.</div>' +
+    '<div class="dash-meta">Professional work, tracked and managed in one place.</div>' +
+    '<div class="dash-actions">' +
+    "<button class='btn btn-green' onclick='showPage(&quot;services&quot;)'>Browse Services</button>" +
+    '<button class="btn btn-outline-white" onclick="openCart()">&#128722; View Cart</button>' +
+    '<button class="btn btn-outline-white" onclick="logout()">Sign Out</button>' +
+    '</div></div></div>' +
+
+    '<section class="section-pad"><div class="container">' +
+    '<div class="dash-stats">' +
+    '<div class="dash-stat"><div class="dash-stat-num">' + orders.length + '</div><div class="dash-stat-label">Total Orders Placed</div></div>' +
+    '<div class="dash-stat"><div class="dash-stat-num">$' + totalSpent + '</div><div class="dash-stat-label">Total Invested</div></div>' +
+    '<div class="dash-stat"><div class="dash-stat-num">' + active + '</div><div class="dash-stat-label">Active Orders</div></div>' +
+    '</div>' +
+
+    '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px">' +
+    '<div class="dash-section-title">Your Orders</div>' +
+    '<div class="dash-tabs">' +
+    "<button class='dash-tab active' onclick='filterOrders(&quot;all&quot;,this)'>All</button>" +
+    "<button class='dash-tab' onclick='filterOrders(&quot;editing&quot;,this)'>Edit Available</button>" +
+    "<button class='dash-tab' onclick='filterOrders(&quot;processing&quot;,this)'>Processing</button>" +
+    "<button class='dash-tab' onclick='filterOrders(&quot;delivered&quot;,this)'>Delivered</button>" +
+    '</div></div>' +
+
+    '<div id="ordersContainer">' +
+    (orders.length === 0
+      ? '<div class="dash-empty"><span class="dash-empty-icon">&#128203;</span><div class="dash-empty-title">No orders yet</div><div class="dash-empty-body">Browse our 40+ professional services, add what you need to your cart, and submit your first brief. Most deliveries arrive within 24 hours.</div><button class="btn btn-green" onclick="showPage(&quot;services&quot;)">Browse All Services</button></div>'
+      : orders.map(o => renderOrderCard(o)).join('')
+    ) +
+    '</div>' +
+    '</div></section>';
+
+  startCountdowns();
+}
+
+function renderOrderCard(o) {
+  const editable = isEditable(o);
+  const statusClass = {editing:'sb-editing',processing:'sb-processing',delivered:'sb-delivered',completed:'sb-completed'};
+  const d = new Date(o.created);
+  const dateStr = d.toLocaleDateString('en-US',{year:'numeric',month:'short',day:'numeric'});
+  return '<div class="order-card" id="oc-' + o.ref + '">' +
+    '<div class="oc-top"><div><div class="oc-ref">' + o.ref + '</div><div class="oc-date">' + dateStr + '</div></div>' +
+    '<div class="oc-total">$' + o.total + '</div></div>' +
+    '<div class="oc-services">' + o.items.map(i => i.name).join(' &middot; ') + '</div>' +
+    '<div class="oc-foot">' +
+    '<span class="status-badge ' + (statusClass[o.status] || 'sb-processing') + '">' + (STATUS_LABELS[o.status] || o.status) + '</span>' +
+    (editable
+      ? '<span class="oc-countdown" data-editable-until="' + o.editable_until + '" data-ref="' + o.ref + '">calculating...</span>' +
+        `<button class="edit-order-btn" onclick="openEditOrder('${o.ref}')">Edit Order</button>`
+      : '') +
+    '</div></div>';
+}
+
+function filterOrders(status, btn) {
+  document.querySelectorAll('.dash-tab').forEach(t => t.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  const orders = getOrders();
+  const filtered = status === 'all' ? orders : orders.filter(o => o.status === status);
+  const container = document.getElementById('ordersContainer');
+  if(!container) return;
+  if(filtered.length === 0) {
+    container.innerHTML = '<div class="dash-empty"><span class="dash-empty-icon">&#128235;</span><div class="dash-empty-title">No ' + (status === 'all' ? '' : (STATUS_LABELS[status] || status) + ' ') + 'orders</div><div class="dash-empty-body">Nothing here yet. Browse services to get started.</div></div>';
+    return;
+  }
+  container.innerHTML = filtered.map(o => renderOrderCard(o)).join('');
+  startCountdowns();
+}
+
+// INIT V6
+updateNavUser();
+updateCartBadge();
+
 </script>
 </body>
 </html>
