@@ -859,6 +859,7 @@ html { overflow-x: hidden; }
       <div class="success-ref" id="sRef"></div>
       <button class="btn btn-green" id="oDoneBtn" style="margin-top:24px" onclick="closeModal('orderModal')">Done</button>
     </div>
+    <div id="orderPayment" class="hidden"></div>
   </div>
 </div>
 
@@ -1677,8 +1678,11 @@ function openOrder(){
   closeModal('serviceModal');
   if(!curSvc)return;
   renderOrderModal();
+  _pendingDirectOrder = null;
   document.getElementById('orderForm').style.display='';
   document.getElementById('orderSuccess').classList.add('hidden');
+  document.getElementById('orderPayment').classList.add('hidden');
+  document.getElementById('orderPayment').innerHTML='';
   ['briefText','oNameInput','oEmail','oCountry'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('fileNames').textContent='';
   document.getElementById('orderModal').classList.add('open');
@@ -1691,20 +1695,21 @@ function closeModal(id,e){
   document.body.style.overflow='';
 }
 
+let _pendingDirectOrder = null;
+
 function submitOrder(){
-  const brief = document.getElementById('briefText').value.trim();
-  const name  = document.getElementById('oNameInput').value.trim();
-  const email = document.getElementById('oEmail').value.trim();
+  const brief   = document.getElementById('briefText').value.trim();
+  const name    = document.getElementById('oNameInput').value.trim();
+  const email   = document.getElementById('oEmail').value.trim();
   const country = document.getElementById('oCountry').value.trim();
   if(!brief || brief.length < 30){ alert(t('order_brief_label') + ': ' + t('order_brief_hint')); return; }
   if(!name){ alert(t('order_name_label') + '...'); return; }
   if(!email || !email.includes('@')){ alert(t('order_email_label') + '...'); return; }
-
   if(!curSvc) return;
 
-  // Build and save the order to localStorage (same structure as cart orders)
+  // Stage the order — save only after payment is confirmed
   const ref = 'BC-' + Date.now().toString(36).toUpperCase().slice(-7);
-  const order = {
+  _pendingDirectOrder = {
     ref,
     items: [{ id: curSvc.id, name: curSvc.n, price: curSvc.p, cat: curSvc.catL, t: curSvc.t, brief }],
     customer: { name, email, country },
@@ -1714,19 +1719,85 @@ function submitOrder(){
     status: 'editing'
   };
 
+  // Show payment screen inside the order modal
+  document.getElementById('orderForm').style.display = 'none';
+  document.getElementById('orderSuccess').classList.add('hidden');
+
+  const payEl = document.getElementById('orderPayment');
+  payEl.classList.remove('hidden');
+  payEl.innerHTML = `
+    <div class="pay-screen">
+      <button class="checkout-back" onclick="backToOrderForm()" style="width:100%;border:none;border-bottom:1px solid var(--border);margin-bottom:16px;padding:12px 0 14px">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="13" height="13"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/></svg>
+        ${t('checkout_back')}
+      </button>
+      <div class="pay-ref">${ref}</div>
+      <div class="pay-total-num">$${curSvc.p}</div>
+      <div class="pay-sub">1 ${t('edit_svc_singular')} &middot; ${t('pay_svc_after_window')}</div>
+      <div class="pay-method" onclick="confirmDirectPayment('stripe')">
+        <div class="pay-icon">&#128179;</div>
+        <div style="flex:1">
+          <div class="pay-name">${t('pay_stripe_name')}</div>
+          <div class="pay-meta">${t('pay_stripe_meta')}</div>
+        </div>
+        <div class="pay-arrow"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="18" height="18"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></div>
+      </div>
+      <div class="pay-method" onclick="confirmDirectPayment('paystack')">
+        <div class="pay-icon">&#127758;</div>
+        <div style="flex:1">
+          <div class="pay-name">${t('pay_paystack_name')}</div>
+          <div class="pay-meta">${t('pay_paystack_meta')}</div>
+        </div>
+        <div class="pay-arrow"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="18" height="18"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></div>
+      </div>
+      <div class="pay-note">${t('pay_note')}</div>
+    </div>`;
+}
+
+function backToOrderForm(){
+  _pendingDirectOrder = null;
+  document.getElementById('orderPayment').classList.add('hidden');
+  document.getElementById('orderPayment').innerHTML = '';
+  document.getElementById('orderForm').style.display = '';
+}
+
+function confirmDirectPayment(method){
+  if(!_pendingDirectOrder) return;
+
+  // Save the order to localStorage now that payment is confirmed
   const orders = getOrders();
-  orders.unshift(order);
+  orders.unshift(_pendingDirectOrder);
   saveOrders(orders);
 
-  // Save user session if not already logged in
-  if(!getUser()) saveUser({ name, email, joined: Date.now() });
+  const o = _pendingDirectOrder;
+  _pendingDirectOrder = null;
+
+  // Log the user in if not already
+  if(!getUser()) saveUser({ name: o.customer.name, email: o.customer.email, joined: Date.now() });
   updateNavUser();
 
-  // Show success screen
-  document.getElementById('orderForm').style.display = 'none';
-  document.getElementById('sRef').textContent = ref;
-  document.getElementById('orderSuccess').classList.remove('hidden');
+  // Hide payment screen
+  document.getElementById('orderPayment').classList.add('hidden');
+  document.getElementById('orderPayment').innerHTML = '';
+
+  // Show success screen with ref and two action buttons
+  document.getElementById('sRef').textContent = o.ref;
+  const successEl = document.getElementById('orderSuccess');
+
+  // Replace static Done button with View Dashboard + Close
+  const doneBtn = document.getElementById('oDoneBtn');
+  if(doneBtn){
+    doneBtn.outerHTML =
+      '<div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:24px">' +
+        '<button class="btn btn-green" onclick="closeModal(\'orderModal\');showPage(\'dashboard\')">' + t('placed_view_dash') + '</button>' +
+        '<button class="btn btn-outline" onclick="closeModal(\'orderModal\')">' + t('placed_close') + '</button>' +
+      '</div>';
+  }
+
+  successEl.classList.remove('hidden');
 }
+
+
 
 // CARD TEMPLATE
 function sCard(s){
