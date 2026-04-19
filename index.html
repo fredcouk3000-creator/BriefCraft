@@ -883,14 +883,14 @@ html { overflow-x: hidden; }
 <div class="login-overlay" id="loginOverlay" onclick="closeLoginOverlay(event)">
   <div class="login-box">
     <div class="login-hdr">
-      <div class="login-title">Sign in to BriefCraft</div>
-      <div class="login-sub">Access your order dashboard, track deliveries, and edit recent briefs. No password required for this preview version.</div>
+      <div class="login-title" id="loginTitle">Sign in to BriefCraft</div>
+      <div class="login-sub" id="loginSubText">Access your order dashboard, track deliveries, and edit recent briefs. No password required for this preview version.</div>
     </div>
     <div class="login-body">
-      <div class="form-group"><label class="form-label">Your Name <span style="color:#ef4444">*</span></label><input type="text" class="form-input" id="loginName" placeholder="First and last name"></div>
-      <div class="form-group"><label class="form-label">Email Address <span style="color:#ef4444">*</span></label><input type="email" class="form-input" id="loginEmail" placeholder="you@company.com"></div>
-      <button class="btn btn-green" style="width:100%;justify-content:center;padding:14px;margin-top:4px" onclick="submitLogin()">Continue to Dashboard</button>
-      <div class="login-note">This is a session-based login for the preview platform. Your email will not be shared. Full authentication will be available when the platform goes live.</div>
+      <div class="form-group"><label class="form-label" id="loginNameLabel">Your Name <span style="color:#ef4444">*</span></label><input type="text" class="form-input" id="loginName" placeholder="First and last name"></div>
+      <div class="form-group"><label class="form-label" id="loginEmailLabel">Email Address <span style="color:#ef4444">*</span></label><input type="email" class="form-input" id="loginEmail" placeholder="you@company.com"></div>
+      <button class="btn btn-green" id="loginContinueBtn" style="width:100%;justify-content:center;padding:14px;margin-top:4px" onclick="submitLogin()">Continue to Dashboard</button>
+      <div class="login-note" id="loginNoteText">This is a session-based login for the preview platform. Your email will not be shared. Full authentication will be available when the platform goes live.</div>
     </div>
   </div>
 </div>
@@ -964,6 +964,59 @@ html { overflow-x: hidden; }
     hiw_ready:'Ready to start?',hiw_btn:'Browse All Services',
     modal_who:'Who This Is For',modal_supply:'What You Need to Supply',modal_delivery:'Delivery Time',modal_others_charge:'Others typically charge',modal_what_you_get:'What You Get Back',
     modal_add_cart:'+ Add to Cart',modal_order_now:'Order Now',
+    word_hours:'hours',modal_for_service:'for this service',
+    cat_all:'All Services',cat_career:'Career and Identity',cat_business:'Business Documents',cat_legal:'HR and Compliance',cat_fundraising:'Fundraising',cat_marketing:'Marketing and Brand',cat_interactive:'Interactive Docs',cat_communications:'Speeches',cat_intelligence:'Intelligence',cat_audits:'Audits',cat_prototypes:'Prototypes',
+    stat_1_l:'Higher interview callback rate',stat_1_b:'Professionally written resumes get 38% more callbacks than self-written ones.',
+    stat_2_l:'Faster business growth with a plan',stat_2_b:'Businesses with a written plan grow 30% faster than those without.',
+    stat_3_l:'Of B2B buyers rely on case studies',stat_3_b:'73% say case studies are the most influential content in their purchase decision.',
+    stat_4_l:'Lower product failure rate',stat_4_b:'Products validated with interactive prototypes fail 64% less often at launch.',
+    stat_5_l:'Return per $1 spent on email marketing',stat_5_b:'Email marketing generates $42 for every $1 spent: the highest ROI of any digital channel.',
+    stat_6_l:'Higher grant win rate',stat_6_b:'Professional grant writers win funding 70% more often than internal staff alone.',
+    faq_1_q:'What is BriefCraft?',faq_1_a:'BriefCraft is a professional services firm. Our specialist team produces expert-grade documents, business plans, research reports, grant proposals, and interactive digital assets, delivered within 24 hours at a fraction of the cost of an agency.',
+    faq_2_q:'How does the process work?',faq_2_a:'Three steps: choose your service, submit your brief with all relevant details, and receive your deliverable. Every order goes through specialist review before it reaches you. Most deliveries happen within 24 hours, and many sooner.',
+    faq_3_q:'Is BriefCraft an automated tool or agent?',faq_3_a:'No. BriefCraft is a professional services firm. Our operational methods are proprietary and we do not disclose them. What we promise, and what we deliver, is the quality of what you receive.',
+    faq_4_q:'What happens if I am not satisfied with the result?',faq_4_a:'Contact us within 48 hours with specific feedback and we will revise your deliverable. Our goal is that you are proud to use what we deliver and willing to come back.',
+    faq_5_q:'Who are your specialists?',faq_5_a:'Our team includes specialist writers, strategists, researchers, grant writers, legal document specialists, and product designers. Each order is handled by the specialist whose expertise matches the type of work required.',
+    faq_6_q:'Do you work with clients outside the United States?',faq_6_a:'Absolutely. Our clients are based everywhere: across Africa, Europe, Asia, the Middle East, Latin America, and the Americas. Every service is priced in US dollars and every deliverable is formatted for international use.',
+    faq_7_q:'How do I submit my brief?',faq_7_a:'After selecting your service, you fill in a brief form with your requirements in detail. You can also upload supporting files such as PDFs, Word documents, existing drafts, or reference examples.',
+    faq_8_q:'Is my information kept confidential?',faq_8_a:'Everything you submit is treated as strictly confidential. We do not share, publish, or sell any client data, briefs, or deliverables.',
+    faq_9_q:'What is your pricing model?',faq_9_a:'All services are fixed-price. The price shown is the price you pay. No hourly billing, no scope creep, no hidden fees. If you need a custom service not listed, contact us and we will work with you directly.',
+    faq_10_q:'How quickly do orders actually arrive?',faq_10_a:'Most services are delivered within 24 hours of receiving a complete brief. Complex services such as full business plans, grant proposals, and prototypes take 24-48 hours. Every service card shows the stated turnaround clearly.',
+    test_1_tx:'I submitted a brief on a Tuesday evening and had a complete, investor-ready business plan in my inbox by Wednesday afternoon. I have paid agencies $1,200 for less thorough work. The quality genuinely surprised me.',test_1_r:'Founder, Chicago',
+    test_2_tx:'My LinkedIn profile had been the same for three years. Two weeks after the BriefCraft rewrite, I had four recruiter messages and two client inquiries from roles I actually wanted. Worth every cent of the $29.',test_2_r:'Product Manager, London',
+    test_3_tx:'We needed a grant proposal for a foundation we had been targeting for two years. The proposal BriefCraft produced was the most thorough one we have ever submitted. We got the grant.',test_3_r:'Executive Director, Cape Town',
+    test_4_tx:'We had a promising SaaS idea and three weeks before an investor meeting. BriefCraft built us a fully clickable web app prototype in under 32 hours. We walked in with something investors could actually use. We closed a $250K pre-seed round.',test_4_r:'Co-Founder, Atlanta',
+    test_5_tx:'I sent a BriefCraft interactive HTML proposal to a corporate client I had been chasing for six months. They called me the next morning. Said it was the most professional proposal they had received from any independent consultant. We signed the contract that Friday.',test_5_r:'Strategy Consultant, Singapore',
+    footer_tagline:'Professional work, delivered in 24 hours. Starting from $19. For anyone, anywhere.',
+    footer_col_services:'Services',footer_col_company:'Company',footer_col_start:'Get Started',
+    footer_career:'Career and Identity',footer_business:'Business Documents',footer_marketing:'Marketing and Brand',footer_intelligence:'Business Intelligence',footer_prototypes:'Prototypes',
+    footer_about:'About Us',footer_hiw:'How It Works',footer_contact:'Contact',footer_faq:'FAQ',
+    footer_browse:'Browse All 40+ Services',footer_audits:'Audits',footer_hr:'HR and Legal Docs',footer_interactive:'Interactive Docs',
+    footer_copy:'2026 BriefCraft. Product of The Tetrux Brand Family. All rights reserved.',
+    footer_privacy:'Privacy',footer_terms:'Terms',footer_refund:'Refund Policy',
+    wa_tooltip:'Chat with us on WhatsApp. Ask a question or get a quote instantly.',
+    about_eyebrow:'Our story',about_h1:'Professional work.<br>Without the premium price.',about_sub:'BriefCraft exists because the gap between what people need done and what they can afford has always been too wide.',
+    about_pullquote:'Every piece of professional work starts the same way: someone has something they need done, and they need it done right.',
+    about_p1:'A business plan. A proposal. A contract. A research report. A prototype. The quality of that work shapes decisions, opens doors, and builds reputations. The difference between a weak resume and a strong one is not years of experience. It is how clearly the experience is communicated.',
+    about_p2:'Most people either struggle through these tasks themselves, with results that do not reflect their actual capability, or they pay agencies and senior freelancers rates that price them out. What never existed was a reliable middle path: professional-grade work, fast, at a price that makes sense for founders, professionals, and business owners everywhere in the world.',
+    about_p3:'That is what BriefCraft is. You brief us. We craft it. Everything else is handled.',
+    about_values_h2:'Our Values',about_values_sub:'Five traits that govern everything we do, from how we write a deliverable to how we respond to a message.',
+    about_val1_title:'Measured Confidence',about_val1_body:'We state what we do clearly and let the work prove it. No boasting. No hollow promises. Quiet certainty backed by consistent delivery.',
+    about_val2_title:'Human Warmth',about_val2_body:'Every interaction feels personal and direct, like a skilled colleague who genuinely wants to help rather than a cold process engine.',
+    about_val3_title:'Refined Precision',about_val3_body:'Every word in every deliverable is chosen deliberately. We do not pad, we do not hedge. We say exactly what needs to be said.',
+    about_val4_title:'Understated Speed',about_val4_body:'We are fast because we are good at this, not because we are cutting corners. Speed is a byproduct of expertise.',
+    about_val5_title:'Honest Simplicity',about_val5_body:'We tell clients what they will receive, what they need to give us, and how long it will take. Clearly. Every time.',
+    about_serve_eyebrow:'Who we serve',about_serve_h3:'Built for everyone who does real work',
+    about_aud1_title:'The Founder',about_aud1_body:'Building something from nothing and needing business plans, pitch decks, proposals, and prototypes. Fast, professionally, and affordably.',
+    about_aud2_title:'The Professional',about_aud2_body:'Navigating a career move, building a personal brand, or expanding a client base. The work is real. The stakes are real.',
+    about_aud3_title:'The Business Owner',about_aud3_body:'Running a company where there is always more writing, research, and documentation needed than there are hours to produce it.',
+    contact_eyebrow:'Get in touch',contact_h1:'We would love to hear from you.',contact_sub:'A question, a custom request, or feedback. We respond the same day.',
+    contact_team_h3:'Talk to our team.',contact_team_p:'Whether you have a question about a specific service, a brief that does not fit our standard catalog, or feedback to share, we want to hear it. We respond to every message.',
+    contact_resp_label:'Response Time',contact_resp_val:'Same day, usually within a few hours',contact_serve_label:'Where We Serve',contact_serve_val:'Every country and every timezone',
+    contact_custom_eyebrow:'Custom Requests',contact_custom_p:'Need something not in our catalog? Describe what you need and we will tell you if our specialists can produce it and what it would cost.',
+    contact_form_h3:'Send us a message',contact_lbl_name:'Name',contact_lbl_email:'Email',contact_lbl_country:'Country',contact_lbl_message:'Message',
+    contact_ph_name:'Your full name',contact_ph_email:'you@company.com',contact_ph_country:'Where are you based?',contact_ph_message:'What would you like to ask, or which service are you interested in?',
+    contact_submit:'Send Message',contact_success_title:'Message received.',contact_success_body:'We will get back to you within a few hours. Thank you for reaching out.',contact_success_btn:'Send Another Message',contact_alert:'Please fill in your name, email, and message.',
   };
   // t() stub — reads from full T object once available, falls back to EN stub
   window.t = function(key){
@@ -2116,7 +2169,7 @@ renderHome();
 // ===== V6: CART, LOGIN, DASHBOARD, EDIT ORDER =====
 
 const BC = { user:'bc_user_v6', cart:'bc_cart_v6', orders:'bc_orders_v6' };
-const STATUS_LABELS = {editing:'Edit Available',processing:'Processing',delivered:'Delivered',completed:'Completed'};
+function getStatusLabel(s){var m={editing:t('dash_status_editing'),processing:t('dash_status_processing'),delivered:t('dash_status_delivered'),completed:t('dash_status_completed')};return m[s]||s;}
 
 // TOAST
 let _toastTimer;
@@ -2378,7 +2431,19 @@ function startCountdowns() {
 }
 
 // LOGIN
+
+function renderLoginModal(){
+  var g=function(id){return document.getElementById(id);};
+  if(g('loginTitle'))g('loginTitle').textContent=t('login_title');
+  if(g('loginSubText'))g('loginSubText').textContent=t('login_sub');
+  if(g('loginNameLabel'))g('loginNameLabel').innerHTML=t('login_name_label')+' <span style="color:#ef4444">*</span>';
+  if(g('loginName'))g('loginName').placeholder=t('login_name_ph');
+  if(g('loginEmailLabel'))g('loginEmailLabel').innerHTML=t('login_email_label')+' <span style="color:#ef4444">*</span>';
+  if(g('loginContinueBtn'))g('loginContinueBtn').textContent=t('login_btn');
+  if(g('loginNoteText'))g('loginNoteText').textContent=t('login_note');
+}
 function openLogin() {
+  renderLoginModal();
   const el = document.getElementById('loginOverlay');
   if(!el) return;
   document.getElementById('loginName').value = '';
@@ -2492,9 +2557,9 @@ function renderDashboard() {
   if(!user) {
     pg.innerHTML = '<div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--bg-2);padding:40px;text-align:center">' +
       '<div style="font-size:44px;margin-bottom:16px">&#128274;</div>' +
-      '<h2 style="font-family:Unbounded,sans-serif;font-size:24px;font-weight:800;color:var(--text);margin-bottom:10px;letter-spacing:-.03em">Sign in to access your dashboard</h2>' +
-      '<p style="font-family:Outfit,sans-serif;font-size:14px;color:var(--text-3);max-width:360px;margin:0 auto 28px;line-height:1.75">Track orders, edit briefs within the 2-hour window, and browse services from your personal BriefCraft dashboard.</p>' +
-      '<button class="btn btn-green btn-lg" onclick="openLogin()">Sign In</button>' +
+      '<h2 style="font-family:Unbounded,sans-serif;font-size:24px;font-weight:800;color:var(--text);margin-bottom:10px;letter-spacing:-.03em">'+t('dash_signin_h')+'</h2>' +
+      '<p style="font-family:Outfit,sans-serif;font-size:14px;color:var(--text-3);max-width:360px;margin:0 auto 28px;line-height:1.75">'+t('dash_signin_p')+'</p>' +
+      '<button class="btn btn-green btn-lg" onclick="openLogin()">'+t('dash_signin_btn')+'</button>' +
       '</div>';
     return;
   }
@@ -2504,34 +2569,34 @@ function renderDashboard() {
 
   pg.innerHTML =
     '<div class="dash-hdr"><div class="container" style="position:relative;z-index:1">' +
-    '<div class="eyebrow-white" style="margin-bottom:12px">Your Dashboard</div>' +
-    '<div class="dash-welcome">Welcome back, ' + user.name.split(' ')[0] + '.</div>' +
-    '<div class="dash-meta">Professional work, tracked and managed in one place.</div>' +
+    '<div class="eyebrow-white" style="margin-bottom:12px">'+t('dash_eyebrow')+'</div>' +
+    '<div class="dash-welcome">'+t('dash_welcome')+user.name.split(' ')[0]+'.</div>' +
+    '<div class="dash-meta">'+t('dash_meta')+'</div>' +
     '<div class="dash-actions">' +
-    "<button class='btn btn-green' onclick='showPage(&quot;services&quot;)'>Browse Services</button>" +
-    '<button class="btn btn-outline-white" onclick="openCart()">&#128722; View Cart</button>' +
-    '<button class="btn btn-outline-white" onclick="logout()">Sign Out</button>' +
+    "<button class='btn btn-green' onclick='showPage(&quot;services&quot;)'>"+t('dash_browse')+"</button>" +
+    '<button class="btn btn-outline-white" onclick="openCart()">&#128722; '+t('dash_cart')+'</button>' +
+    '<button class="btn btn-outline-white" onclick="logout()">'+t('dash_signout')+'</button>' +
     '</div></div></div>' +
 
     '<section class="section-pad"><div class="container">' +
     '<div class="dash-stats">' +
-    '<div class="dash-stat"><div class="dash-stat-num">' + orders.length + '</div><div class="dash-stat-label">Total Orders Placed</div></div>' +
-    '<div class="dash-stat"><div class="dash-stat-num">$' + totalSpent + '</div><div class="dash-stat-label">Total Invested</div></div>' +
-    '<div class="dash-stat"><div class="dash-stat-num">' + active + '</div><div class="dash-stat-label">Active Orders</div></div>' +
+    '<div class="dash-stat"><div class="dash-stat-num">' + orders.length + '</div><div class="dash-stat-label">'+t('dash_total_orders')+'</div></div>' +
+    '<div class="dash-stat"><div class="dash-stat-num">$' + totalSpent + '</div><div class="dash-stat-label">'+t('dash_total_invested')+'</div></div>' +
+    '<div class="dash-stat"><div class="dash-stat-num">' + active + '</div><div class="dash-stat-label">'+t('dash_active_orders')+'</div></div>' +
     '</div>' +
 
     '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px">' +
-    '<div class="dash-section-title">Your Orders</div>' +
+    '<div class="dash-section-title">'+t('dash_orders_title')+'</div>' +
     '<div class="dash-tabs">' +
-    "<button class='dash-tab active' onclick='filterOrders(&quot;all&quot;,this)'>All</button>" +
-    "<button class='dash-tab' onclick='filterOrders(&quot;editing&quot;,this)'>Edit Available</button>" +
-    "<button class='dash-tab' onclick='filterOrders(&quot;processing&quot;,this)'>Processing</button>" +
-    "<button class='dash-tab' onclick='filterOrders(&quot;delivered&quot;,this)'>Delivered</button>" +
+    "<button class='dash-tab active' onclick='filterOrders(&quot;all&quot;,this)'>"+t('dash_tab_all')+"</button>" +
+    "<button class='dash-tab' onclick='filterOrders(&quot;editing&quot;,this)'>"+t('dash_tab_editing')+"</button>" +
+    "<button class='dash-tab' onclick='filterOrders(&quot;processing&quot;,this)'>"+t('dash_tab_processing')+"</button>" +
+    "<button class='dash-tab' onclick='filterOrders(&quot;delivered&quot;,this)'>"+t('dash_tab_delivered')+"</button>" +
     '</div></div>' +
 
     '<div id="ordersContainer">' +
     (orders.length === 0
-      ? '<div class="dash-empty"><span class="dash-empty-icon">&#128203;</span><div class="dash-empty-title">No orders yet</div><div class="dash-empty-body">Browse our 40+ professional services, add what you need to your cart, and submit your first brief. Most deliveries arrive within 24 hours.</div><button class="btn btn-green" onclick="showPage(&quot;services&quot;)">Browse All Services</button></div>'
+      ? '<div class="dash-empty"><span class="dash-empty-icon">&#128203;</span><div class="dash-empty-title">'+t('dash_empty_title')+'</div><div class="dash-empty-body">'+t('dash_empty_body')+'</div><button class="btn btn-green" onclick="showPage(&quot;services&quot;)">'+t('dash_browse_all')+'</button></div>'
       : orders.map(o => renderOrderCard(o)).join('')
     ) +
     '</div>' +
@@ -2550,10 +2615,10 @@ function renderOrderCard(o) {
     '<div class="oc-total">$' + o.total + '</div></div>' +
     '<div class="oc-services">' + o.items.map(i => i.name).join(' &middot; ') + '</div>' +
     '<div class="oc-foot">' +
-    '<span class="status-badge ' + (statusClass[o.status] || 'sb-processing') + '">' + (STATUS_LABELS[o.status] || o.status) + '</span>' +
+    '<span class="status-badge ' + (statusClass[o.status] || 'sb-processing') + '">' + (getStatusLabel(o.status)) + '</span>' +
     (editable
       ? '<span class="oc-countdown" data-editable-until="' + o.editable_until + '" data-ref="' + o.ref + '">calculating...</span>' +
-        `<button class="edit-order-btn" onclick="openEditOrder('${o.ref}')">Edit Order</button>`
+        `<button class="edit-order-btn" onclick="openEditOrder('${o.ref}')">`+t('dash_edit_order')+`</button>`
       : '') +
     '</div></div>';
 }
@@ -2566,7 +2631,7 @@ function filterOrders(status, btn) {
   const container = document.getElementById('ordersContainer');
   if(!container) return;
   if(filtered.length === 0) {
-    container.innerHTML = '<div class="dash-empty"><span class="dash-empty-icon">&#128235;</span><div class="dash-empty-title">No ' + (status === 'all' ? '' : (STATUS_LABELS[status] || status) + ' ') + 'orders</div><div class="dash-empty-body">Nothing here yet. Browse services to get started.</div></div>';
+    container.innerHTML = '<div class="dash-empty"><span class="dash-empty-icon">&#128235;</span><div class="dash-empty-title">No ' + (status === 'all' ? '' : getStatusLabel(status)+' ') + 'orders</div><div class="dash-empty-body">Nothing here yet. Browse services to get started.</div></div>';
     return;
   }
   container.innerHTML = filtered.map(o => renderOrderCard(o)).join('');
@@ -2792,6 +2857,18 @@ en:{
   test_3_tx:'We needed a grant proposal for a foundation we had been targeting for two years. The proposal BriefCraft produced was the most thorough one we have ever submitted. We got the grant.', test_3_r:'Executive Director, Cape Town',
   test_4_tx:'We had a promising SaaS idea and three weeks before an investor meeting. BriefCraft built us a fully clickable web app prototype in under 32 hours. We walked in with something investors could actually use. We closed a $250K pre-seed round.', test_4_r:'Co-Founder, Atlanta',
   test_5_tx:'I sent a BriefCraft interactive HTML proposal to a corporate client I had been chasing for six months. They called me the next morning. Said it was the most professional proposal they had received from any independent consultant. We signed the contract that Friday.', test_5_r:'Strategy Consultant, Singapore',
+
+  login_title:'Sign in to BriefCraft',login_sub:'Access your order dashboard, track deliveries, and edit recent briefs. No password required for this preview version.',
+  login_name_label:'Your Name',login_name_ph:'First and last name',login_email_label:'Email Address',login_btn:'Continue to Dashboard',
+  login_note:'This is a session-based login for the preview platform. Your email will not be shared. Full authentication will be available when the platform goes live.',
+  dash_signin_h:'Sign in to access your dashboard',dash_signin_p:'Track orders, edit briefs within the 2-hour window, and browse services from your personal BriefCraft dashboard.',dash_signin_btn:'Sign In',
+  dash_eyebrow:'Your Dashboard',dash_welcome:'Welcome back, ',dash_meta:'Professional work, tracked and managed in one place.',
+  dash_browse:'Browse Services',dash_cart:'View Cart',dash_signout:'Sign Out',
+  dash_total_orders:'Total Orders Placed',dash_total_invested:'Total Invested',dash_active_orders:'Active Orders',
+  dash_orders_title:'Your Orders',dash_tab_all:'All',dash_tab_editing:'Edit Available',dash_tab_processing:'Processing',dash_tab_delivered:'Delivered',
+  dash_empty_title:'No orders yet',dash_empty_body:'Browse our 40+ professional services, add what you need to your cart, and submit your first brief. Most deliveries arrive within 24 hours.',
+  dash_browse_all:'Browse All Services',dash_status_editing:'Edit Available',dash_status_processing:'Processing',dash_status_delivered:'Delivered',dash_status_completed:'Completed',
+  dash_edit_order:'Edit Order',dash_no_orders_suffix:'orders',dash_nothing_yet:'Nothing here yet. Browse services to get started.',dash_calculating:'calculating...',
   modal_add_cart:'+ Add to Cart', modal_order_now:'Order Now',
   about_eyebrow:'Our story',
   about_h1:'Professional work.<br>Without the premium price.',
@@ -2956,6 +3033,18 @@ fr:{
   test_3_tx:"Nous avions besoin d'une proposition de subvention pour une fondation que nous ciblions depuis deux ans. La proposition produite par BriefCraft était la plus complète que nous ayons jamais soumise. Nous avons obtenu la subvention.", test_3_r:'Directrice Exécutive, Le Cap',
   test_4_tx:"Nous avions une idée SaaS prometteuse et trois semaines avant une réunion avec des investisseurs. BriefCraft nous a construit un prototype d'application web entièrement cliquable en moins de 32 heures. Nous sommes arrivés avec quelque chose que les investisseurs pouvaient vraiment utiliser. Nous avons levé 250 000$ en pré-amorçage.", test_4_r:'Cofondateur, Atlanta',
   test_5_tx:"J'ai envoyé une proposition HTML interactive BriefCraft à un client d'entreprise que je poursuivais depuis six mois. Ils m'ont appelé le lendemain matin. Ils ont dit que c'était la proposition la plus professionnelle reçue de tout consultant indépendant. Nous avons signé le contrat ce vendredi.", test_5_r:'Consultante en Stratégie, Singapour',
+
+  login_title:'Se connecter à BriefCraft',login_sub:"Accédez à votre tableau de bord, suivez vos livraisons et modifiez vos briefs récents. Aucun mot de passe requis pour cette version aperçu.",
+  login_name_label:'Votre nom',login_name_ph:'Prénom et nom de famille',login_email_label:'Adresse e-mail',login_btn:'Accéder au tableau de bord',
+  login_note:"Il s'agit d'une connexion basée sur la session pour la plateforme aperçu. Votre e-mail ne sera pas partagé.",
+  dash_signin_h:'Connectez-vous pour accéder à votre tableau de bord',dash_signin_p:"Suivez vos commandes, modifiez vos briefs dans les 2 heures et parcourez les services depuis votre tableau de bord BriefCraft personnel.",dash_signin_btn:'Se connecter',
+  dash_eyebrow:'Votre tableau de bord',dash_welcome:'Bienvenue, ',dash_meta:'Travail professionnel, suivi et géré en un seul endroit.',
+  dash_browse:'Parcourir les services',dash_cart:'Voir le panier',dash_signout:'Se déconnecter',
+  dash_total_orders:'Commandes totales',dash_total_invested:'Total investi',dash_active_orders:'Commandes actives',
+  dash_orders_title:'Vos commandes',dash_tab_all:'Tout',dash_tab_editing:'Modification disponible',dash_tab_processing:'En cours',dash_tab_delivered:'Livré',
+  dash_empty_title:'Pas encore de commandes',dash_empty_body:'Parcourez nos 40+ services professionnels, ajoutez ce dont vous avez besoin et soumettez votre premier brief.',
+  dash_browse_all:'Voir tous les services',dash_status_editing:'Modification disponible',dash_status_processing:'En cours',dash_status_delivered:'Livré',dash_status_completed:'Complété',
+  dash_edit_order:'Modifier la commande',dash_no_orders_suffix:'commandes',dash_nothing_yet:'Rien pour l instant. Parcourez les services pour commencer.',dash_calculating:'calcul...',
   modal_add_cart:'+ Ajouter au panier', modal_order_now:'Commander maintenant',
   about_eyebrow:'Notre histoire',
   about_h1:'Un travail professionnel.<br>Sans le prix premium.',
@@ -3120,6 +3209,18 @@ pt:{
   test_3_tx:'Precisávamos de uma proposta de financiamento para uma fundação que estávamos buscando há dois anos. A proposta que a BriefCraft produziu foi a mais completa que já submetemos. Conseguimos o financiamento.', test_3_r:'Diretora Executiva, Cidade do Cabo',
   test_4_tx:'Tínhamos uma ideia SaaS promissora e três semanas antes de uma reunião com investidores. A BriefCraft nos construiu um protótipo de aplicativo web completamente clicável em menos de 32 horas. Entramos com algo que os investidores podiam realmente usar. Fechamos uma rodada pré-seed de $250K.', test_4_r:'Co-Fundador, Atlanta',
   test_5_tx:'Enviei uma proposta HTML interativa da BriefCraft para um cliente corporativo que eu estava buscando há seis meses. Eles me ligaram na manhã seguinte. Disseram que era a proposta mais profissional que receberam de qualquer consultor independente. Assinamos o contrato naquela sexta-feira.', test_5_r:'Consultora de Estratégia, Singapura',
+
+  login_title:'Entrar no BriefCraft',login_sub:'Acesse seu painel de pedidos, acompanhe entregas e edite briefs recentes. Nenhuma senha necessária para esta versão prévia.',
+  login_name_label:'Seu Nome',login_name_ph:'Nome e sobrenome',login_email_label:'Endereço de E-mail',login_btn:'Continuar para o Painel',
+  login_note:'Este é um login baseado em sessão para a plataforma de prévia. Seu e-mail não será compartilhado.',
+  dash_signin_h:'Entre para acessar seu painel',dash_signin_p:'Acompanhe pedidos, edite briefs dentro da janela de 2 horas e navegue pelos serviços do seu painel BriefCraft pessoal.',dash_signin_btn:'Entrar',
+  dash_eyebrow:'Seu Painel',dash_welcome:'Bem-vindo de volta, ',dash_meta:'Trabalho profissional, rastreado e gerenciado em um só lugar.',
+  dash_browse:'Ver Serviços',dash_cart:'Ver Carrinho',dash_signout:'Sair',
+  dash_total_orders:'Total de Pedidos',dash_total_invested:'Total Investido',dash_active_orders:'Pedidos Ativos',
+  dash_orders_title:'Seus Pedidos',dash_tab_all:'Todos',dash_tab_editing:'Edição Disponível',dash_tab_processing:'Em Andamento',dash_tab_delivered:'Entregue',
+  dash_empty_title:'Nenhum pedido ainda',dash_empty_body:'Navegue pelos nossos 40+ serviços profissionais, adicione o que precisar ao carrinho e envie seu primeiro briefing.',
+  dash_browse_all:'Ver Todos os Serviços',dash_status_editing:'Edição Disponível',dash_status_processing:'Em Andamento',dash_status_delivered:'Entregue',dash_status_completed:'Concluído',
+  dash_edit_order:'Editar Pedido',dash_no_orders_suffix:'pedidos',dash_nothing_yet:'Nada aqui ainda. Navegue pelos serviços para começar.',dash_calculating:'calculando...',
   modal_add_cart:'+ Adicionar ao carrinho', modal_order_now:'Pedir agora',
   about_eyebrow:'Nossa história',
   about_h1:'Trabalho profissional.<br>Sem o preço premium.',
@@ -3284,6 +3385,18 @@ es:{
   test_3_tx:'Necesitábamos una propuesta de subvención para una fundación que habíamos estado buscando durante dos años. La propuesta que produjo BriefCraft fue la más completa que hemos enviado jamás. Obtuvimos la subvención.', test_3_r:'Directora Ejecutiva, Ciudad del Cabo',
   test_4_tx:'Teníamos una prometedora idea SaaS y tres semanas antes de una reunión con inversores. BriefCraft nos construyó un prototipo de aplicación web completamente clicable en menos de 32 horas. Entramos con algo que los inversores podían usar de verdad. Cerramos una ronda pre-semilla de $250K.', test_4_r:'Co-Fundador, Atlanta',
   test_5_tx:'Envié una propuesta HTML interactiva de BriefCraft a un cliente corporativo al que había estado persiguiendo durante seis meses. Me llamaron a la mañana siguiente. Dijeron que era la propuesta más profesional que habían recibido de cualquier consultor independiente. Firmamos el contrato ese viernes.', test_5_r:'Consultora de Estrategia, Singapur',
+
+  login_title:'Iniciar sesión en BriefCraft',login_sub:'Accede a tu panel de pedidos, rastrea entregas y edita briefs recientes. No se requiere contraseña para esta versión de vista previa.',
+  login_name_label:'Tu Nombre',login_name_ph:'Nombre y apellido',login_email_label:'Correo Electrónico',login_btn:'Continuar al Panel',
+  login_note:'Este es un inicio de sesión basado en sesión para la plataforma de vista previa. Tu correo electrónico no será compartido.',
+  dash_signin_h:'Inicia sesión para acceder a tu panel',dash_signin_p:'Rastrea pedidos, edita briefs dentro de la ventana de 2 horas y navega por los servicios desde tu panel BriefCraft personal.',dash_signin_btn:'Iniciar sesión',
+  dash_eyebrow:'Tu Panel',dash_welcome:'Bienvenido de nuevo, ',dash_meta:'Trabajo profesional, rastreado y gestionado en un solo lugar.',
+  dash_browse:'Ver Servicios',dash_cart:'Ver Carrito',dash_signout:'Cerrar sesión',
+  dash_total_orders:'Pedidos Totales',dash_total_invested:'Total Invertido',dash_active_orders:'Pedidos Activos',
+  dash_orders_title:'Tus Pedidos',dash_tab_all:'Todos',dash_tab_editing:'Edición Disponible',dash_tab_processing:'En Proceso',dash_tab_delivered:'Entregado',
+  dash_empty_title:'Sin pedidos aún',dash_empty_body:'Explora nuestros 40+ servicios profesionales, añade lo que necesitas al carrito y envía tu primer brief.',
+  dash_browse_all:'Ver Todos los Servicios',dash_status_editing:'Edición Disponible',dash_status_processing:'En Proceso',dash_status_delivered:'Entregado',dash_status_completed:'Completado',
+  dash_edit_order:'Editar Pedido',dash_no_orders_suffix:'pedidos',dash_nothing_yet:'Nada aquí todavía. Navega por los servicios para comenzar.',dash_calculating:'calculando...',
   modal_add_cart:'+ Añadir al carrito', modal_order_now:'Pedir ahora',
   about_eyebrow:'Nuestra historia',
   about_h1:'Trabajo profesional.<br>Sin el precio premium.',
@@ -3448,6 +3561,18 @@ ar:{
   test_3_tx:'احتجنا إلى مقترح منحة لمؤسسة كنا نستهدفها منذ عامين. المقترح الذي أنتجته BriefCraft كان الأكثر شمولاً من بين جميع المقترحات التي قدمناها. حصلنا على المنحة.', test_3_r:'المديرة التنفيذية، كيب تاون',
   test_4_tx:'كان لدينا فكرة SaaS واعدة وثلاثة أسابيع قبل اجتماع مع المستثمرين. بنت لنا BriefCraft نموذجاً أولياً لتطبيق ويب قابلاً للنقر بالكامل في أقل من 32 ساعة. دخلنا بشيء يمكن للمستثمرين استخدامه فعلاً. أغلقنا جولة ما قبل البذرة بـ 250,000 دولار.', test_4_r:'مؤسس مشارك، أتلانتا',
   test_5_tx:'أرسلت عرض سعر HTML تفاعلي من BriefCraft إلى عميل مؤسسي كنت أسعى إليه منذ ستة أشهر. اتصلوا بي في صباح اليوم التالي. قالوا إنه كان أكثر العروض احترافية التي تلقوها من أي مستشار مستقل. وقعنا العقد ذلك الجمعة.', test_5_r:'مستشارة استراتيجية، سنغافورة',
+
+  login_title:'تسجيل الدخول إلى BriefCraft',login_sub:'ادخل إلى لوحة الطلبات وتتبع التسليمات وعدّل ملخصاتك الأخيرة. لا يلزم كلمة مرور لهذا الإصدار التجريبي.',
+  login_name_label:'اسمك',login_name_ph:'الاسم الأول والأخير',login_email_label:'البريد الإلكتروني',login_btn:'الدخول إلى لوحة التحكم',
+  login_note:'هذا تسجيل دخول قائم على الجلسة للمنصة التجريبية. لن تتم مشاركة بريدك الإلكتروني.',
+  dash_signin_h:'سجّل دخولك للوصول إلى لوحة التحكم',dash_signin_p:'تتبع الطلبات وعدّل الملخصات خلال ساعتين واستعرض الخدمات من لوحة تحكم BriefCraft الشخصية.',dash_signin_btn:'تسجيل الدخول',
+  dash_eyebrow:'لوحة التحكم الخاصة بك',dash_welcome:'مرحباً بعودتك، ',dash_meta:'عمل احترافي، يُتابع ويُدار في مكان واحد.',
+  dash_browse:'استعرض الخدمات',dash_cart:'عرض السلة',dash_signout:'تسجيل الخروج',
+  dash_total_orders:'إجمالي الطلبات',dash_total_invested:'إجمالي الاستثمار',dash_active_orders:'الطلبات النشطة',
+  dash_orders_title:'طلباتك',dash_tab_all:'الكل',dash_tab_editing:'متاح للتعديل',dash_tab_processing:'قيد المعالجة',dash_tab_delivered:'تم التسليم',
+  dash_empty_title:'لا توجد طلبات بعد',dash_empty_body:'استعرض أكثر من 40 خدمة احترافية وأضف ما تحتاجه إلى سلتك وأرسل أول ملخص.',
+  dash_browse_all:'استعرض جميع الخدمات',dash_status_editing:'متاح للتعديل',dash_status_processing:'قيد المعالجة',dash_status_delivered:'تم التسليم',dash_status_completed:'مكتمل',
+  dash_edit_order:'تعديل الطلب',dash_no_orders_suffix:'طلبات',dash_nothing_yet:'لا شيء هنا بعد. استعرض الخدمات للبدء.',dash_calculating:'جارٍ الحساب...',
   modal_add_cart:'+ أضف إلى السلة', modal_order_now:'اطلب الآن',
   about_eyebrow:'قصتنا',
   about_h1:'عمل احترافي.<br>بدون السعر المرتفع.',
@@ -3612,6 +3737,18 @@ de:{
   test_3_tx:'Wir brauchten einen Förderantrag für eine Stiftung, die wir seit zwei Jahren angesprochen hatten. Der von BriefCraft erstellte Antrag war der gründlichste, den wir je eingereicht haben. Wir haben die Förderung erhalten.', test_3_r:'Geschäftsführerin, Kapstadt',
   test_4_tx:'Wir hatten eine vielversprechende SaaS-Idee und drei Wochen bis zu einem Investorengespräch. BriefCraft baute uns in unter 32 Stunden einen vollständig klickbaren Web-App-Prototyp. Wir gingen mit etwas hin, das Investoren wirklich nutzen konnten. Wir schlossen eine Pre-Seed-Runde über $250K ab.', test_4_r:'Mitgründer, Atlanta',
   test_5_tx:'Ich schickte einem Unternehmenskunden, den ich seit sechs Monaten umwarb, ein interaktives HTML-Angebot von BriefCraft. Sie riefen mich am nächsten Morgen an. Sagten, es sei das professionellste Angebot, das sie von einem unabhängigen Berater erhalten hatten. Wir unterzeichneten den Vertrag diesen Freitag.', test_5_r:'Strategieberaterin, Singapur',
+
+  login_title:'Bei BriefCraft anmelden',login_sub:'Greifen Sie auf Ihr Bestelldashboard zu, verfolgen Sie Lieferungen und bearbeiten Sie aktuelle Briefs. Kein Passwort für diese Vorschauversion erforderlich.',
+  login_name_label:'Ihr Name',login_name_ph:'Vor- und Nachname',login_email_label:'E-Mail-Adresse',login_btn:'Zum Dashboard weiter',
+  login_note:'Dies ist eine sitzungsbasierte Anmeldung für die Vorschau-Plattform. Ihre E-Mail wird nicht geteilt.',
+  dash_signin_h:'Anmelden um auf Ihr Dashboard zuzugreifen',dash_signin_p:'Verfolgen Sie Bestellungen, bearbeiten Sie Briefs innerhalb des 2-Stunden-Fensters und durchsuchen Sie Leistungen von Ihrem persönlichen BriefCraft-Dashboard.',dash_signin_btn:'Anmelden',
+  dash_eyebrow:'Ihr Dashboard',dash_welcome:'Willkommen zurück, ',dash_meta:'Professionelle Arbeit, verfolgt und verwaltet an einem Ort.',
+  dash_browse:'Leistungen ansehen',dash_cart:'Warenkorb anzeigen',dash_signout:'Abmelden',
+  dash_total_orders:'Gesamte Bestellungen',dash_total_invested:'Gesamt investiert',dash_active_orders:'Aktive Bestellungen',
+  dash_orders_title:'Ihre Bestellungen',dash_tab_all:'Alle',dash_tab_editing:'Bearbeitung verfügbar',dash_tab_processing:'In Bearbeitung',dash_tab_delivered:'Geliefert',
+  dash_empty_title:'Noch keine Bestellungen',dash_empty_body:'Durchsuchen Sie unsere 40+ professionellen Leistungen, fügen Sie dem Warenkorb hinzu und reichen Sie Ihr erstes Brief ein.',
+  dash_browse_all:'Alle Leistungen ansehen',dash_status_editing:'Bearbeitung verfügbar',dash_status_processing:'In Bearbeitung',dash_status_delivered:'Geliefert',dash_status_completed:'Abgeschlossen',
+  dash_edit_order:'Bestellung bearbeiten',dash_no_orders_suffix:'Bestellungen',dash_nothing_yet:'Noch nichts hier. Durchsuchen Sie Leistungen um zu beginnen.',dash_calculating:'berechnet...',
   modal_add_cart:'+ In den Warenkorb', modal_order_now:'Jetzt bestellen',
   about_eyebrow:'Unsere Geschichte',
   about_h1:'Professionelle Arbeit.<br>Ohne den Premium-Preis.',
@@ -3776,6 +3913,18 @@ ru:{
   test_3_tx:'Нам нужно было грантовое предложение для фонда, который мы нацеливались достичь два года. Предложение, подготовленное BriefCraft, было наиболее тщательным из всех, что мы когда-либо подавали. Мы получили грант.', test_3_r:'Исполнительный директор, Кейптаун',
   test_4_tx:'У нас была перспективная идея SaaS и три недели до встречи с инвесторами. BriefCraft создала нам полностью кликабельный прототип веб-приложения менее чем за 32 часа. Мы пришли с чем-то, что инвесторы могли реально использовать. Мы закрыли пре-сид раунд на $250K.', test_4_r:'Сооснователь, Атланта',
   test_5_tx:'Я отправила интерактивное HTML-предложение BriefCraft корпоративному клиенту, которого добивалась шесть месяцев. Они позвонили мне на следующее утро. Сказали, что это было самое профессиональное предложение, которое они получали от независимого консультанта. Мы подписали контракт в ту пятницу.', test_5_r:'Стратегический консультант, Сингапур',
+
+  login_title:'Войти в BriefCraft',login_sub:'Получите доступ к панели заказов, отслеживайте доставки и редактируйте последние брифы. Пароль не требуется для этой предварительной версии.',
+  login_name_label:'Ваше имя',login_name_ph:'Имя и фамилия',login_email_label:'Адрес электронной почты',login_btn:'Перейти к панели управления',
+  login_note:'Это сессионный вход для предварительной платформы. Ваш email не будет передан третьим лицам.',
+  dash_signin_h:'Войдите для доступа к вашей панели управления',dash_signin_p:'Отслеживайте заказы, редактируйте брифы в течение 2 часов и просматривайте услуги из вашей личной панели BriefCraft.',dash_signin_btn:'Войти',
+  dash_eyebrow:'Ваша панель управления',dash_welcome:'Добро пожаловать, ',dash_meta:'Профессиональная работа, отслеживаемая и управляемая в одном месте.',
+  dash_browse:'Смотреть услуги',dash_cart:'Смотреть корзину',dash_signout:'Выйти',
+  dash_total_orders:'Всего заказов',dash_total_invested:'Всего вложено',dash_active_orders:'Активные заказы',
+  dash_orders_title:'Ваши заказы',dash_tab_all:'Все',dash_tab_editing:'Доступно редактирование',dash_tab_processing:'В обработке',dash_tab_delivered:'Доставлено',
+  dash_empty_title:'Заказов пока нет',dash_empty_body:'Просматривайте наши 40+ профессиональных услуг, добавляйте нужное в корзину и отправьте первый бриф.',
+  dash_browse_all:'Смотреть все услуги',dash_status_editing:'Доступно редактирование',dash_status_processing:'В обработке',dash_status_delivered:'Доставлено',dash_status_completed:'Завершено',
+  dash_edit_order:'Редактировать заказ',dash_no_orders_suffix:'заказов',dash_nothing_yet:'Пока ничего нет. Просматривайте услуги чтобы начать.',dash_calculating:'вычисляется...',
   modal_add_cart:'+ В корзину', modal_order_now:'Заказать сейчас',
   about_eyebrow:'Наша история',
   about_h1:'Профессиональная работа.<br>Без премиальной цены.',
@@ -5935,6 +6084,7 @@ function setLang(code){
   const renders={home:renderHome,services:renderServices,'how-it-works':renderHIW,about:renderAbout,contact:renderContact,dashboard:renderDashboard};
   if(renders[curPage])renders[curPage]();
   renderFooter();
+  renderLoginModal();
   // Update WhatsApp tooltip
   var wtt=document.getElementById('waTooltipText');
   if(wtt)wtt.innerHTML=t('wa_tooltip');
