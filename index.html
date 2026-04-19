@@ -535,6 +535,124 @@ img{max-width:100%}
 /* Stats dark section */
 .stats-dark .stat-num,
 .stat-item .stat-num { color: var(--green-bright); }
+
+/* ─── CROSS-LANGUAGE LAYOUT & OVERFLOW FIXES ───────────────────────────── */
+
+/* Prevent any element from causing horizontal scroll */
+html { overflow-x: hidden; }
+
+/* All grid/flex children must respect their allocated column width */
+.stat-item, .cat-card, .t-card, .val-card, .svc, .hp-card,
+.step, .trust-item, .hiw-step-wrap, .footer-lnk { min-width: 0; }
+
+/* All text in grids: wrap rather than overflow */
+.stat-label  { overflow-wrap: break-word; word-break: break-word; line-height: 1.45; hyphens: auto; }
+.stat-body   { overflow-wrap: break-word; word-break: break-word; }
+.cat-name    { overflow-wrap: break-word; word-break: break-word; line-height: 1.4; }
+.svc-name    { overflow-wrap: break-word; word-break: break-word; }
+.svc-tag     { overflow-wrap: break-word; }
+.svc-turn    { overflow-wrap: break-word; min-width: 0; flex-shrink: 1; }
+.val-title, .val-body { overflow-wrap: break-word; }
+.t-text      { overflow-wrap: break-word; }
+.trust-label { overflow-wrap: break-word; word-break: break-word; }
+.trust-sub   { overflow-wrap: break-word; }
+.hp-lbl, .hp-body { overflow-wrap: break-word; word-break: break-word; }
+
+/* Stat label scales down gracefully on narrower columns */
+.stat-label { font-size: clamp(10px, 1.05vw, 13px); }
+
+/* Stat grid and cat grid: never wider than viewport */
+.stat-grid, .cat-grid { max-width: 100%; overflow: hidden; }
+
+/* Reduce stat item padding on mid-width screens to accommodate longer text */
+@media(max-width:1280px) {
+  .stat-item { padding: 40px 28px; }
+}
+@media(max-width:1024px) {
+  .stat-item { padding: 36px 22px; }
+  .stat-num  { font-size: 48px; }
+  .cat-name  { font-size: 10px; }
+}
+@media(max-width:768px) {
+  .stat-item { padding: 32px 20px; }
+  .stat-num  { font-size: 42px; }
+  .stat-label { font-size: 11px; }
+}
+@media(max-width:520px) {
+  .stat-item { padding: 28px 16px; }
+  .stat-num  { font-size: 36px; }
+}
+
+/* Trust strip items: allow text to wrap at smaller sizes */
+.trust-item { word-break: break-word; }
+@media(max-width:900px) {
+  .trust-item { font-size: 12px; padding: 14px 8px; }
+  .trust-label { font-size: 11px; }
+}
+
+/* Service cards: prevent foot layout breaking */
+.svc-foot { flex-wrap: wrap; gap: 8px; }
+.svc-cta  { flex-shrink: 0; }
+
+/* ─── RTL (ARABIC) SPECIFIC CORRECTIONS ─────────────────────────────────── */
+[dir="rtl"] .sec-hdr        { text-align: right; }
+[dir="rtl"] .eyebrow        { text-align: right; }
+[dir="rtl"] .page-hdr       { text-align: right; }
+[dir="rtl"] .stat-item      { text-align: right; }
+[dir="rtl"] .cat-card       { text-align: right; }
+[dir="rtl"] .cat-card .cat-icon { margin: 0 0 12px auto; }
+[dir="rtl"] .trust-item     { text-align: right; }
+[dir="rtl"] .hp-card        { text-align: right; }
+[dir="rtl"] .t-author       { flex-direction: row-reverse; text-align: right; }
+[dir="rtl"] .t-text         { text-align: right; }
+[dir="rtl"] .t-name, [dir="rtl"] .t-role { text-align: right; }
+[dir="rtl"] .t-stars        { text-align: right; }
+[dir="rtl"] .faq-q          { flex-direction: row-reverse; text-align: right; }
+[dir="rtl"] .faq-a-inner    { text-align: right; }
+[dir="rtl"] .step           { text-align: right; }
+[dir="rtl"] .hiw-step-wrap  { flex-direction: row-reverse; text-align: right; }
+[dir="rtl"] .hiw-content    { text-align: right; }
+[dir="rtl"] .g-box          { flex-direction: row-reverse; text-align: right; }
+[dir="rtl"] .g-body         { text-align: right; }
+[dir="rtl"] .c-det          { flex-direction: row-reverse; }
+[dir="rtl"] .c-det-title, [dir="rtl"] .c-det-val { text-align: right; }
+[dir="rtl"] .val-card       { text-align: right; }
+[dir="rtl"] .svc-foot       { flex-direction: row-reverse; }
+[dir="rtl"] .svc-row        { flex-direction: row-reverse; }
+[dir="rtl"] .modal-price-row { flex-direction: row-reverse; }
+[dir="rtl"] .stat-box-row   { flex-direction: row-reverse; text-align: right; }
+[dir="rtl"] .del-box        { text-align: right; direction: rtl; }
+[dir="rtl"] .who-chips      { justify-content: flex-end; }
+[dir="rtl"] .modal-sec      { text-align: right; }
+[dir="rtl"] .supply-list    { text-align: right; padding-left: 0; padding-right: 20px; }
+[dir="rtl"] .nav-links      { flex-direction: row-reverse; }
+[dir="rtl"] .nav-inner      { flex-direction: row-reverse; }
+[dir="rtl"] .footer-bot     { flex-direction: row-reverse; }
+[dir="rtl"] .footer-legal   { flex-direction: row-reverse; }
+[dir="rtl"] .footer-grid > div { text-align: right; }
+[dir="rtl"] .svc-name, [dir="rtl"] .svc-tag { text-align: right; }
+[dir="rtl"] .hero-sub       { text-align: right; }
+[dir="rtl"] .hero-h1        { text-align: right; }
+[dir="rtl"] .hero-btns      { justify-content: flex-end; flex-direction: row-reverse; }
+[dir="rtl"] .section-pad p, [dir="rtl"] .section-pad h2,
+[dir="rtl"] .section-pad h3 { text-align: right; }
+[dir="rtl"] .form-label, [dir="rtl"] .form-input,
+[dir="rtl"] .form-textarea  { text-align: right; direction: rtl; }
+[dir="rtl"] .success-title, [dir="rtl"] .success-body { text-align: right; }
+[dir="rtl"] .order-item, [dir="rtl"] .order-label { text-align: right; }
+[dir="rtl"] .hiw-num        { flex-shrink: 0; }
+[dir="rtl"] .lang-opt       { flex-direction: row-reverse; text-align: right; }
+[dir="rtl"] .sbt-label, [dir="rtl"] .sbt-body, [dir="rtl"] .sbt-src { text-align: right; }
+[dir="rtl"] .mfr, [dir="rtl"] .modal-desc { text-align: right; }
+[dir="rtl"] .mturn          { text-align: right; }
+[dir="rtl"] .modal-price-row .mprice { text-align: right; }
+[dir="rtl"] .page-hdr p, [dir="rtl"] .page-hdr h1 { text-align: right; }
+[dir="rtl"] .footer-tagline { text-align: right; }
+[dir="rtl"] .footer-copy    { text-align: right; }
+[dir="rtl"] .footer-col h4  { text-align: right; }
+[dir="rtl"] .val-num        { text-align: right; }
+[dir="rtl"] .hero-proof .hp-card { text-align: right; }
+/* ──────────────────────────────────────────────────────────────────────── */
 .stats-dark .stat-src,
 .stat-item .stat-src { color: rgba(255,140,66,.55); }
 
