@@ -493,12 +493,22 @@ img{max-width:100%}
 .dash-empty-body{font-family:'Outfit',sans-serif;font-size:13px;color:var(--text-3);line-height:1.7;max-width:340px;margin:0 auto 20px}
 .order-card{background:#fff;border:1px solid var(--border);border-radius:var(--r-lg);padding:20px 24px;margin-bottom:12px;transition:.2s}
 .order-card:hover{border-color:var(--green-bd);box-shadow:0 4px 20px rgba(212,80,10,.1)}
-.oc-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:8px;flex-wrap:wrap}
+.oc-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:4px;flex-wrap:wrap}
 .oc-ref{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--green);font-weight:600}
 .oc-date{font-family:'Outfit',sans-serif;font-size:11px;color:var(--text-4);margin-top:3px}
 .oc-total{font-family:'Unbounded',sans-serif;font-size:22px;font-weight:800;color:var(--text);letter-spacing:-.03em}
 .oc-services{font-family:'Outfit',sans-serif;font-size:13px;color:var(--text-2);margin-bottom:12px;line-height:1.6}
 .oc-foot{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.oc-svc-count{font-family:'Outfit',sans-serif;font-size:11px;color:var(--text-4);margin-bottom:10px;font-weight:500}
+.oc-svc-list{border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin-bottom:14px}
+.oc-svc-item{display:flex;align-items:center;justify-content:space-between;padding:11px 14px;border-bottom:1px solid var(--border);gap:12px}
+.oc-svc-item:last-child{border-bottom:none}
+.oc-svc-item:nth-child(odd){background:var(--bg)}
+.oc-svc-item:nth-child(even){background:var(--bg-2)}
+.oc-svc-info{flex:1;min-width:0}
+.oc-svc-name{font-family:'Unbounded',sans-serif;font-size:11px;font-weight:600;color:var(--text);letter-spacing:-.01em;margin-bottom:2px;overflow-wrap:break-word;line-height:1.4}
+.oc-svc-meta{font-family:'Outfit',sans-serif;font-size:11px;color:var(--text-4);line-height:1.4}
+.oc-svc-price{font-family:'Unbounded',sans-serif;font-size:13px;font-weight:700;color:var(--green);letter-spacing:-.02em;flex-shrink:0}
 .status-badge{padding:4px 12px;border-radius:20px;font-family:'Unbounded',sans-serif;font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase}
 .sb-editing{background:rgba(212,80,10,.1);color:var(--green-dk);border:1px solid var(--green-bd)}
 .sb-processing{background:rgba(28,43,74,.07);color:var(--dark);border:1px solid rgba(28,43,74,.15)}
@@ -808,46 +818,46 @@ html { overflow-x: hidden; }
 <div class="order-overlay" id="orderModal" onclick="closeModal('orderModal',event)">
   <div class="order-box">
     <div class="order-hdr">
-      <div><h3>Submit Your Brief</h3><div class="order-svc" id="oLabel"></div></div>
+      <div><h3 id="orderModalTitle">Submit Your Brief</h3><div class="order-svc" id="oLabel"></div></div>
       <button class="modal-x" onclick="closeModal('orderModal')">&times;</button>
     </div>
     <div id="orderForm">
       <div class="order-body">
         <div class="order-summary">
-          <div><div class="os-name" id="oName"></div><div class="os-meta">Fixed price · 24-48 hr delivery · Satisfaction guaranteed</div></div>
+          <div><div class="os-name" id="oName"></div><div class="os-meta" id="oMeta">Fixed price · 24-48 hr delivery · Satisfaction guaranteed</div></div>
           <div class="os-price" id="oPrice"></div>
         </div>
         <div class="form-group">
-          <label class="form-label">Your Brief <span>*</span></label>
+          <label class="form-label" id="oBriefLabel">Your Brief <span>*</span></label>
           <textarea class="form-textarea" id="briefText" placeholder="Give us everything we need. The more specific you are, the better the result. Include your goals, your audience, context, requirements, and any examples..."></textarea>
-          <div class="form-hint">Minimum 50 characters. You can also upload supporting files below.</div>
+          <div class="form-hint" id="oBriefHint">Minimum 50 characters. You can also upload supporting files below.</div>
         </div>
         <div class="form-group">
-          <label class="form-label">Upload Files <span style="font-family:'Outfit',sans-serif;text-transform:none;font-size:11px;color:var(--text-4);font-weight:400;letter-spacing:0">(Optional)</span></label>
+          <label class="form-label" id="oUploadLabel">Upload Files <span id="oUploadOptional" style="font-family:'Outfit',sans-serif;text-transform:none;font-size:11px;color:var(--text-4);font-weight:400;letter-spacing:0">(Optional)</span></label>
           <div class="upload-area" onclick="document.getElementById('fileInput').click()">
             <div class="upload-icon">📎</div>
-            <div class="upload-text"><strong>Click to upload</strong> or drag and drop. PDF, Word, TXT, JPG, PNG up to 10MB.</div>
+            <div class="upload-text" id="oUploadText"><strong id="oUploadStrong">Click to upload</strong> <span id="oUploadDrag">or drag and drop.</span> PDF, Word, TXT, JPG, PNG up to 10MB.</div>
           </div>
           <input type="file" id="fileInput" style="display:none" multiple>
           <div id="fileNames" style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--green);margin-top:6px"></div>
         </div>
         <div class="form-row">
-          <div class="form-group"><label class="form-label">Your Name <span>*</span></label><input type="text" class="form-input" id="oNameInput" placeholder="Full name"></div>
-          <div class="form-group"><label class="form-label">Email <span>*</span></label><input type="email" class="form-input" id="oEmail" placeholder="you@company.com"></div>
+          <div class="form-group"><label class="form-label" id="oNameLabel">Your Name <span>*</span></label><input type="text" class="form-input" id="oNameInput" placeholder="Full name"></div>
+          <div class="form-group"><label class="form-label" id="oEmailLabel">Email <span>*</span></label><input type="email" class="form-input" id="oEmail" placeholder="you@company.com"></div>
         </div>
-        <div class="form-group"><label class="form-label">Country</label><input type="text" class="form-input" id="oCountry" placeholder="Anywhere in the world"></div>
+        <div class="form-group"><label class="form-label" id="oCountryLabel">Country</label><input type="text" class="form-input" id="oCountry" placeholder="Anywhere in the world"></div>
       </div>
       <div class="order-foot">
-        <button class="btn btn-green" style="width:100%;justify-content:center;font-size:14px;padding:16px;border-radius:var(--r-lg)" onclick="submitOrder()">Place Order <span id="oBtnPrice"></span></button>
-        <div style="text-align:center;margin-top:10px;font-family:'Outfit',sans-serif;font-size:11px;color:var(--text-4)">Your brief is confidential. Confirmation sent to your email.</div>
+        <button class="btn btn-green" style="width:100%;justify-content:center;font-size:14px;padding:16px;border-radius:var(--r-lg)" onclick="submitOrder()"><span id="oPlaceBtn">Place Order</span> <span id="oBtnPrice"></span></button>
+        <div id="oConfidential" style="text-align:center;margin-top:10px;font-family:'Outfit',sans-serif;font-size:11px;color:var(--text-4)">Your brief is confidential. Confirmation sent to your email.</div>
       </div>
     </div>
     <div id="orderSuccess" class="success-wrap hidden">
       <div class="success-icon">✅</div>
-      <div class="success-title">Your brief is in good hands.</div>
-      <div class="success-body">We have received your order. Your specialist begins work immediately. A confirmation email with your order details is on its way.</div>
+      <div class="success-title" id="oSuccessTitle">Your brief is in good hands.</div>
+      <div class="success-body" id="oSuccessBody">We have received your order. Your specialist begins work immediately. A confirmation email with your order details is on its way.</div>
       <div class="success-ref" id="sRef"></div>
-      <button class="btn btn-green" style="margin-top:24px" onclick="closeModal('orderModal')">Done</button>
+      <button class="btn btn-green" id="oDoneBtn" style="margin-top:24px" onclick="closeModal('orderModal')">Done</button>
     </div>
   </div>
 </div>
@@ -873,8 +883,8 @@ html { overflow-x: hidden; }
         <span class="cart-total-label" id="cartCount">0 services</span>
         <span class="cart-total-val" id="cartTotalVal">$0</span>
       </div>
-      <div class="cart-note">Fixed pricing. No hidden fees. Editable for 2 hours after order.</div>
-      <button class="btn btn-green" style="width:100%;justify-content:center;padding:15px;font-size:14px" onclick="proceedToCheckout()">Proceed to Checkout</button>
+      <div class="cart-note" id="cartNote">Fixed pricing. No hidden fees. Editable for 2 hours after order.</div>
+      <button class="btn btn-green" id="cartCheckoutBtn" style="width:100%;justify-content:center;padding:15px;font-size:14px" onclick="proceedToCheckout()">Proceed to Checkout</button>
     </div>
   </div>
 </div>
@@ -900,8 +910,8 @@ html { overflow-x: hidden; }
   <div class="edit-box">
     <div class="edit-hdr">
       <div>
-        <div style="font-family:'Unbounded',sans-serif;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--green);margin-bottom:8px">Edit Your Order</div>
-        <div style="font-family:'Unbounded',sans-serif;font-size:18px;font-weight:700;color:#fff;letter-spacing:-.02em">Update briefs and details</div>
+        <div id="editHdrEyebrow" style="font-family:'Unbounded',sans-serif;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--green);margin-bottom:8px">Edit Your Order</div>
+        <div id="editHdrTitle" style="font-family:'Unbounded',sans-serif;font-size:18px;font-weight:700;color:#fff;letter-spacing:-.02em">Update briefs and details</div>
         <div class="edit-cd" id="editCountdownBadge" data-editable-until="" data-ref="">Calculating edit window...</div>
       </div>
       <button class="modal-x" onclick="closeEdit()">&times;</button>
@@ -1640,9 +1650,33 @@ function openSvc(id){
   document.body.style.overflow='hidden';
 }
 
+function renderOrderModal(){
+  var g=function(id){return document.getElementById(id);};
+  if(g('orderModalTitle'))g('orderModalTitle').textContent=t('order_form_title');
+  if(g('oMeta'))g('oMeta').textContent=t('order_form_fixed_meta');
+  if(g('oBriefLabel'))g('oBriefLabel').innerHTML=t('order_brief_label')+' <span>*</span>';
+  if(g('briefText'))g('briefText').placeholder=t('order_brief_ph');
+  if(g('oBriefHint'))g('oBriefHint').textContent=t('order_brief_hint');
+  if(g('oUploadLabel'))g('oUploadLabel').innerHTML=t('order_upload_label')+' <span id="oUploadOptional" style="font-family:\'Outfit\',sans-serif;text-transform:none;font-size:11px;color:var(--text-4);font-weight:400;letter-spacing:0">'+t('order_upload_optional')+'</span>';
+  if(g('oUploadStrong'))g('oUploadStrong').textContent=t('order_upload_click');
+  if(g('oUploadDrag'))g('oUploadDrag').textContent=t('order_upload_drag');
+  if(g('oNameLabel'))g('oNameLabel').innerHTML=t('order_name_label')+' <span>*</span>';
+  if(g('oNameInput'))g('oNameInput').placeholder=t('order_name_ph');
+  if(g('oEmailLabel'))g('oEmailLabel').innerHTML=t('order_email_label')+' <span>*</span>';
+  if(g('oEmail'))g('oEmail').placeholder='you@company.com';
+  if(g('oCountryLabel'))g('oCountryLabel').textContent=t('order_country_label');
+  if(g('oCountry'))g('oCountry').placeholder=t('order_country_ph');
+  if(g('oPlaceBtn'))g('oPlaceBtn').textContent=t('order_place_btn');
+  if(g('oConfidential'))g('oConfidential').textContent=t('order_confidential');
+  if(g('oSuccessTitle'))g('oSuccessTitle').textContent=t('order_success_title');
+  if(g('oSuccessBody'))g('oSuccessBody').textContent=t('order_success_body');
+  if(g('oDoneBtn'))g('oDoneBtn').textContent=t('order_done_btn');
+}
+
 function openOrder(){
   closeModal('serviceModal');
   if(!curSvc)return;
+  renderOrderModal();
   document.getElementById('orderForm').style.display='';
   document.getElementById('orderSuccess').classList.add('hidden');
   ['briefText','oNameInput','oEmail','oCountry'].forEach(id=>document.getElementById(id).value='');
@@ -1658,14 +1692,39 @@ function closeModal(id,e){
 }
 
 function submitOrder(){
-  const brief=document.getElementById('briefText').value.trim();
-  const name=document.getElementById('oNameInput').value.trim();
-  const email=document.getElementById('oEmail').value.trim();
-  if(!brief||brief.length<30){alert('Please write a brief of at least 30 characters.');return;}
-  if(!name){alert('Please enter your name.');return;}
-  if(!email||!email.includes('@')){alert('Please enter a valid email address.');return;}
-  document.getElementById('orderForm').style.display='none';
-  document.getElementById('sRef').textContent='Reference: BC-'+Date.now().toString(36).toUpperCase().slice(-7);
+  const brief = document.getElementById('briefText').value.trim();
+  const name  = document.getElementById('oNameInput').value.trim();
+  const email = document.getElementById('oEmail').value.trim();
+  const country = document.getElementById('oCountry').value.trim();
+  if(!brief || brief.length < 30){ alert(t('order_brief_label') + ': ' + t('order_brief_hint')); return; }
+  if(!name){ alert(t('order_name_label') + '...'); return; }
+  if(!email || !email.includes('@')){ alert(t('order_email_label') + '...'); return; }
+
+  if(!curSvc) return;
+
+  // Build and save the order to localStorage (same structure as cart orders)
+  const ref = 'BC-' + Date.now().toString(36).toUpperCase().slice(-7);
+  const order = {
+    ref,
+    items: [{ id: curSvc.id, name: curSvc.n, price: curSvc.p, cat: curSvc.catL, t: curSvc.t, brief }],
+    customer: { name, email, country },
+    total: curSvc.p,
+    created: Date.now(),
+    editable_until: Date.now() + 7200000,
+    status: 'editing'
+  };
+
+  const orders = getOrders();
+  orders.unshift(order);
+  saveOrders(orders);
+
+  // Save user session if not already logged in
+  if(!getUser()) saveUser({ name, email, joined: Date.now() });
+  updateNavUser();
+
+  // Show success screen
+  document.getElementById('orderForm').style.display = 'none';
+  document.getElementById('sRef').textContent = ref;
   document.getElementById('orderSuccess').classList.remove('hidden');
 }
 
@@ -2223,7 +2282,6 @@ function updateCartBadge() {
 function openCart() {
   document.getElementById('cartOverlay').classList.add('open');
   document.body.style.overflow = 'hidden';
-  document.getElementById('cartHdrTitle').textContent = 'Your Cart';
   renderCartBody();
 }
 function closeCartOverlay(e) {
@@ -2235,44 +2293,57 @@ function closeCart() {
   document.body.style.overflow = '';
 }
 
+function _svcName(item) {
+  var s = SVCS.find(function(x){return x.id===item.id;});
+  return s ? getSvcData(s).n : item.name;
+}
+function _svcCat(item) {
+  var s = SVCS.find(function(x){return x.id===item.id;});
+  return s ? getSvcData(s).catL : item.cat;
+}
+
 function renderCartBody() {
   const cart = getCart();
   const body = document.getElementById('cartBody');
   const footer = document.getElementById('cartFooter');
   const sub = document.getElementById('cartSubtitle');
   const title = document.getElementById('cartHdrTitle');
+  const noteEl = document.getElementById('cartNote');
+  const checkoutBtn = document.getElementById('cartCheckoutBtn');
   if(!body) return;
-  title.textContent = 'Your Cart';
-  sub.textContent = cart.length === 0 ? 'Empty' : cart.length + ' item' + (cart.length > 1 ? 's' : '');
+  title.textContent = t('cart_title');
+  if(noteEl) noteEl.textContent = t('cart_fixed_note');
+  if(checkoutBtn) checkoutBtn.textContent = t('cart_checkout');
+  sub.textContent = cart.length === 0 ? t('cart_empty') : cart.length + ' ' + (cart.length > 1 ? t('cart_item_plural') : t('cart_item_singular'));
 
   if(cart.length === 0) {
     footer.style.display = 'none';
-    body.innerHTML = "<div class='cart-empty'><div class='cart-empty-icon'>&#128722;</div><div class='cart-empty-title'>Your cart is empty</div><div class='cart-empty-body'>Browse our 40+ professional services and add what you need. Your cart saves between sessions.</div><button class='btn btn-green' style='margin-top:20px' onclick='closeCart();showPage(&quot;services&quot;)'>Browse Services</button></div>";
+    body.innerHTML = "<div class='cart-empty'><div class='cart-empty-icon'>&#128722;</div><div class='cart-empty-title'>" + t('cart_empty_title') + "</div><div class='cart-empty-body'>" + t('cart_empty_body') + "</div><button class='btn btn-green' style='margin-top:20px' onclick='closeCart();showPage(&quot;services&quot;)'>" + t('cart_browse') + "</button></div>";
     return;
   }
 
   footer.style.display = '';
-  document.getElementById('cartCount').textContent = cart.length + ' service' + (cart.length > 1 ? 's' : '');
+  document.getElementById('cartCount').textContent = cart.length + ' ' + (cart.length > 1 ? t('cart_svc_plural') : t('cart_svc_singular'));
   document.getElementById('cartTotalVal').textContent = '$' + cartTotal();
 
   body.innerHTML = cart.map(item => `
     <div class="cart-item">
       <div class="ci-row">
         <div>
-          <div class="ci-name">${item.name}</div>
-          <div class="ci-cat">${item.cat} &middot; ${item.t}</div>
+          <div class="ci-name">${_svcName(item)}</div>
+          <div class="ci-cat">${_svcCat(item)} &middot; ${item.t}</div>
         </div>
         <div class="ci-price">$${item.price}</div>
       </div>
       <div class="ci-actions">
         <button class="ci-brief-toggle" id="ctog-${item.id}" onclick="toggleCartBrief('${item.id}')">
-          ${item.brief ? '<span class=\"ci-brief-ok\">&#10003;</span> Brief added' : '+ Add brief'}
+          ${item.brief ? '<span class=\"ci-brief-ok\">&#10003;</span> ' + t('cart_brief_added') : t('cart_add_brief')}
           <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="11" height="11"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
         </button>
-        <button class="ci-remove" onclick="removeFromCart('${item.id}')">Remove</button>
+        <button class="ci-remove" onclick="removeFromCart('${item.id}')">${t('cart_remove')}</button>
       </div>
       <div class="ci-brief-body" id="cb-${item.id}">
-        <textarea class="ci-brief-ta" placeholder="Describe your requirements. You can also update this within the 2-hour edit window after ordering." oninput="saveCartBrief('${item.id}',this.value)">${item.brief}</textarea>
+        <textarea class="ci-brief-ta" placeholder="${t('cart_brief_ph')}" oninput="saveCartBrief('${item.id}',this.value)">${item.brief}</textarea>
       </div>
     </div>`).join('');
 }
@@ -2286,30 +2357,30 @@ function proceedToCheckout() {
   const cart = getCart();
   if(cart.length === 0) return;
   const user = getUser();
-  document.getElementById('cartHdrTitle').textContent = 'Checkout';
-  document.getElementById('cartSubtitle').textContent = cart.length + ' service' + (cart.length > 1 ? 's' : '') + ' &middot; $' + cartTotal();
+  document.getElementById('cartHdrTitle').textContent = t('checkout_title');
+  document.getElementById('cartSubtitle').textContent = cart.length + ' ' + (cart.length > 1 ? t('cart_svc_plural') : t('cart_svc_singular')) + ' &middot; $' + cartTotal();
   document.getElementById('cartFooter').style.display = 'none';
 
   document.getElementById('cartBody').innerHTML = `
     <button class="checkout-back" onclick="renderCartBody()">
       <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="13" height="13"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/></svg>
-      Back to Cart
+      ${t('checkout_back')}
     </button>
     <div class="checkout-summary">
-      <div style="font-family:'Unbounded',sans-serif;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-4);margin-bottom:10px">Order Summary</div>
-      ${cart.map(i => '<div class="cs-row"><span class="cs-name">' + i.name + '</span><span class="cs-price">$' + i.price + '</span></div>').join('')}
+      <div style="font-family:'Unbounded',sans-serif;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-4);margin-bottom:10px">${t('checkout_order_summary')}</div>
+      ${cart.map(i => '<div class="cs-row"><span class="cs-name">' + _svcName(i) + '</span><span class="cs-price">$' + i.price + '</span></div>').join('')}
       <hr class="cs-divider">
-      <div class="cs-total-row"><span class="cs-total-label">Total</span><span class="cs-total-price">$${cartTotal()}</span></div>
+      <div class="cs-total-row"><span class="cs-total-label">${t('checkout_total')}</span><span class="cs-total-price">$${cartTotal()}</span></div>
     </div>
     <div class="checkout-form">
-      <div style="font-family:'Unbounded',sans-serif;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-4);margin-bottom:14px">Your Details</div>
-      <div class="form-group"><label class="form-label">Name <span style="color:#ef4444">*</span></label><input type="text" class="form-input" id="coName" placeholder="Full name" value="${user ? user.name : ''}"></div>
-      <div class="form-group"><label class="form-label">Email <span style="color:#ef4444">*</span></label><input type="email" class="form-input" id="coEmail" placeholder="you@company.com" value="${user ? user.email : ''}"></div>
-      <div class="form-group"><label class="form-label">Country</label><input type="text" class="form-input" id="coCountry" placeholder="Where are you based?"></div>
+      <div style="font-family:'Unbounded',sans-serif;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-4);margin-bottom:14px">${t('checkout_your_details')}</div>
+      <div class="form-group"><label class="form-label">${t('checkout_name')} <span style="color:#ef4444">*</span></label><input type="text" class="form-input" id="coName" placeholder="${t('checkout_name_ph')}" value="${user ? user.name : ''}"></div>
+      <div class="form-group"><label class="form-label">${t('checkout_email')} <span style="color:#ef4444">*</span></label><input type="email" class="form-input" id="coEmail" placeholder="${t('checkout_email_ph')}" value="${user ? user.email : ''}"></div>
+      <div class="form-group"><label class="form-label">${t('checkout_country')}</label><input type="text" class="form-input" id="coCountry" placeholder="${t('checkout_country_ph')}"></div>
       <button class="btn btn-green" style="width:100%;justify-content:center;padding:15px;font-size:14px;margin-top:4px" onclick="goToPayment()">
-        Proceed to Payment &nbsp;&middot;&nbsp; $${cartTotal()}
+        ${t('checkout_proceed')} &nbsp;&middot;&nbsp; $${cartTotal()}
       </button>
-      <div style="text-align:center;margin-top:10px;font-family:'Outfit',sans-serif;font-size:11px;color:var(--text-4)">Order is editable for 2 hours after placement. Fixed pricing, no hidden fees.</div>
+      <div style="text-align:center;margin-top:10px;font-family:'Outfit',sans-serif;font-size:11px;color:var(--text-4)">${t('checkout_editable_note')}</div>
     </div>`;
 }
 
@@ -2317,39 +2388,37 @@ let _pendingOrder = null;
 function goToPayment() {
   const name = (document.getElementById('coName') || {}).value && document.getElementById('coName').value.trim();
   const email = (document.getElementById('coEmail') || {}).value && document.getElementById('coEmail').value.trim();
-  if(!name) { showToast('Please enter your name'); return; }
-  if(!email || !email.includes('@')) { showToast('Please enter a valid email'); return; }
+  if(!name) { showToast(t('checkout_name') + '...'); return; }
+  if(!email || !email.includes('@')) { showToast(t('checkout_email') + '...'); return; }
   const cart = getCart();
   const ref = 'BC-' + Date.now().toString(36).toUpperCase().slice(-7);
   _pendingOrder = { ref, items:[...cart.map(x=>({...x}))], customer:{name,email}, total:cartTotal(), created:Date.now(), editable_until:Date.now()+7200000, status:'editing' };
 
-  document.getElementById('cartHdrTitle').textContent = 'Secure Payment';
-  document.getElementById('cartSubtitle').textContent = 'Choose payment method';
+  document.getElementById('cartHdrTitle').textContent = t('pay_title');
+  document.getElementById('cartSubtitle').textContent = t('pay_subtitle');
 
   document.getElementById('cartBody').innerHTML = `
     <div class="pay-screen">
       <div class="pay-ref">${ref}</div>
       <div class="pay-total-num">$${cartTotal()}</div>
-      <div class="pay-sub">${cart.length} service${cart.length>1?'s':''} &middot; Specialists begin after edit window closes</div>
+      <div class="pay-sub">${cart.length} ${cart.length>1?t('cart_svc_plural'):t('cart_svc_singular')} &middot; ${t('pay_svc_after_window')}</div>
       <div class="pay-method" onclick="confirmPayment('stripe')">
         <div class="pay-icon">&#128179;</div>
         <div style="flex:1">
-          <div class="pay-name">Pay with Stripe</div>
-          <div class="pay-meta">Credit / Debit card &middot; International &middot; Secure</div>
+          <div class="pay-name">${t('pay_stripe_name')}</div>
+          <div class="pay-meta">${t('pay_stripe_meta')}</div>
         </div>
         <div class="pay-arrow"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="18" height="18"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></div>
       </div>
       <div class="pay-method" onclick="confirmPayment('paystack')">
         <div class="pay-icon">&#127758;</div>
         <div style="flex:1">
-          <div class="pay-name">Pay with Paystack</div>
-          <div class="pay-meta">Nigeria, Ghana, Kenya, South Africa &amp; more</div>
+          <div class="pay-name">${t('pay_paystack_name')}</div>
+          <div class="pay-meta">${t('pay_paystack_meta')}</div>
         </div>
         <div class="pay-arrow"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="18" height="18"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></div>
       </div>
-      <div class="pay-note">
-        Clicking either option creates your order immediately and starts your 2-hour edit window. Payment processing will be connected when the full platform goes live.
-      </div>
+      <div class="pay-note">${t('pay_note')}</div>
     </div>`;
 }
 
@@ -2366,19 +2435,19 @@ function confirmPayment(method) {
   if(!getUser()) saveUser({name:o.customer.name, email:o.customer.email, joined:Date.now()});
   updateNavUser();
 
-  document.getElementById('cartHdrTitle').textContent = 'Order Placed';
-  document.getElementById('cartSubtitle').textContent = method === 'stripe' ? 'via Stripe' : 'via Paystack';
+  document.getElementById('cartHdrTitle').textContent = t('placed_title');
+  document.getElementById('cartSubtitle').textContent = method === 'stripe' ? t('placed_via_stripe') : t('placed_via_paystack');
 
   document.getElementById('cartBody').innerHTML = `
     <div class="order-success">
       <span class="os-icon">&#9989;</span>
-      <div class="os-title">Your brief is in good hands.</div>
-      <div class="os-body">Order created. Your specialists begin work after the 2-hour edit window closes. A confirmation will be sent to ${o.customer.email}.</div>
+      <div class="os-title">${t('placed_h')}</div>
+      <div class="os-body">${t('placed_body_pre')}${o.customer.email}.</div>
       <div class="os-ref">${o.ref}</div>
-      <div class="os-cd" id="successCountdown">Calculating edit window...</div>
+      <div class="os-cd" id="successCountdown">${t('edit_hdr_calculating')}</div>
       <div class="os-btns">
-        <button class="btn btn-green" onclick="closeCart();showPage('dashboard')">View Dashboard</button>
-        <button class="btn btn-outline" onclick="closeCart()">Close</button>
+        <button class="btn btn-green" onclick="closeCart();showPage('dashboard')">${t('placed_view_dash')}</button>
+        <button class="btn btn-outline" onclick="closeCart()">${t('placed_close')}</button>
       </div>
     </div>`;
 
@@ -2388,7 +2457,7 @@ function confirmPayment(method) {
     const el = document.getElementById('successCountdown');
     if(!el) { clearInterval(_successCDInterval); return; }
     const r = o.editable_until - Date.now();
-    el.textContent = r <= 0 ? 'Edit window closed' : 'Edit closes in: ' + formatCountdown(r);
+    el.textContent = r <= 0 ? t('cd_edit_closed') : t('cd_edit_closes') + formatCountdown(r);
   }, 1000);
 }
 
@@ -2415,7 +2484,7 @@ function startCountdowns() {
       if(!until) return;
       const r = until - Date.now();
       if(r <= 0) {
-        el.textContent = 'Edit window closed';
+        el.textContent = t('cd_edit_closed');
         el.closest('.order-card') && el.closest('.order-card').querySelector('.edit-order-btn') && el.closest('.order-card').querySelector('.edit-order-btn').remove();
         const ref = el.dataset.ref;
         if(ref) {
@@ -2424,7 +2493,7 @@ function startCountdowns() {
           if(o && o.status === 'editing') { o.status = 'processing'; saveOrders(orders); }
         }
       } else {
-        el.textContent = 'Edit closes in: ' + formatCountdown(r);
+        el.textContent = t('cd_edit_closes') + formatCountdown(r);
       }
     });
   }, 1000);
@@ -2501,28 +2570,64 @@ document.addEventListener('click', e => {
 function openEditOrder(ref) {
   const orders = getOrders();
   const order = orders.find(o => o.ref === ref);
-  if(!order || !isEditable(order)) { showToast('Edit window has closed for this order'); return; }
+  if(!order || !isEditable(order)) { showToast(t('cd_edit_closed')); return; }
+
+  // Update header text
+  const eyebrow = document.getElementById('editHdrEyebrow');
+  const titleEl = document.getElementById('editHdrTitle');
+  if(eyebrow) eyebrow.textContent = t('edit_hdr_eyebrow');
+  if(titleEl) titleEl.textContent = t('edit_hdr_title');
+
   const badge = document.getElementById('editCountdownBadge');
   badge.dataset.editableUntil = order.editable_until;
   badge.dataset.ref = ref;
+  badge.textContent = t('edit_hdr_calculating');
+
+  const svcCount = order.items.length;
+  const svcLabel = svcCount > 1 ? t('edit_svc_plural') : t('edit_svc_singular');
+
   document.getElementById('editOrderContent').innerHTML =
     '<div style="padding:16px 24px;border-bottom:1px solid var(--border);background:var(--bg-2)">' +
     '<div style="font-family:JetBrains Mono,monospace;font-size:13px;color:var(--green);font-weight:600">' + ref + '</div>' +
-    '<div style="font-family:Outfit,sans-serif;font-size:12px;color:var(--text-4);margin-top:3px">' + order.items.length + ' service' + (order.items.length > 1 ? 's' : '') + ' &middot; Total $' + order.total + '</div>' +
+    '<div style="font-family:Outfit,sans-serif;font-size:12px;color:var(--text-4);margin-top:3px">' + svcCount + ' ' + svcLabel + ' &middot; ' + t('edit_total_label') + ' $' + order.total + '</div>' +
     '</div>' +
-    order.items.map((item, idx) =>
-      '<div class="edit-item">' +
-      '<div class="edit-item-name">' + item.name + '</div>' +
-      '<div class="edit-item-meta">' + item.cat + ' &middot; $' + item.price + ' &middot; ' + item.t + ' delivery</div>' +
-      '<label class="form-label" style="margin-bottom:6px">Brief</label>' +
+    order.items.map((item, idx) => {
+      const translatedName = (function(){ var s=SVCS.find(function(x){return x.id===item.id;}); return s?getSvcData(s).n:item.name; })();
+      const translatedCat  = (function(){ var s=SVCS.find(function(x){return x.id===item.id;}); return s?getSvcData(s).catL:item.cat; })();
+      return '<div class="edit-item">' +
+      '<div class="edit-item-name">' + translatedName + '</div>' +
+      '<div class="edit-item-meta">' + translatedCat + ' &middot; $' + item.price + ' &middot; ' + item.t + ' ' + t('edit_delivery_suffix') + '</div>' +
+      '<label class="form-label" style="margin-bottom:6px">' + t('edit_brief_label') + '</label>' +
       '<textarea class="form-textarea" id="edit-brief-' + idx + '" style="min-height:90px">' + (item.brief || '') + '</textarea>' +
-      '</div>'
-    ).join('') +
+      '<div style="margin-top:10px">' +
+      '<label class="form-label" style="margin-bottom:6px">' + t('order_upload_label') + ' <span style="font-family:Outfit,sans-serif;text-transform:none;font-size:11px;color:var(--text-4);font-weight:400;letter-spacing:0">' + t('order_upload_optional') + '</span></label>' +
+      '<div class="upload-area" onclick="document.getElementById(\'edit-file-' + idx + '\').click()" style="padding:14px">' +
+      '<div class="upload-icon" style="font-size:20px;margin-bottom:4px">📎</div>' +
+      '<div class="upload-text"><strong>' + t('order_upload_click') + '</strong> ' + t('order_upload_drag') + ' ' + t('order_upload_types') + '</div>' +
+      '</div>' +
+      '<input type="file" id="edit-file-' + idx + '" style="display:none" multiple>' +
+      '<div id="edit-filenames-' + idx + '" style="font-family:JetBrains Mono,monospace;font-size:12px;color:var(--green);margin-top:6px"></div>' +
+      '</div>' +
+      '</div>';
+    }).join('') +
     '<div style="padding:16px 24px;background:var(--bg-2);border-top:1px solid var(--border)">' +
     `<button class="btn btn-green" style="width:100%;justify-content:center" onclick="saveEditOrder('${ref}')">` +
-    'Save Changes</button>' +
-    '<div style="text-align:center;margin-top:8px;font-family:Outfit,sans-serif;font-size:11px;color:var(--text-4)">Changes saved immediately. Edit window applies.</div>' +
+    t('edit_save') + '</button>' +
+    '<div style="text-align:center;margin-top:8px;font-family:Outfit,sans-serif;font-size:11px;color:var(--text-4)">' + t('edit_save_note') + '</div>' +
     '</div>';
+
+  // Wire up file input display for each item
+  order.items.forEach((item, idx) => {
+    const fi = document.getElementById('edit-file-' + idx);
+    if(fi) {
+      fi.addEventListener('change', function(){
+        const names = Array.from(this.files).map(f=>f.name).join(', ');
+        const nd = document.getElementById('edit-filenames-' + idx);
+        if(nd) nd.textContent = names;
+      });
+    }
+  });
+
   document.getElementById('editOverlay').classList.add('open');
   document.body.style.overflow = 'hidden';
   startCountdowns();
@@ -2565,7 +2670,7 @@ function renderDashboard() {
   }
   const orders = getOrders();
   const totalSpent = orders.reduce((t, o) => t + o.total, 0);
-  const active = orders.filter(o => o.status === 'editing' || o.status === 'processing').length;
+  const totalServices = orders.reduce((sum, o) => sum + o.items.length, 0);
 
   pg.innerHTML =
     '<div class="dash-hdr"><div class="container" style="position:relative;z-index:1">' +
@@ -2581,8 +2686,8 @@ function renderDashboard() {
     '<section class="section-pad"><div class="container">' +
     '<div class="dash-stats">' +
     '<div class="dash-stat"><div class="dash-stat-num">' + orders.length + '</div><div class="dash-stat-label">'+t('dash_total_orders')+'</div></div>' +
+    '<div class="dash-stat"><div class="dash-stat-num">' + totalServices + '</div><div class="dash-stat-label">'+t('dash_total_services')+'</div></div>' +
     '<div class="dash-stat"><div class="dash-stat-num">$' + totalSpent + '</div><div class="dash-stat-label">'+t('dash_total_invested')+'</div></div>' +
-    '<div class="dash-stat"><div class="dash-stat-num">' + active + '</div><div class="dash-stat-label">'+t('dash_active_orders')+'</div></div>' +
     '</div>' +
 
     '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px">' +
@@ -2610,17 +2715,37 @@ function renderOrderCard(o) {
   const statusClass = {editing:'sb-editing',processing:'sb-processing',delivered:'sb-delivered',completed:'sb-completed'};
   const d = new Date(o.created);
   const dateStr = d.toLocaleDateString('en-US',{year:'numeric',month:'short',day:'numeric'});
+  const svcCount = o.items.length;
+  const svcLabel = svcCount > 1 ? t('edit_svc_plural') : t('edit_svc_singular');
+
+  const serviceRows = o.items.map(i => {
+    const s = SVCS.find(function(x){return x.id===i.id;});
+    const name = s ? getSvcData(s).n : i.name;
+    const cat  = s ? getSvcData(s).catL : i.cat;
+    return '<div class="oc-svc-item">' +
+      '<div class="oc-svc-info">' +
+        '<div class="oc-svc-name">' + name + '</div>' +
+        '<div class="oc-svc-meta">' + cat + ' &middot; ' + i.t + '</div>' +
+      '</div>' +
+      '<div class="oc-svc-price">$' + i.price + '</div>' +
+    '</div>';
+  }).join('');
+
   return '<div class="order-card" id="oc-' + o.ref + '">' +
-    '<div class="oc-top"><div><div class="oc-ref">' + o.ref + '</div><div class="oc-date">' + dateStr + '</div></div>' +
-    '<div class="oc-total">$' + o.total + '</div></div>' +
-    '<div class="oc-services">' + o.items.map(i => i.name).join(' &middot; ') + '</div>' +
+    '<div class="oc-top">' +
+      '<div><div class="oc-ref">' + o.ref + '</div><div class="oc-date">' + dateStr + '</div></div>' +
+      '<div class="oc-total">$' + o.total + '</div>' +
+    '</div>' +
+    '<div class="oc-svc-count">' + svcCount + ' ' + svcLabel + '</div>' +
+    '<div class="oc-svc-list">' + serviceRows + '</div>' +
     '<div class="oc-foot">' +
-    '<span class="status-badge ' + (statusClass[o.status] || 'sb-processing') + '">' + (getStatusLabel(o.status)) + '</span>' +
-    (editable
-      ? '<span class="oc-countdown" data-editable-until="' + o.editable_until + '" data-ref="' + o.ref + '">calculating...</span>' +
-        `<button class="edit-order-btn" onclick="openEditOrder('${o.ref}')">`+t('dash_edit_order')+`</button>`
-      : '') +
-    '</div></div>';
+      '<span class="status-badge ' + (statusClass[o.status] || 'sb-processing') + '">' + getStatusLabel(o.status) + '</span>' +
+      (editable
+        ? '<span class="oc-countdown" data-editable-until="' + o.editable_until + '" data-ref="' + o.ref + '">' + t('dash_calculating') + '</span>' +
+          '<button class="edit-order-btn" onclick="openEditOrder(\'' + o.ref + '\')">' + t('dash_edit_order') + '</button>'
+        : '') +
+    '</div>' +
+  '</div>';
 }
 
 function filterOrders(status, btn) {
@@ -2631,7 +2756,7 @@ function filterOrders(status, btn) {
   const container = document.getElementById('ordersContainer');
   if(!container) return;
   if(filtered.length === 0) {
-    container.innerHTML = '<div class="dash-empty"><span class="dash-empty-icon">&#128235;</span><div class="dash-empty-title">No ' + (status === 'all' ? '' : getStatusLabel(status)+' ') + 'orders</div><div class="dash-empty-body">Nothing here yet. Browse services to get started.</div></div>';
+    container.innerHTML = '<div class="dash-empty"><span class="dash-empty-icon">&#128235;</span><div class="dash-empty-title">' + window.t('dash_nothing_yet') + '</div></div>';
     return;
   }
   container.innerHTML = filtered.map(o => renderOrderCard(o)).join('');
@@ -2864,11 +2989,18 @@ en:{
   dash_signin_h:'Sign in to access your dashboard',dash_signin_p:'Track orders, edit briefs within the 2-hour window, and browse services from your personal BriefCraft dashboard.',dash_signin_btn:'Sign In',
   dash_eyebrow:'Your Dashboard',dash_welcome:'Welcome back, ',dash_meta:'Professional work, tracked and managed in one place.',
   dash_browse:'Browse Services',dash_cart:'View Cart',dash_signout:'Sign Out',
-  dash_total_orders:'Total Orders Placed',dash_total_invested:'Total Invested',dash_active_orders:'Active Orders',
+  dash_total_orders:'Total Orders Placed',dash_total_services:'Services Ordered',dash_total_invested:'Total Invested',
   dash_orders_title:'Your Orders',dash_tab_all:'All',dash_tab_editing:'Edit Available',dash_tab_processing:'Processing',dash_tab_delivered:'Delivered',
   dash_empty_title:'No orders yet',dash_empty_body:'Browse our 40+ professional services, add what you need to your cart, and submit your first brief. Most deliveries arrive within 24 hours.',
   dash_browse_all:'Browse All Services',dash_status_editing:'Edit Available',dash_status_processing:'Processing',dash_status_delivered:'Delivered',dash_status_completed:'Completed',
   dash_edit_order:'Edit Order',dash_no_orders_suffix:'orders',dash_nothing_yet:'Nothing here yet. Browse services to get started.',dash_calculating:'calculating...',
+  cart_title:'Your Cart',cart_empty:'Empty',cart_empty_title:'Your cart is empty',cart_empty_body:'Browse our 40+ professional services and add what you need. Your cart saves between sessions.',cart_browse:'Browse Services',cart_item_singular:'item',cart_item_plural:'items',cart_svc_singular:'service',cart_svc_plural:'services',cart_fixed_note:'Fixed pricing. No hidden fees. Editable for 2 hours after order.',cart_checkout:'Proceed to Checkout',cart_remove:'Remove',cart_add_brief:'+ Add brief',cart_brief_added:'Brief added',cart_brief_ph:'Describe your requirements. You can also update this within the 2-hour edit window after ordering.',
+  checkout_title:'Checkout',checkout_back:'Back to Cart',checkout_order_summary:'Order Summary',checkout_total:'Total',checkout_your_details:'Your Details',checkout_name:'Name',checkout_email:'Email',checkout_country:'Country',checkout_name_ph:'Full name',checkout_email_ph:'you@company.com',checkout_country_ph:'Where are you based?',checkout_proceed:'Proceed to Payment',checkout_editable_note:'Order is editable for 2 hours after placement. Fixed pricing, no hidden fees.',
+  pay_title:'Secure Payment',pay_subtitle:'Choose payment method',pay_svc_after_window:'Specialists begin after edit window closes',pay_stripe_name:'Pay with Stripe',pay_stripe_meta:'Credit / Debit card \u00b7 International \u00b7 Secure',pay_paystack_name:'Pay with Paystack',pay_paystack_meta:'Nigeria, Ghana, Kenya, South Africa \u0026 more',pay_note:'Clicking either option creates your order immediately and starts your 2-hour edit window. Payment processing will be connected when the full platform goes live.',
+  placed_title:'Order Placed',placed_via_stripe:'via Stripe',placed_via_paystack:'via Paystack',placed_h:'Your brief is in good hands.',placed_body_pre:'Order created. Your specialists begin work after the 2-hour edit window closes. A confirmation will be sent to ',placed_view_dash:'View Dashboard',placed_close:'Close',
+  edit_hdr_eyebrow:'Edit Your Order',edit_hdr_title:'Update briefs and details',edit_hdr_calculating:'Calculating edit window...',edit_svc_singular:'service',edit_svc_plural:'services',edit_total_label:'Total',edit_brief_label:'Brief',edit_save:'Save Changes',edit_save_note:'Changes saved immediately. Edit window applies.',edit_delivery_suffix:'delivery',
+  order_form_title:'Submit Your Brief',order_form_fixed_meta:'Fixed price \u00b7 24-48 hr delivery \u00b7 Satisfaction guaranteed',order_brief_label:'Your Brief',order_brief_ph:'Give us everything we need. The more specific you are, the better the result. Include your goals, your audience, context, requirements, and any examples...',order_brief_hint:'Minimum 50 characters. You can also upload supporting files below.',order_upload_label:'Upload Files',order_upload_optional:'(Optional)',order_upload_click:'Click to upload',order_upload_drag:'or drag and drop.',order_upload_types:'PDF, Word, TXT, JPG, PNG up to 10MB.',order_name_label:'Your Name',order_email_label:'Email',order_country_label:'Country',order_name_ph:'Full name',order_country_ph:'Anywhere in the world',order_place_btn:'Place Order',order_confidential:'Your brief is confidential. Confirmation sent to your email.',order_success_title:'Your brief is in good hands.',order_success_body:'We have received your order. Your specialist begins work immediately. A confirmation email with your order details is on its way.',order_done_btn:'Done',
+  cd_edit_closes:'Edit closes in: ',cd_edit_closed:'Edit window closed',
   modal_add_cart:'+ Add to Cart', modal_order_now:'Order Now',
   about_eyebrow:'Our story',
   about_h1:'Professional work.<br>Without the premium price.',
@@ -3040,11 +3172,18 @@ fr:{
   dash_signin_h:'Connectez-vous pour accéder à votre tableau de bord',dash_signin_p:"Suivez vos commandes, modifiez vos briefs dans les 2 heures et parcourez les services depuis votre tableau de bord BriefCraft personnel.",dash_signin_btn:'Se connecter',
   dash_eyebrow:'Votre tableau de bord',dash_welcome:'Bienvenue, ',dash_meta:'Travail professionnel, suivi et géré en un seul endroit.',
   dash_browse:'Parcourir les services',dash_cart:'Voir le panier',dash_signout:'Se déconnecter',
-  dash_total_orders:'Commandes totales',dash_total_invested:'Total investi',dash_active_orders:'Commandes actives',
+  dash_total_orders:'Commandes totales',dash_total_services:'Services commandés',dash_total_invested:'Total investi',
   dash_orders_title:'Vos commandes',dash_tab_all:'Tout',dash_tab_editing:'Modification disponible',dash_tab_processing:'En cours',dash_tab_delivered:'Livré',
   dash_empty_title:'Pas encore de commandes',dash_empty_body:'Parcourez nos 40+ services professionnels, ajoutez ce dont vous avez besoin et soumettez votre premier brief.',
   dash_browse_all:'Voir tous les services',dash_status_editing:'Modification disponible',dash_status_processing:'En cours',dash_status_delivered:'Livré',dash_status_completed:'Complété',
   dash_edit_order:'Modifier la commande',dash_no_orders_suffix:'commandes',dash_nothing_yet:'Rien pour l instant. Parcourez les services pour commencer.',dash_calculating:'calcul...',
+  cart_title:'Votre Panier',cart_empty:'Vide',cart_empty_title:'Votre panier est vide',cart_empty_body:'Parcourez nos 40+ services professionnels et ajoutez ce dont vous avez besoin. Votre panier est sauvegardé entre les sessions.',cart_browse:'Parcourir les services',cart_item_singular:'article',cart_item_plural:'articles',cart_svc_singular:'service',cart_svc_plural:'services',cart_fixed_note:'Prix fixe. Aucun frais caché. Modifiable pendant 2 heures après la commande.',cart_checkout:'Passer à la caisse',cart_remove:'Supprimer',cart_add_brief:'+ Ajouter un brief',cart_brief_added:'Brief ajouté',cart_brief_ph:'Décrivez vos besoins. Vous pouvez également mettre à jour cela pendant la fenêtre de modification de 2 heures après la commande.',
+  checkout_title:'Paiement',checkout_back:'Retour au panier',checkout_order_summary:'Résumé de la commande',checkout_total:'Total',checkout_your_details:'Vos coordonnées',checkout_name:'Nom',checkout_email:'Email',checkout_country:'Pays',checkout_name_ph:'Nom complet',checkout_email_ph:'vous@entreprise.com',checkout_country_ph:'Où êtes-vous basé ?',checkout_proceed:'Passer au paiement',checkout_editable_note:'La commande est modifiable pendant 2 heures après placement. Prix fixe, aucun frais caché.',
+  pay_title:'Paiement sécurisé',pay_subtitle:'Choisissez un mode de paiement',pay_svc_after_window:'Les spécialistes commencent après la fermeture de la fenêtre de modification',pay_stripe_name:'Payer avec Stripe',pay_stripe_meta:'Carte de crédit / débit \u00b7 International \u00b7 Sécurisé',pay_paystack_name:'Payer avec Paystack',pay_paystack_meta:'Nigeria, Ghana, Kenya, Afrique du Sud et plus',pay_note:"En cliquant sur l'une ou l'autre option, votre commande est créée immédiatement et votre fenêtre de modification de 2 heures commence. Le traitement des paiements sera connecté lors du lancement de la plateforme.",
+  placed_title:'Commande passée',placed_via_stripe:'via Stripe',placed_via_paystack:'via Paystack',placed_h:'Votre brief est en bonnes mains.',placed_body_pre:'Commande créée. Vos spécialistes commencent à travailler après la fermeture de la fenêtre de modification de 2 heures. Une confirmation sera envoyée à ',placed_view_dash:'Voir le tableau de bord',placed_close:'Fermer',
+  edit_hdr_eyebrow:'Modifier votre commande',edit_hdr_title:'Mettre à jour les briefs et les détails',edit_hdr_calculating:'Calcul de la fenêtre de modification...',edit_svc_singular:'service',edit_svc_plural:'services',edit_total_label:'Total',edit_brief_label:'Brief',edit_save:'Enregistrer les modifications',edit_save_note:"Modifications enregistrées immédiatement. La fenêtre de modification s'applique.",edit_delivery_suffix:'livraison',
+  order_form_title:'Soumettre votre brief',order_form_fixed_meta:'Prix fixe \u00b7 Livraison 24-48h \u00b7 Satisfaction garantie',order_brief_label:'Votre Brief',order_brief_ph:'Donnez-nous tout ce dont nous avons besoin. Plus vous êtes précis, meilleur sera le résultat. Incluez vos objectifs, votre audience, le contexte, les exigences et des exemples...',order_brief_hint:'Minimum 50 caractères. Vous pouvez également télécharger des fichiers de support ci-dessous.',order_upload_label:'Télécharger des fichiers',order_upload_optional:'(Facultatif)',order_upload_click:'Cliquez pour télécharger',order_upload_drag:'ou glissez-déposez.',order_upload_types:'PDF, Word, TXT, JPG, PNG jusqu\u0027à 10 Mo.',order_name_label:'Votre nom',order_email_label:'Email',order_country_label:'Pays',order_name_ph:'Nom complet',order_country_ph:"N'importe où dans le monde",order_place_btn:'Passer la commande',order_confidential:'Votre brief est confidentiel. Confirmation envoyée à votre email.',order_success_title:'Votre brief est en bonnes mains.',order_success_body:"Nous avons reçu votre commande. Votre spécialiste commence à travailler immédiatement. Un email de confirmation avec les détails de votre commande est en route.",order_done_btn:'Terminé',
+  cd_edit_closes:'Fermeture dans : ',cd_edit_closed:'Fenêtre de modification fermée',
   modal_add_cart:'+ Ajouter au panier', modal_order_now:'Commander maintenant',
   about_eyebrow:'Notre histoire',
   about_h1:'Un travail professionnel.<br>Sans le prix premium.',
@@ -3216,11 +3355,18 @@ pt:{
   dash_signin_h:'Entre para acessar seu painel',dash_signin_p:'Acompanhe pedidos, edite briefs dentro da janela de 2 horas e navegue pelos serviços do seu painel BriefCraft pessoal.',dash_signin_btn:'Entrar',
   dash_eyebrow:'Seu Painel',dash_welcome:'Bem-vindo de volta, ',dash_meta:'Trabalho profissional, rastreado e gerenciado em um só lugar.',
   dash_browse:'Ver Serviços',dash_cart:'Ver Carrinho',dash_signout:'Sair',
-  dash_total_orders:'Total de Pedidos',dash_total_invested:'Total Investido',dash_active_orders:'Pedidos Ativos',
+  dash_total_orders:'Total de Pedidos',dash_total_services:'Serviços Solicitados',dash_total_invested:'Total Investido',
   dash_orders_title:'Seus Pedidos',dash_tab_all:'Todos',dash_tab_editing:'Edição Disponível',dash_tab_processing:'Em Andamento',dash_tab_delivered:'Entregue',
   dash_empty_title:'Nenhum pedido ainda',dash_empty_body:'Navegue pelos nossos 40+ serviços profissionais, adicione o que precisar ao carrinho e envie seu primeiro briefing.',
   dash_browse_all:'Ver Todos os Serviços',dash_status_editing:'Edição Disponível',dash_status_processing:'Em Andamento',dash_status_delivered:'Entregue',dash_status_completed:'Concluído',
   dash_edit_order:'Editar Pedido',dash_no_orders_suffix:'pedidos',dash_nothing_yet:'Nada aqui ainda. Navegue pelos serviços para começar.',dash_calculating:'calculando...',
+  cart_title:'Seu Carrinho',cart_empty:'Vazio',cart_empty_title:'Seu carrinho está vazio',cart_empty_body:'Explore nossos 40+ serviços profissionais e adicione o que precisar. Seu carrinho é salvo entre as sessões.',cart_browse:'Explorar Serviços',cart_item_singular:'item',cart_item_plural:'itens',cart_svc_singular:'serviço',cart_svc_plural:'serviços',cart_fixed_note:'Preço fixo. Sem taxas ocultas. Editável por 2 horas após o pedido.',cart_checkout:'Prosseguir para o Checkout',cart_remove:'Remover',cart_add_brief:'+ Adicionar brief',cart_brief_added:'Brief adicionado',cart_brief_ph:'Descreva seus requisitos. Você também pode atualizar isso na janela de edição de 2 horas após o pedido.',
+  checkout_title:'Checkout',checkout_back:'Voltar ao Carrinho',checkout_order_summary:'Resumo do Pedido',checkout_total:'Total',checkout_your_details:'Seus Dados',checkout_name:'Nome',checkout_email:'Email',checkout_country:'País',checkout_name_ph:'Nome completo',checkout_email_ph:'você@empresa.com',checkout_country_ph:'Onde você está localizado?',checkout_proceed:'Prosseguir para o Pagamento',checkout_editable_note:'O pedido é editável por 2 horas após o envio. Preço fixo, sem taxas ocultas.',
+  pay_title:'Pagamento Seguro',pay_subtitle:'Escolha o método de pagamento',pay_svc_after_window:'Os especialistas começam após o fechamento da janela de edição',pay_stripe_name:'Pagar com Stripe',pay_stripe_meta:'Cartão de Crédito / Débito \u00b7 Internacional \u00b7 Seguro',pay_paystack_name:'Pagar com Paystack',pay_paystack_meta:'Nigéria, Gana, Quênia, África do Sul e mais',pay_note:'Clicar em qualquer opção cria seu pedido imediatamente e inicia sua janela de edição de 2 horas. O processamento de pagamento será conectado quando a plataforma completa for ao ar.',
+  placed_title:'Pedido Realizado',placed_via_stripe:'via Stripe',placed_via_paystack:'via Paystack',placed_h:'Seu brief está em boas mãos.',placed_body_pre:'Pedido criado. Seus especialistas começam a trabalhar após o fechamento da janela de edição de 2 horas. Uma confirmação será enviada para ',placed_view_dash:'Ver Painel',placed_close:'Fechar',
+  edit_hdr_eyebrow:'Editar Seu Pedido',edit_hdr_title:'Atualizar briefs e detalhes',edit_hdr_calculating:'Calculando janela de edição...',edit_svc_singular:'serviço',edit_svc_plural:'serviços',edit_total_label:'Total',edit_brief_label:'Brief',edit_save:'Salvar Alterações',edit_save_note:'Alterações salvas imediatamente. Janela de edição se aplica.',edit_delivery_suffix:'entrega',
+  order_form_title:'Enviar Seu Brief',order_form_fixed_meta:'Preço fixo \u00b7 Entrega 24-48h \u00b7 Satisfação garantida',order_brief_label:'Seu Brief',order_brief_ph:'Nos dê tudo que precisamos. Quanto mais específico você for, melhor será o resultado. Inclua seus objetivos, público, contexto, requisitos e exemplos...',order_brief_hint:'Mínimo 50 caracteres. Você também pode enviar arquivos de suporte abaixo.',order_upload_label:'Enviar Arquivos',order_upload_optional:'(Opcional)',order_upload_click:'Clique para enviar',order_upload_drag:'ou arraste e solte.',order_upload_types:'PDF, Word, TXT, JPG, PNG até 10MB.',order_name_label:'Seu Nome',order_email_label:'Email',order_country_label:'País',order_name_ph:'Nome completo',order_country_ph:'Em qualquer lugar do mundo',order_place_btn:'Fazer Pedido',order_confidential:'Seu brief é confidencial. Confirmação enviada ao seu email.',order_success_title:'Seu brief está em boas mãos.',order_success_body:'Recebemos seu pedido. Seu especialista começa a trabalhar imediatamente. Um email de confirmação com os detalhes do seu pedido está a caminho.',order_done_btn:'Concluído',
+  cd_edit_closes:'Edição fecha em: ',cd_edit_closed:'Janela de edição fechada',
   modal_add_cart:'+ Adicionar ao carrinho', modal_order_now:'Pedir agora',
   about_eyebrow:'Nossa história',
   about_h1:'Trabalho profissional.<br>Sem o preço premium.',
@@ -3392,11 +3538,18 @@ es:{
   dash_signin_h:'Inicia sesión para acceder a tu panel',dash_signin_p:'Rastrea pedidos, edita briefs dentro de la ventana de 2 horas y navega por los servicios desde tu panel BriefCraft personal.',dash_signin_btn:'Iniciar sesión',
   dash_eyebrow:'Tu Panel',dash_welcome:'Bienvenido de nuevo, ',dash_meta:'Trabajo profesional, rastreado y gestionado en un solo lugar.',
   dash_browse:'Ver Servicios',dash_cart:'Ver Carrito',dash_signout:'Cerrar sesión',
-  dash_total_orders:'Pedidos Totales',dash_total_invested:'Total Invertido',dash_active_orders:'Pedidos Activos',
+  dash_total_orders:'Pedidos Totales',dash_total_services:'Servicios Solicitados',dash_total_invested:'Total Invertido',
   dash_orders_title:'Tus Pedidos',dash_tab_all:'Todos',dash_tab_editing:'Edición Disponible',dash_tab_processing:'En Proceso',dash_tab_delivered:'Entregado',
   dash_empty_title:'Sin pedidos aún',dash_empty_body:'Explora nuestros 40+ servicios profesionales, añade lo que necesitas al carrito y envía tu primer brief.',
   dash_browse_all:'Ver Todos los Servicios',dash_status_editing:'Edición Disponible',dash_status_processing:'En Proceso',dash_status_delivered:'Entregado',dash_status_completed:'Completado',
   dash_edit_order:'Editar Pedido',dash_no_orders_suffix:'pedidos',dash_nothing_yet:'Nada aquí todavía. Navega por los servicios para comenzar.',dash_calculating:'calculando...',
+  cart_title:'Tu Carrito',cart_empty:'Vacío',cart_empty_title:'Tu carrito está vacío',cart_empty_body:'Explora nuestros 40+ servicios profesionales y agrega lo que necesitas. Tu carrito se guarda entre sesiones.',cart_browse:'Explorar Servicios',cart_item_singular:'artículo',cart_item_plural:'artículos',cart_svc_singular:'servicio',cart_svc_plural:'servicios',cart_fixed_note:'Precio fijo. Sin tarifas ocultas. Editable durante 2 horas después del pedido.',cart_checkout:'Proceder al Pago',cart_remove:'Eliminar',cart_add_brief:'+ Agregar brief',cart_brief_added:'Brief agregado',cart_brief_ph:'Describe tus requisitos. También puedes actualizar esto dentro de la ventana de edición de 2 horas después de ordenar.',
+  checkout_title:'Pago',checkout_back:'Volver al Carrito',checkout_order_summary:'Resumen del Pedido',checkout_total:'Total',checkout_your_details:'Tus Datos',checkout_name:'Nombre',checkout_email:'Email',checkout_country:'País',checkout_name_ph:'Nombre completo',checkout_email_ph:'tú@empresa.com',checkout_country_ph:'¿Dónde estás ubicado?',checkout_proceed:'Proceder al Pago',checkout_editable_note:'El pedido es editable durante 2 horas después de realizarlo. Precio fijo, sin tarifas ocultas.',
+  pay_title:'Pago Seguro',pay_subtitle:'Elige el método de pago',pay_svc_after_window:'Los especialistas comienzan después del cierre de la ventana de edición',pay_stripe_name:'Pagar con Stripe',pay_stripe_meta:'Tarjeta de Crédito / Débito \u00b7 Internacional \u00b7 Seguro',pay_paystack_name:'Pagar con Paystack',pay_paystack_meta:'Nigeria, Ghana, Kenia, Sudáfrica y más',pay_note:'Al hacer clic en cualquier opción se crea tu pedido de inmediato y comienza tu ventana de edición de 2 horas. El procesamiento de pagos se conectará cuando la plataforma completa esté en vivo.',
+  placed_title:'Pedido Realizado',placed_via_stripe:'via Stripe',placed_via_paystack:'via Paystack',placed_h:'Tu brief está en buenas manos.',placed_body_pre:'Pedido creado. Tus especialistas comienzan a trabajar después del cierre de la ventana de edición de 2 horas. Se enviará una confirmación a ',placed_view_dash:'Ver Panel',placed_close:'Cerrar',
+  edit_hdr_eyebrow:'Editar Tu Pedido',edit_hdr_title:'Actualizar briefs y detalles',edit_hdr_calculating:'Calculando ventana de edición...',edit_svc_singular:'servicio',edit_svc_plural:'servicios',edit_total_label:'Total',edit_brief_label:'Brief',edit_save:'Guardar Cambios',edit_save_note:'Cambios guardados inmediatamente. Se aplica la ventana de edición.',edit_delivery_suffix:'entrega',
+  order_form_title:'Enviar Tu Brief',order_form_fixed_meta:'Precio fijo \u00b7 Entrega 24-48h \u00b7 Satisfacción garantizada',order_brief_label:'Tu Brief',order_brief_ph:'Danos todo lo que necesitamos. Cuanto más específico seas, mejor será el resultado. Incluye tus objetivos, audiencia, contexto, requisitos y ejemplos...',order_brief_hint:'Mínimo 50 caracteres. También puedes subir archivos de soporte abajo.',order_upload_label:'Subir Archivos',order_upload_optional:'(Opcional)',order_upload_click:'Haz clic para subir',order_upload_drag:'o arrastra y suelta.',order_upload_types:'PDF, Word, TXT, JPG, PNG hasta 10MB.',order_name_label:'Tu Nombre',order_email_label:'Email',order_country_label:'País',order_name_ph:'Nombre completo',order_country_ph:'En cualquier parte del mundo',order_place_btn:'Realizar Pedido',order_confidential:'Tu brief es confidencial. Confirmación enviada a tu email.',order_success_title:'Tu brief está en buenas manos.',order_success_body:'Hemos recibido tu pedido. Tu especialista comienza a trabajar de inmediato. Un email de confirmación con los detalles de tu pedido está en camino.',order_done_btn:'Listo',
+  cd_edit_closes:'Edición cierra en: ',cd_edit_closed:'Ventana de edición cerrada',
   modal_add_cart:'+ Añadir al carrito', modal_order_now:'Pedir ahora',
   about_eyebrow:'Nuestra historia',
   about_h1:'Trabajo profesional.<br>Sin el precio premium.',
@@ -3568,11 +3721,18 @@ ar:{
   dash_signin_h:'سجّل دخولك للوصول إلى لوحة التحكم',dash_signin_p:'تتبع الطلبات وعدّل الملخصات خلال ساعتين واستعرض الخدمات من لوحة تحكم BriefCraft الشخصية.',dash_signin_btn:'تسجيل الدخول',
   dash_eyebrow:'لوحة التحكم الخاصة بك',dash_welcome:'مرحباً بعودتك، ',dash_meta:'عمل احترافي، يُتابع ويُدار في مكان واحد.',
   dash_browse:'استعرض الخدمات',dash_cart:'عرض السلة',dash_signout:'تسجيل الخروج',
-  dash_total_orders:'إجمالي الطلبات',dash_total_invested:'إجمالي الاستثمار',dash_active_orders:'الطلبات النشطة',
+  dash_total_orders:'إجمالي الطلبات',dash_total_services:'الخدمات المطلوبة',dash_total_invested:'إجمالي الاستثمار',
   dash_orders_title:'طلباتك',dash_tab_all:'الكل',dash_tab_editing:'متاح للتعديل',dash_tab_processing:'قيد المعالجة',dash_tab_delivered:'تم التسليم',
   dash_empty_title:'لا توجد طلبات بعد',dash_empty_body:'استعرض أكثر من 40 خدمة احترافية وأضف ما تحتاجه إلى سلتك وأرسل أول ملخص.',
   dash_browse_all:'استعرض جميع الخدمات',dash_status_editing:'متاح للتعديل',dash_status_processing:'قيد المعالجة',dash_status_delivered:'تم التسليم',dash_status_completed:'مكتمل',
   dash_edit_order:'تعديل الطلب',dash_no_orders_suffix:'طلبات',dash_nothing_yet:'لا شيء هنا بعد. استعرض الخدمات للبدء.',dash_calculating:'جارٍ الحساب...',
+  cart_title:'سلة التسوق',cart_empty:'فارغة',cart_empty_title:'سلتك فارغة',cart_empty_body:'تصفح أكثر من 40 خدمة احترافية وأضف ما تحتاجه. سلتك محفوظة بين الجلسات.',cart_browse:'تصفح الخدمات',cart_item_singular:'عنصر',cart_item_plural:'عناصر',cart_svc_singular:'خدمة',cart_svc_plural:'خدمات',cart_fixed_note:'سعر ثابت. بدون رسوم مخفية. قابل للتعديل لمدة ساعتين بعد الطلب.',cart_checkout:'المتابعة إلى الدفع',cart_remove:'إزالة',cart_add_brief:'+ إضافة ملخص',cart_brief_added:'تم إضافة الملخص',cart_brief_ph:'صف متطلباتك. يمكنك أيضاً تحديث هذا خلال نافذة التعديل لمدة ساعتين بعد الطلب.',
+  checkout_title:'الدفع',checkout_back:'العودة إلى السلة',checkout_order_summary:'ملخص الطلب',checkout_total:'المجموع',checkout_your_details:'بياناتك',checkout_name:'الاسم',checkout_email:'البريد الإلكتروني',checkout_country:'البلد',checkout_name_ph:'الاسم الكامل',checkout_email_ph:'أنت@شركة.com',checkout_country_ph:'أين تتواجد؟',checkout_proceed:'المتابعة إلى الدفع',checkout_editable_note:'الطلب قابل للتعديل لمدة ساعتين بعد الإيداع. سعر ثابت، بدون رسوم مخفية.',
+  pay_title:'الدفع الآمن',pay_subtitle:'اختر طريقة الدفع',pay_svc_after_window:'يبدأ المتخصصون بعد إغلاق نافذة التعديل',pay_stripe_name:'الدفع عبر Stripe',pay_stripe_meta:'بطاقة ائتمان / خصم \u00b7 دولي \u00b7 آمن',pay_paystack_name:'الدفع عبر Paystack',pay_paystack_meta:'نيجيريا، غانا، كينيا، جنوب أفريقيا وأكثر',pay_note:'النقر على أي خيار يُنشئ طلبك فوراً ويبدأ نافذة التعديل لمدة ساعتين. ستتصل معالجة الدفع عند إطلاق المنصة الكاملة.',
+  placed_title:'تم تقديم الطلب',placed_via_stripe:'عبر Stripe',placed_via_paystack:'عبر Paystack',placed_h:'ملخصك في أيدٍ أمينة.',placed_body_pre:'تم إنشاء الطلب. يبدأ متخصصوك العمل بعد إغلاق نافذة التعديل لمدة ساعتين. سيتم إرسال تأكيد إلى ',placed_view_dash:'عرض لوحة التحكم',placed_close:'إغلاق',
+  edit_hdr_eyebrow:'تعديل طلبك',edit_hdr_title:'تحديث الملخصات والتفاصيل',edit_hdr_calculating:'جارٍ حساب نافذة التعديل...',edit_svc_singular:'خدمة',edit_svc_plural:'خدمات',edit_total_label:'المجموع',edit_brief_label:'الملخص',edit_save:'حفظ التغييرات',edit_save_note:'التغييرات محفوظة فوراً. نافذة التعديل سارية.',edit_delivery_suffix:'تسليم',
+  order_form_title:'تقديم ملخصك',order_form_fixed_meta:'سعر ثابت \u00b7 تسليم 24-48 ساعة \u00b7 ضمان الرضا',order_brief_label:'ملخصك',order_brief_ph:'أعطنا كل ما نحتاجه. كلما كنت أكثر تحديداً، كانت النتيجة أفضل. أدرج أهدافك وجمهورك والسياق والمتطلبات وأي أمثلة...',order_brief_hint:'50 حرفاً كحد أدنى. يمكنك أيضاً رفع الملفات الداعمة أدناه.',order_upload_label:'رفع الملفات',order_upload_optional:'(اختياري)',order_upload_click:'انقر للرفع',order_upload_drag:'أو اسحب وأفلت.',order_upload_types:'PDF وWord وTXT وJPG وPNG بحجم يصل إلى 10 ميغابايت.',order_name_label:'اسمك',order_email_label:'البريد الإلكتروني',order_country_label:'البلد',order_name_ph:'الاسم الكامل',order_country_ph:'في أي مكان في العالم',order_place_btn:'تقديم الطلب',order_confidential:'ملخصك سري. سيتم إرسال التأكيد إلى بريدك الإلكتروني.',order_success_title:'ملخصك في أيدٍ أمينة.',order_success_body:'استلمنا طلبك. متخصصك يبدأ العمل فوراً. بريد إلكتروني تأكيدي مع تفاصيل طلبك في طريقه إليك.',order_done_btn:'تم',
+  cd_edit_closes:'يغلق التعديل في: ',cd_edit_closed:'نافذة التعديل مغلقة',
   modal_add_cart:'+ أضف إلى السلة', modal_order_now:'اطلب الآن',
   about_eyebrow:'قصتنا',
   about_h1:'عمل احترافي.<br>بدون السعر المرتفع.',
@@ -3744,11 +3904,18 @@ de:{
   dash_signin_h:'Anmelden um auf Ihr Dashboard zuzugreifen',dash_signin_p:'Verfolgen Sie Bestellungen, bearbeiten Sie Briefs innerhalb des 2-Stunden-Fensters und durchsuchen Sie Leistungen von Ihrem persönlichen BriefCraft-Dashboard.',dash_signin_btn:'Anmelden',
   dash_eyebrow:'Ihr Dashboard',dash_welcome:'Willkommen zurück, ',dash_meta:'Professionelle Arbeit, verfolgt und verwaltet an einem Ort.',
   dash_browse:'Leistungen ansehen',dash_cart:'Warenkorb anzeigen',dash_signout:'Abmelden',
-  dash_total_orders:'Gesamte Bestellungen',dash_total_invested:'Gesamt investiert',dash_active_orders:'Aktive Bestellungen',
+  dash_total_orders:'Gesamte Bestellungen',dash_total_services:'Bestellte Leistungen',dash_total_invested:'Gesamt investiert',
   dash_orders_title:'Ihre Bestellungen',dash_tab_all:'Alle',dash_tab_editing:'Bearbeitung verfügbar',dash_tab_processing:'In Bearbeitung',dash_tab_delivered:'Geliefert',
   dash_empty_title:'Noch keine Bestellungen',dash_empty_body:'Durchsuchen Sie unsere 40+ professionellen Leistungen, fügen Sie dem Warenkorb hinzu und reichen Sie Ihr erstes Brief ein.',
   dash_browse_all:'Alle Leistungen ansehen',dash_status_editing:'Bearbeitung verfügbar',dash_status_processing:'In Bearbeitung',dash_status_delivered:'Geliefert',dash_status_completed:'Abgeschlossen',
   dash_edit_order:'Bestellung bearbeiten',dash_no_orders_suffix:'Bestellungen',dash_nothing_yet:'Noch nichts hier. Durchsuchen Sie Leistungen um zu beginnen.',dash_calculating:'berechnet...',
+  cart_title:'Ihr Warenkorb',cart_empty:'Leer',cart_empty_title:'Ihr Warenkorb ist leer',cart_empty_body:'Durchsuchen Sie unsere 40+ professionellen Dienste und fügen Sie hinzu, was Sie benötigen. Ihr Warenkorb wird zwischen Sitzungen gespeichert.',cart_browse:'Dienste durchsuchen',cart_item_singular:'Artikel',cart_item_plural:'Artikel',cart_svc_singular:'Dienst',cart_svc_plural:'Dienste',cart_fixed_note:'Festpreis. Keine versteckten Gebühren. Editierbar für 2 Stunden nach Bestellung.',cart_checkout:'Zur Kasse',cart_remove:'Entfernen',cart_add_brief:'+ Brief hinzufügen',cart_brief_added:'Brief hinzugefügt',cart_brief_ph:'Beschreiben Sie Ihre Anforderungen. Sie können dies auch innerhalb des 2-Stunden-Bearbeitungsfensters nach der Bestellung aktualisieren.',
+  checkout_title:'Kasse',checkout_back:'Zurück zum Warenkorb',checkout_order_summary:'Bestellübersicht',checkout_total:'Gesamt',checkout_your_details:'Ihre Daten',checkout_name:'Name',checkout_email:'E-Mail',checkout_country:'Land',checkout_name_ph:'Vollständiger Name',checkout_email_ph:'sie@unternehmen.com',checkout_country_ph:'Wo befinden Sie sich?',checkout_proceed:'Weiter zur Zahlung',checkout_editable_note:'Die Bestellung ist 2 Stunden nach der Aufgabe bearbeitbar. Festpreis, keine versteckten Gebühren.',
+  pay_title:'Sichere Zahlung',pay_subtitle:'Zahlungsmethode wählen',pay_svc_after_window:'Spezialisten beginnen nach Schließung des Bearbeitungsfensters',pay_stripe_name:'Mit Stripe bezahlen',pay_stripe_meta:'Kredit- / Debitkarte \u00b7 International \u00b7 Sicher',pay_paystack_name:'Mit Paystack bezahlen',pay_paystack_meta:'Nigeria, Ghana, Kenia, Südafrika und mehr',pay_note:'Ein Klick auf eine der Optionen erstellt Ihre Bestellung sofort und startet Ihr 2-Stunden-Bearbeitungsfenster. Die Zahlungsabwicklung wird verbunden, wenn die vollständige Plattform live geht.',
+  placed_title:'Bestellung aufgegeben',placed_via_stripe:'via Stripe',placed_via_paystack:'via Paystack',placed_h:'Ihr Brief ist in guten Händen.',placed_body_pre:'Bestellung erstellt. Ihre Spezialisten beginnen nach Schließung des 2-Stunden-Bearbeitungsfensters. Eine Bestätigung wird gesendet an ',placed_view_dash:'Dashboard anzeigen',placed_close:'Schließen',
+  edit_hdr_eyebrow:'Bestellung bearbeiten',edit_hdr_title:'Briefs und Details aktualisieren',edit_hdr_calculating:'Bearbeitungsfenster wird berechnet...',edit_svc_singular:'Dienst',edit_svc_plural:'Dienste',edit_total_label:'Gesamt',edit_brief_label:'Brief',edit_save:'Änderungen speichern',edit_save_note:'Änderungen sofort gespeichert. Bearbeitungsfenster gilt.',edit_delivery_suffix:'Lieferung',
+  order_form_title:'Ihren Brief einreichen',order_form_fixed_meta:'Festpreis \u00b7 Lieferung 24-48h \u00b7 Zufriedenheitsgarantie',order_brief_label:'Ihr Brief',order_brief_ph:'Geben Sie uns alles, was wir brauchen. Je spezifischer Sie sind, desto besser das Ergebnis. Fügen Sie Ihre Ziele, Zielgruppe, Kontext, Anforderungen und Beispiele hinzu...',order_brief_hint:'Mindestens 50 Zeichen. Sie können unten auch unterstützende Dateien hochladen.',order_upload_label:'Dateien hochladen',order_upload_optional:'(Optional)',order_upload_click:'Klicken zum Hochladen',order_upload_drag:'oder ziehen und ablegen.',order_upload_types:'PDF, Word, TXT, JPG, PNG bis zu 10 MB.',order_name_label:'Ihr Name',order_email_label:'E-Mail',order_country_label:'Land',order_name_ph:'Vollständiger Name',order_country_ph:'Irgendwo auf der Welt',order_place_btn:'Bestellung aufgeben',order_confidential:'Ihr Brief ist vertraulich. Bestätigung an Ihre E-Mail gesendet.',order_success_title:'Ihr Brief ist in guten Händen.',order_success_body:'Wir haben Ihre Bestellung erhalten. Ihr Spezialist beginnt sofort mit der Arbeit. Eine Bestätigungs-E-Mail mit Ihren Bestelldetails ist unterwegs.',order_done_btn:'Fertig',
+  cd_edit_closes:'Bearbeitung endet in: ',cd_edit_closed:'Bearbeitungsfenster geschlossen',
   modal_add_cart:'+ In den Warenkorb', modal_order_now:'Jetzt bestellen',
   about_eyebrow:'Unsere Geschichte',
   about_h1:'Professionelle Arbeit.<br>Ohne den Premium-Preis.',
@@ -3920,11 +4087,18 @@ ru:{
   dash_signin_h:'Войдите для доступа к вашей панели управления',dash_signin_p:'Отслеживайте заказы, редактируйте брифы в течение 2 часов и просматривайте услуги из вашей личной панели BriefCraft.',dash_signin_btn:'Войти',
   dash_eyebrow:'Ваша панель управления',dash_welcome:'Добро пожаловать, ',dash_meta:'Профессиональная работа, отслеживаемая и управляемая в одном месте.',
   dash_browse:'Смотреть услуги',dash_cart:'Смотреть корзину',dash_signout:'Выйти',
-  dash_total_orders:'Всего заказов',dash_total_invested:'Всего вложено',dash_active_orders:'Активные заказы',
+  dash_total_orders:'Всего заказов',dash_total_services:'Заказано услуг',dash_total_invested:'Всего вложено',
   dash_orders_title:'Ваши заказы',dash_tab_all:'Все',dash_tab_editing:'Доступно редактирование',dash_tab_processing:'В обработке',dash_tab_delivered:'Доставлено',
   dash_empty_title:'Заказов пока нет',dash_empty_body:'Просматривайте наши 40+ профессиональных услуг, добавляйте нужное в корзину и отправьте первый бриф.',
   dash_browse_all:'Смотреть все услуги',dash_status_editing:'Доступно редактирование',dash_status_processing:'В обработке',dash_status_delivered:'Доставлено',dash_status_completed:'Завершено',
   dash_edit_order:'Редактировать заказ',dash_no_orders_suffix:'заказов',dash_nothing_yet:'Пока ничего нет. Просматривайте услуги чтобы начать.',dash_calculating:'вычисляется...',
+  cart_title:'Ваша Корзина',cart_empty:'Пусто',cart_empty_title:'Ваша корзина пуста',cart_empty_body:'Просмотрите наши 40+ профессиональных услуг и добавьте то, что вам нужно. Ваша корзина сохраняется между сессиями.',cart_browse:'Просмотр услуг',cart_item_singular:'товар',cart_item_plural:'товаров',cart_svc_singular:'услуга',cart_svc_plural:'услуг',cart_fixed_note:'Фиксированная цена. Нет скрытых платежей. Редактируется 2 часа после заказа.',cart_checkout:'Перейти к оформлению',cart_remove:'Удалить',cart_add_brief:'+ Добавить бриф',cart_brief_added:'Бриф добавлен',cart_brief_ph:'Опишите ваши требования. Вы также можете обновить это в течение 2-часового окна редактирования после заказа.',
+  checkout_title:'Оформление',checkout_back:'Назад в корзину',checkout_order_summary:'Сводка заказа',checkout_total:'Итого',checkout_your_details:'Ваши данные',checkout_name:'Имя',checkout_email:'Эл. почта',checkout_country:'Страна',checkout_name_ph:'Полное имя',checkout_email_ph:'вы@компания.com',checkout_country_ph:'Где вы находитесь?',checkout_proceed:'Перейти к оплате',checkout_editable_note:'Заказ можно редактировать в течение 2 часов после размещения. Фиксированная цена, нет скрытых платежей.',
+  pay_title:'Безопасная оплата',pay_subtitle:'Выберите способ оплаты',pay_svc_after_window:'Специалисты начинают после закрытия окна редактирования',pay_stripe_name:'Оплата через Stripe',pay_stripe_meta:'Кредитная / дебетовая карта \u00b7 Международная \u00b7 Безопасно',pay_paystack_name:'Оплата через Paystack',pay_paystack_meta:'Нигерия, Гана, Кения, ЮАР и другие',pay_note:'Нажатие любого варианта создаёт заказ немедленно и запускает 2-часовое окно редактирования. Обработка платежей будет подключена при запуске полной платформы.',
+  placed_title:'Заказ оформлен',placed_via_stripe:'через Stripe',placed_via_paystack:'через Paystack',placed_h:'Ваш бриф в надёжных руках.',placed_body_pre:'Заказ создан. Ваши специалисты начнут работу после закрытия 2-часового окна редактирования. Подтверждение будет отправлено на ',placed_view_dash:'Открыть панель',placed_close:'Закрыть',
+  edit_hdr_eyebrow:'Редактировать заказ',edit_hdr_title:'Обновить брифы и детали',edit_hdr_calculating:'Вычисление окна редактирования...',edit_svc_singular:'услуга',edit_svc_plural:'услуг',edit_total_label:'Итого',edit_brief_label:'Бриф',edit_save:'Сохранить изменения',edit_save_note:'Изменения сохраняются немедленно. Применяется окно редактирования.',edit_delivery_suffix:'доставка',
+  order_form_title:'Отправить бриф',order_form_fixed_meta:'Фиксированная цена \u00b7 Доставка 24-48ч \u00b7 Гарантия удовлетворённости',order_brief_label:'Ваш Бриф',order_brief_ph:'Дайте нам всё необходимое. Чем конкретнее вы будете, тем лучше результат. Укажите цели, аудиторию, контекст, требования и примеры...',order_brief_hint:'Минимум 50 символов. Вы также можете загрузить поддерживающие файлы ниже.',order_upload_label:'Загрузить файлы',order_upload_optional:'(Необязательно)',order_upload_click:'Нажмите для загрузки',order_upload_drag:'или перетащите.',order_upload_types:'PDF, Word, TXT, JPG, PNG до 10 МБ.',order_name_label:'Ваше имя',order_email_label:'Эл. почта',order_country_label:'Страна',order_name_ph:'Полное имя',order_country_ph:'Где угодно в мире',order_place_btn:'Оформить заказ',order_confidential:'Ваш бриф конфиденциален. Подтверждение отправлено на вашу почту.',order_success_title:'Ваш бриф в надёжных руках.',order_success_body:'Мы получили ваш заказ. Ваш специалист сразу начинает работу. Письмо с подтверждением и деталями заказа уже в пути.',order_done_btn:'Готово',
+  cd_edit_closes:'Редактирование закрывается через: ',cd_edit_closed:'Окно редактирования закрыто',
   modal_add_cart:'+ В корзину', modal_order_now:'Заказать сейчас',
   about_eyebrow:'Наша история',
   about_h1:'Профессиональная работа.<br>Без премиальной цены.',
@@ -6085,6 +6259,14 @@ function setLang(code){
   if(renders[curPage])renders[curPage]();
   renderFooter();
   renderLoginModal();
+  renderOrderModal();
+  // Update cart if open
+  if(document.getElementById('cartOverlay').classList.contains('open')) renderCartBody();
+  // Update edit header static text
+  var eh=document.getElementById('editHdrEyebrow');
+  var et=document.getElementById('editHdrTitle');
+  if(eh)eh.textContent=t('edit_hdr_eyebrow');
+  if(et)et.textContent=t('edit_hdr_title');
   // Update WhatsApp tooltip
   var wtt=document.getElementById('waTooltipText');
   if(wtt)wtt.innerHTML=t('wa_tooltip');
