@@ -731,6 +731,16 @@ html { overflow-x: hidden; }
   .lang-dropdown{left:0;transform:none}
   @keyframes langPop{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
 }
+/* ── Country Searchable Dropdown ── */
+.cs-wrap{position:relative;width:100%}
+.cs-wrap .form-input{width:100%;cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;padding-right:32px}
+.cs-wrap .form-input.cs-open{border-color:var(--orange,#D4500A);box-shadow:0 0 0 3px rgba(212,80,10,.12)}
+.cs-list{position:absolute;top:calc(100% + 4px);left:0;right:0;background:#fff;border:1px solid var(--border,#e5e7eb);border-radius:10px;box-shadow:0 8px 32px rgba(0,0,0,.13);z-index:9999;max-height:220px;overflow-y:auto;display:none}
+.cs-list.cs-visible{display:block}
+.cs-item{padding:9px 14px;font-size:13px;font-family:'Outfit',sans-serif;color:#1a1a1a;cursor:pointer;transition:background .1s}
+.cs-item:hover,.cs-item.cs-focused{background:rgba(212,80,10,.07);color:var(--orange,#D4500A)}
+.cs-item.cs-selected{background:rgba(212,80,10,.12);color:var(--orange,#D4500A);font-weight:600}
+.cs-empty{padding:12px 14px;font-size:13px;color:#999;font-family:'Outfit',sans-serif}
 </style>
 </head>
 <body>
@@ -1693,8 +1703,11 @@ function openOrder(){
   document.getElementById('orderSuccess').classList.add('hidden');
   document.getElementById('orderPayment').classList.add('hidden');
   document.getElementById('orderPayment').innerHTML='';
-  ['briefText','oNameInput','oEmail','oCountry'].forEach(id=>document.getElementById(id).value='');
+  ['briefText','oNameInput','oEmail'].forEach(id=>document.getElementById(id).value='');
+  // Reset country dropdown value
+  const _oc = document.getElementById('oCountry'); if(_oc) _oc.value='';
   document.getElementById('fileNames').textContent='';
+  setTimeout(()=>makeCountryDropdown('oCountry'),0);
   document.getElementById('orderModal').classList.add('open');
   document.body.style.overflow='hidden';
 }
@@ -2292,6 +2305,7 @@ function renderContact(){
         </div>
       </div>
     </section>`;
+  setTimeout(()=>makeCountryDropdown('cCountry'),0);
 }
 
 function submitContact(){
@@ -2468,17 +2482,19 @@ function proceedToCheckout() {
       </button>
       <div style="text-align:center;margin-top:10px;font-family:'Outfit',sans-serif;font-size:11px;color:var(--text-4)">${t('checkout_editable_note')}</div>
     </div>`;
+  setTimeout(()=>makeCountryDropdown('coCountry'),0);
 }
 
 let _pendingOrder = null;
 function goToPayment() {
   const name = (document.getElementById('coName') || {}).value && document.getElementById('coName').value.trim();
   const email = (document.getElementById('coEmail') || {}).value && document.getElementById('coEmail').value.trim();
+  const country = (document.getElementById('coCountry') || {}).value ? document.getElementById('coCountry').value.trim() : '';
   if(!name) { showToast(t('checkout_name') + '...'); return; }
   if(!email || !email.includes('@')) { showToast(t('checkout_email') + '...'); return; }
   const cart = getCart();
   const ref = 'BC-' + Date.now().toString(36).toUpperCase().slice(-7);
-  _pendingOrder = { ref, items:[...cart.map(x=>({...x}))], customer:{name,email}, total:cartTotal(), created:Date.now(), editable_until:Date.now()+7200000, status:'editing' };
+  _pendingOrder = { ref, items:[...cart.map(x=>({...x}))], customer:{name,email,country}, total:cartTotal(), created:Date.now(), editable_until:Date.now()+7200000, status:'editing' };
 
   document.getElementById('cartHdrTitle').textContent = t('pay_title');
   document.getElementById('cartSubtitle').textContent = t('pay_subtitle');
@@ -6399,6 +6415,157 @@ if(window.curLang!=='en'){
   buildLangDropdown();
   renderFooter();
 }
+</script>
+
+<script>
+/* ── BriefCraft V23: Searchable Country Dropdown ── */
+const COUNTRY_LIST = [
+  "Afghanistan","Albania","Algeria","Andorra","Angola","Antigua and Barbuda","Argentina","Armenia","Australia","Austria",
+  "Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bhutan",
+  "Bolivia","Bosnia and Herzegovina","Botswana","Brazil","Brunei","Bulgaria","Burkina Faso","Burundi","Cabo Verde","Cambodia",
+  "Cameroon","Canada","Central African Republic","Chad","Chile","China","Colombia","Comoros","Congo (Brazzaville)","Congo (Kinshasa)",
+  "Costa Rica","Croatia","Cuba","Cyprus","Czech Republic","Denmark","Djibouti","Dominica","Dominican Republic","Ecuador",
+  "Egypt","El Salvador","Equatorial Guinea","Eritrea","Estonia","Eswatini","Ethiopia","Fiji","Finland","France",
+  "Gabon","Gambia","Georgia","Germany","Ghana","Greece","Grenada","Guatemala","Guinea","Guinea-Bissau",
+  "Guyana","Haiti","Honduras","Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland",
+  "Israel","Italy","Jamaica","Japan","Jordan","Kazakhstan","Kenya","Kiribati","Kosovo","Kuwait",
+  "Kyrgyzstan","Laos","Latvia","Lebanon","Lesotho","Liberia","Libya","Liechtenstein","Lithuania","Luxembourg",
+  "Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Marshall Islands","Mauritania","Mauritius","Mexico",
+  "Micronesia","Moldova","Monaco","Mongolia","Montenegro","Morocco","Mozambique","Myanmar","Namibia","Nauru",
+  "Nepal","Netherlands","New Zealand","Nicaragua","Niger","Nigeria","North Korea","North Macedonia","Norway","Oman",
+  "Pakistan","Palau","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal","Qatar",
+  "Romania","Russia","Rwanda","Saint Kitts and Nevis","Saint Lucia","Saint Vincent and the Grenadines","Samoa","San Marino","Sao Tome and Principe","Saudi Arabia",
+  "Senegal","Serbia","Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia","Solomon Islands","Somalia","South Africa",
+  "South Korea","South Sudan","Spain","Sri Lanka","Sudan","Suriname","Sweden","Switzerland","Syria","Taiwan",
+  "Tajikistan","Tanzania","Thailand","Timor-Leste","Togo","Tonga","Trinidad and Tobago","Tunisia","Turkey","Turkmenistan",
+  "Tuvalu","Uganda","Ukraine","United Arab Emirates","United Kingdom","United States","Uruguay","Uzbekistan","Vanuatu","Vatican City",
+  "Venezuela","Vietnam","Yemen","Zambia","Zimbabwe"
+];
+
+function makeCountryDropdown(inputId) {
+  const inp = document.getElementById(inputId);
+  if (!inp || inp.dataset.csInit) return;
+  inp.dataset.csInit = '1';
+  inp.setAttribute('autocomplete', 'off');
+  inp.setAttribute('readonly', 'true');
+
+  // Wrap
+  const wrap = document.createElement('div');
+  wrap.className = 'cs-wrap';
+  inp.parentNode.insertBefore(wrap, inp);
+  wrap.appendChild(inp);
+
+  // Dropdown list
+  const list = document.createElement('div');
+  list.className = 'cs-list';
+  wrap.appendChild(list);
+
+  // Hidden search input for keyboard filtering
+  const searchInp = document.createElement('input');
+  searchInp.type = 'text';
+  searchInp.className = 'form-input';
+  searchInp.placeholder = inp.placeholder || 'Type to search...';
+  searchInp.style.cssText = 'display:none;width:100%;margin-bottom:0;border-bottom-left-radius:0;border-bottom-right-radius:0';
+  searchInp.setAttribute('autocomplete', 'off');
+  wrap.insertBefore(searchInp, list);
+
+  let focusIdx = -1;
+  let isOpen = false;
+
+  function getFiltered(q) {
+    if (!q) return COUNTRY_LIST;
+    const lq = q.toLowerCase();
+    return COUNTRY_LIST.filter(c => c.toLowerCase().startsWith(lq))
+      .concat(COUNTRY_LIST.filter(c => !c.toLowerCase().startsWith(lq) && c.toLowerCase().includes(lq)));
+  }
+
+  function renderList(q) {
+    const filtered = getFiltered(q);
+    focusIdx = -1;
+    list.innerHTML = '';
+    if (filtered.length === 0) {
+      list.innerHTML = '<div class="cs-empty">No countries found</div>';
+      return;
+    }
+    filtered.forEach((c, i) => {
+      const item = document.createElement('div');
+      item.className = 'cs-item' + (inp.value === c ? ' cs-selected' : '');
+      item.textContent = c;
+      item.addEventListener('mousedown', e => { e.preventDefault(); selectCountry(c); });
+      list.appendChild(item);
+    });
+  }
+
+  function openDropdown() {
+    if (isOpen) return;
+    isOpen = true;
+    inp.style.display = 'none';
+    searchInp.style.display = '';
+    list.classList.add('cs-visible');
+    searchInp.classList.add('cs-open');
+    renderList('');
+    // Scroll selected into view
+    const sel = list.querySelector('.cs-selected');
+    if (sel) sel.scrollIntoView({ block: 'nearest' });
+    searchInp.focus();
+    searchInp.value = '';
+  }
+
+  function closeDropdown() {
+    if (!isOpen) return;
+    isOpen = false;
+    searchInp.style.display = 'none';
+    inp.style.display = '';
+    list.classList.remove('cs-visible');
+    inp.classList.remove('cs-open');
+  }
+
+  function selectCountry(c) {
+    inp.value = c;
+    closeDropdown();
+    // Fire change event so any listeners pick it up
+    inp.dispatchEvent(new Event('change', { bubbles: true }));
+  }
+
+  inp.addEventListener('click', openDropdown);
+  inp.addEventListener('keydown', e => { if (e.key !== 'Tab') openDropdown(); });
+
+  searchInp.addEventListener('input', () => renderList(searchInp.value));
+
+  searchInp.addEventListener('keydown', e => {
+    const items = list.querySelectorAll('.cs-item');
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      focusIdx = Math.min(focusIdx + 1, items.length - 1);
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      focusIdx = Math.max(focusIdx - 1, 0);
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      if (focusIdx >= 0 && items[focusIdx]) {
+        selectCountry(items[focusIdx].textContent);
+      } else if (items.length === 1) {
+        selectCountry(items[0].textContent);
+      }
+      return;
+    } else if (e.key === 'Escape' || e.key === 'Tab') {
+      closeDropdown(); return;
+    }
+    items.forEach((el, i) => el.classList.toggle('cs-focused', i === focusIdx));
+    if (items[focusIdx]) items[focusIdx].scrollIntoView({ block: 'nearest' });
+  });
+
+  searchInp.addEventListener('blur', e => {
+    setTimeout(() => { if (!wrap.contains(document.activeElement)) closeDropdown(); }, 150);
+  });
+
+  document.addEventListener('click', e => {
+    if (!wrap.contains(e.target)) closeDropdown();
+  });
+}
+
+// Auto-init oCountry on page load (it's static in the DOM)
+document.addEventListener('DOMContentLoaded', () => makeCountryDropdown('oCountry'));
 </script>
 
 </body>
