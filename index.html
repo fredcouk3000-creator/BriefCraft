@@ -579,6 +579,30 @@ img{max-width:100%}
 .page-hdr::before { background: radial-gradient(circle,rgba(255,140,66,.18) 0%,transparent 65%); }
 /* ─────────────────────────────────────────────────────────────── */
 
+/* ── LANGUAGE SWITCHER ─────────────────────────────────────────── */
+.lang-wrap{position:relative;display:flex;align-items:center}
+.lang-btn{display:flex;align-items:center;gap:5px;background:none;border:1.5px solid var(--border-2);border-radius:20px;padding:5px 11px;cursor:pointer;font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;color:var(--text);transition:.15s;white-space:nowrap}
+.lang-btn:hover{border-color:var(--green);color:var(--green)}
+.lang-btn svg{flex-shrink:0}
+.lang-code{font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase}
+.lang-dropdown{position:absolute;top:calc(100% + 8px);left:50%;transform:translateX(-50%);background:#fff;border:1px solid var(--border);border-radius:var(--r-lg);box-shadow:var(--shadow-lg);min-width:180px;z-index:1000;padding:6px 0;display:none;animation:langPop .15s ease}
+.lang-dropdown.open{display:block}
+@keyframes langPop{from{opacity:0;transform:translateX(-50%) translateY(-4px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+.lang-opt{display:flex;align-items:center;gap:10px;padding:9px 16px;font-family:'Outfit',sans-serif;font-size:13px;font-weight:500;color:var(--text);cursor:pointer;transition:.1s}
+.lang-opt:hover{background:var(--bg-2);color:var(--green)}
+.lang-opt.active{background:var(--green-lt);color:var(--green);font-weight:700}
+.lang-opt-flag{font-size:16px;flex-shrink:0}
+.lang-opt-name{flex:1}
+.lang-opt-code{font-size:10px;color:var(--text-4);font-family:'JetBrains Mono',monospace}
+/* desktop: lang-wrap lives between nav-links and cart */
+/* mobile: lang-wrap always visible, sign-in shrinks */
+@media(max-width:768px){
+  #navLoginBtn{padding:6px 10px!important;font-size:11px!important}
+  .lang-btn{padding:5px 8px;gap:3px}
+  .lang-code{display:none}
+  .lang-dropdown{left:0;transform:none}
+  @keyframes langPop{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
+}
 </style>
 </head>
 <body>
@@ -591,11 +615,20 @@ img{max-width:100%}
         <span class="logo-brief">Brief</span><span class="logo-craft">Craft</span>
       </div>
       <div class="nav-links">
-        <button class="nav-link active" onclick="showPage('home')">Home</button>
-        <button class="nav-link" onclick="showPage('services')">Services</button>
-        <button class="nav-link" onclick="showPage('how-it-works')">How It Works</button>
-        <button class="nav-link" onclick="showPage('about')">About</button>
-        <button class="nav-link" onclick="showPage('contact')">Contact</button>
+        <button class="nav-link active" onclick="showPage('home')" data-i18n="nav_home">Home</button>
+        <button class="nav-link" onclick="showPage('services')" data-i18n="nav_services">Services</button>
+        <button class="nav-link" onclick="showPage('how-it-works')" data-i18n="nav_hiw">How It Works</button>
+        <button class="nav-link" onclick="showPage('about')" data-i18n="nav_about">About</button>
+        <button class="nav-link" onclick="showPage('contact')" data-i18n="nav_contact">Contact</button>
+      </div>
+      <!-- GLOBE: desktop = between Contact and Cart; mobile = after logo (nav-links hidden) -->
+      <div class="lang-wrap" id="langWrap">
+        <button class="lang-btn" id="langBtn" onclick="toggleLangMenu(event)" aria-label="Change language">
+          <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke-width="2"/><path stroke-width="2" d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/></svg>
+          <span class="lang-code" id="langCode">EN</span>
+          <svg width="10" height="10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+        </button>
+        <div class="lang-dropdown" id="langDropdown"></div>
       </div>
       <button class="cart-btn" id="cartBtn" onclick="openCart()" title="Your cart">
         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="20" height="20"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
@@ -609,12 +642,12 @@ img{max-width:100%}
         </button>
         <div class="user-dropdown" id="userDropdown">
           <div class="ud-email" id="navUserEmail"></div>
-          <div class="ud-item" onclick="showPage('dashboard');toggleUserMenu()">Dashboard</div>
-          <div class="ud-item ud-logout" onclick="logout()">Sign Out</div>
+          <div class="ud-item" onclick="showPage('dashboard');toggleUserMenu()" data-i18n="nav_dashboard">Dashboard</div>
+          <div class="ud-item ud-logout" onclick="logout()" data-i18n="nav_signout">Sign Out</div>
         </div>
       </div>
-      <button id="navLoginBtn" class="btn btn-outline btn-sm" onclick="openLogin()" style="font-size:12px;padding:8px 16px">Sign In</button>
-      <button class="btn btn-green nav-cta btn-sm" onclick="showPage('services')">Browse Services</button>
+      <button id="navLoginBtn" class="btn btn-outline btn-sm" onclick="openLogin()" style="font-size:12px;padding:8px 16px" data-i18n="nav_signin">Sign In</button>
+      <button class="btn btn-green nav-cta btn-sm" onclick="showPage('services')" data-i18n="nav_browse">Browse Services</button>
       <div class="nav-hamburger" id="hamburger" onclick="toggleMobileMenu()">
         <span></span><span></span><span></span>
       </div>
@@ -622,11 +655,11 @@ img{max-width:100%}
   </div>
 </nav>
 <div class="mobile-menu" id="mobileMenu">
-  <div class="mob-link" onclick="showPage('home');toggleMobileMenu()">Home</div>
-  <div class="mob-link" onclick="showPage('services');toggleMobileMenu()">Services</div>
-  <div class="mob-link" onclick="showPage('how-it-works');toggleMobileMenu()">How It Works</div>
-  <div class="mob-link" onclick="showPage('about');toggleMobileMenu()">About</div>
-  <div class="mob-link" onclick="showPage('contact');toggleMobileMenu()">Contact</div>
+  <div class="mob-link" onclick="showPage('home');toggleMobileMenu()" data-i18n="nav_home">Home</div>
+  <div class="mob-link" onclick="showPage('services');toggleMobileMenu()" data-i18n="nav_services">Services</div>
+  <div class="mob-link" onclick="showPage('how-it-works');toggleMobileMenu()" data-i18n="nav_hiw">How It Works</div>
+  <div class="mob-link" onclick="showPage('about');toggleMobileMenu()" data-i18n="nav_about">About</div>
+  <div class="mob-link" onclick="showPage('contact');toggleMobileMenu()" data-i18n="nav_contact">Contact</div>
 </div>
 
 <!-- PAGES -->
@@ -647,8 +680,8 @@ img{max-width:100%}
     <div class="modal-body" id="mBody"></div>
     <div class="modal-foot">
       <div class="mfp" id="mFootPrice"></div>
-      <button class="btn btn-outline btn-lg" onclick="addToCart(curSvc&&curSvc.id)">+ Add to Cart</button>
-      <button class="btn btn-green btn-lg" style="margin-left:auto" onclick="openOrder()">Order Now</button>
+      <button class="btn btn-outline btn-lg" id="modalAddCart" onclick="addToCart(curSvc&&curSvc.id)">+ Add to Cart</button>
+      <button class="btn btn-green btn-lg" id="modalOrderNow" style="margin-left:auto" onclick="openOrder()">Order Now</button>
     </div>
   </div>
 </div>
@@ -796,6 +829,64 @@ img{max-width:100%}
     </div>
   </div>
 </footer>
+
+<!-- LANGUAGE EARLY INIT: must run before main script so t() exists when renderHome() fires -->
+<script>
+(function(){
+  var _lang = localStorage.getItem('bc_lang') || 'en';
+  window.curLang = _lang;
+  // Minimal EN strings for initial render — full T object injected by language script below
+  window._T_EN = {
+    nav_home:'Home',nav_services:'Services',nav_hiw:'How It Works',nav_about:'About',nav_contact:'Contact',
+    nav_signin:'Sign In',nav_browse:'Browse Services',nav_dashboard:'Dashboard',nav_signout:'Sign Out',
+    hero_eyebrow:'Professional Services. 24-Hour Delivery.',
+    hero_line1:'Brief us.',hero_pre_em:"We'll ",hero_em:'craft',hero_line3:'the rest.',
+    hero_sub:'Business plans, pitch decks, grant proposals, resumes, research reports, audits, and product prototypes. Produced by our specialist team and delivered in 24 hours. Starting from $19.',
+    hero_btn_browse:'Browse All Services',hero_btn_hiw:'See How It Works',
+    proof_svc_lbl:'Professional Services',proof_svc_body:'From resumes to product prototypes. One specialist team handles it all.',
+    proof_del_lbl:'Average Delivery Time',proof_del_body:'Most orders arrive before your next business day. Guaranteed.',
+    proof_price_lbl:'Starting Price',proof_price_body:'15 to 25 percent of what agencies charge for the same work.',
+    proof_sat_lbl:'Satisfaction Guaranteed',proof_sat_body:'We revise every deliverable until you are proud to use it.',
+    trust_delivery:'24-Hour Delivery',trust_delivery_sub:'Most services',
+    trust_team:'Specialist Team',trust_team_sub:'Right expert, every time',
+    trust_global:'Global Clients',trust_global_sub:'Every country, every timezone',
+    trust_pricing:'Fixed Pricing',trust_pricing_sub:'No surprises, ever',
+    trust_guarantee:'Satisfaction Guarantee',trust_guarantee_sub:'We will fix it if needed',
+    sec_cats_eyebrow:'What we cover',sec_cats_h2:'Ten Categories. Forty-Plus Services.',
+    sec_cats_p:'Every type of professional document, research report, or digital asset your work demands.',
+    sec_feat_eyebrow:'Popular right now',sec_feat_h2:'Services People Order Most',
+    sec_feat_p:'From career documents to product prototypes. These are the services our clients come back for.',
+    btn_view_all:'View All 40+ Services',scard_view:'View',scard_delivery:'delivery',
+    hiw_home_h2:'Three steps. That is it.',hiw_home_p:'No back-and-forth. No waiting. No uncertainty.',
+    hiw_s1_title:'Choose Your Service',hiw_s1_body:'Browse 40+ services across 10 categories. Each service shows exactly what you receive, who it is for, and what it costs. No hidden fees.',
+    hiw_s2_title:'Submit Your Brief',hiw_s2_body:'Fill in the order form with your details and goals. Upload supporting files if needed. The more context you give, the better the result.',
+    hiw_s3_title:'Receive Your Deliverable',hiw_s3_body:'Your specialist completes the work. It goes through review. You receive it in your inbox. Most orders arrive within 24 hours.',
+    sec_stats_eyebrow:'The numbers behind the work',sec_stats_h2:'Why professional quality matters',sec_stats_p:'The difference between good and exceptional is measurable.',
+    sec_test_eyebrow:'Client experiences',sec_test_h2:'Real work. Real results.',
+    sec_guar_title:'Our Guarantee',sec_guar_body:'Every deliverable goes through specialist review before it reaches you. If it does not meet the standard described on the service page, contact us within 48 hours with specific feedback and we will revise it at no charge. Our goal is that you are proud to use what you receive.',
+    sec_faq_eyebrow:'Common questions',sec_faq_h2:'Frequently Asked Questions',
+    sec_cta_h2:'Ready to get something done?',sec_cta_p:'Choose your service, submit your brief, and receive professional-grade work within 24 hours. From anywhere in the world.',sec_cta_btn:'Start a Brief Today',
+    svc_page_eyebrow:'40+ Professional Services',svc_page_h1:'Everything you need.<br>Done right.',svc_page_p:'Browse by category. Click any service for full details, the data behind it, and an instant order form.',
+    filter_all:'All Services',svc_label_singular:'service',svc_label_plural:'services',
+    hiw_page_eyebrow:'Simple. Clear. Fast.',hiw_page_h1:'How BriefCraft Works',hiw_page_p:'From your first click to a finished deliverable. Here is exactly what happens.',
+    hiw_full_s1_title:'Choose Your Service',hiw_full_s1_body:'Browse 41 professional services across 10 categories. Every service page shows you exactly what you will receive, who it is for, and what it costs. The price shown is the price you pay.',
+    hiw_full_s2_title:'Submit Your Brief',hiw_full_s2_body:'Fill in the order form with your goals, audience, context, and any specific requirements. You can paste text directly or upload supporting files including PDFs, Word documents, or existing drafts.',
+    hiw_full_s3_title:'Your Specialist Gets to Work',hiw_full_s3_body:'The right specialist for that type of work begins immediately. Grant writers handle grants. Pitch deck strategists handle pitch decks. Product designers handle prototypes. You get the right expert, not a generalist.',
+    hiw_full_s4_title:'Quality Review',hiw_full_s4_body:'Before anything reaches you, your deliverable goes through a specialist review for completeness, accuracy, tone, and whether it delivers on what you asked for. This step is non-negotiable.',
+    hiw_full_s5_title:'Delivery to You',hiw_full_s5_body:'You receive your completed deliverable, typically within the stated turnaround time and often sooner. Documents arrive in editable formats. Prototypes arrive as single HTML files that open in any browser.',
+    hiw_full_s6_title:'Revisions if Needed',hiw_full_s6_body:'If the deliverable does not match what was described, contact us within 48 hours with specific feedback and we will revise it. Our goal is that you are proud to use what you receive.',
+    hiw_ready:'Ready to start?',hiw_btn:'Browse All Services',
+    modal_who:'Who This Is For',modal_supply:'What You Need to Supply',modal_delivery:'Delivery Time',modal_others_charge:'Others typically charge',modal_what_you_get:'What You Get Back',
+    modal_add_cart:'+ Add to Cart',modal_order_now:'Order Now',
+  };
+  // t() stub — reads from full T object once available, falls back to EN stub
+  window.t = function(key){
+    if(window.T && window.T[window.curLang] && window.T[window.curLang][key]) return window.T[window.curLang][key];
+    if(window.T && window.T.en && window.T.en[key]) return window.T.en[key];
+    return window._T_EN[key] || key;
+  };
+})();
+</script>
 
 <script>
 // SERVICE DATA
@@ -1378,15 +1469,15 @@ function openSvc(id){
     <div class="modal-price-row">
       <div>
         <div class="mprice"><sup>$</sup>${s.p}</div>
-        <div class="mfr">Others typically charge ${s.fr} for this service</div>
+        <div class="mfr">${t('modal_others_charge')} ${s.fr} for this service</div>
       </div>
       <div class="mturn">
-        <div class="mturn-label">Delivery Time</div>
+        <div class="mturn-label">${t('modal_delivery')}</div>
         <div class="mturn-val">${s.t}</div>
       </div>
     </div>
     <p class="modal-desc">${s.desc}</p>
-    <div class="modal-sec">Who This Is For</div>
+    <div class="modal-sec">${t('modal_who')}</div>
     <div class="who-chips">${s.who.map(w=>`<span class="who-chip">${w}</span>`).join('')}</div>
     <div class="stat-box">
       <div class="stat-box-row">
@@ -1398,10 +1489,13 @@ function openSvc(id){
         </div>
       </div>
     </div>
-    <div class="modal-sec" style="margin-top:20px">What You Need to Supply</div>
+    <div class="modal-sec" style="margin-top:20px">${t('modal_supply')}</div>
     <ul class="supply-list">${s.supply.map(x=>`<li>${x}</li>`).join('')}</ul>
-    <div class="del-box"><strong>What You Get Back</strong>${s.del}</div>
+    <div class="del-box"><strong>${t('modal_what_you_get')}</strong>${s.del}</div>
   `;
+  document.getElementById('modalAddCart').textContent='';
+  document.getElementById('modalAddCart').innerHTML=t('modal_add_cart');
+  document.getElementById('modalOrderNow').textContent=t('modal_order_now');
   document.getElementById('serviceModal').classList.add('open');
   document.body.style.overflow='hidden';
 }
@@ -1452,8 +1546,8 @@ function sCard(s){
     <div class="svc-tag">${s.tag}</div>
   </div>
   <div class="svc-foot">
-    <div class="svc-turn"><strong>${s.t}</strong> delivery</div>
-    <button class="svc-cta">View <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg></button>
+    <div class="svc-turn"><strong>${s.t}</strong> ${t('scard_delivery')}</div>
+    <button class="svc-cta">${t('scard_view')} <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg></button>
   </div>
 </div>`;}
 
@@ -1484,19 +1578,19 @@ function renderHome(){
         <div>
           <div class="eyebrow" style="margin-bottom:20px;display:flex;align-items:center;gap:10px">
             <span style="width:24px;height:2px;background:var(--green);display:inline-block;border-radius:2px"></span>
-            Professional Services. 24-Hour Delivery.
+            ${t('hero_eyebrow')}
           </div>
-          <h1 class="hero-h1">Brief us.<br>We'll <span class="em">craft</span><br>the rest.</h1>
-          <p class="hero-sub">Business plans, pitch decks, grant proposals, resumes, research reports, audits, and product prototypes. Produced by our specialist team and delivered in 24 hours. Starting from $19.</p>
+          <h1 class="hero-h1">${t('hero_line1')}<br>${t('hero_pre_em')}<span class="em">${t('hero_em')}</span><br>${t('hero_line3')}</h1>
+          <p class="hero-sub">${t('hero_sub')}</p>
           <div class="hero-btns">
-            <button class="btn btn-green btn-lg" onclick="showPage('services')">Browse All Services</button>
-            <button class="btn btn-outline btn-lg" onclick="showPage('how-it-works')">See How It Works</button>
+            <button class="btn btn-green btn-lg" onclick="showPage('services')">${t('hero_btn_browse')}</button>
+            <button class="btn btn-outline btn-lg" onclick="showPage('how-it-works')">${t('hero_btn_hiw')}</button>
           </div>
           <div class="hero-proof">
-            <div class="hp-card"><span class="hp-icon">&#128230;</span><div class="hp-num">40+</div><div class="hp-lbl">Professional Services</div><div class="hp-body">From resumes to product prototypes. One specialist team handles it all.</div></div>
-            <div class="hp-card"><span class="hp-icon">&#9889;</span><div class="hp-num">36hrs</div><div class="hp-lbl">Average Delivery Time</div><div class="hp-body">Most orders arrive before your next business day. Guaranteed.</div></div>
-            <div class="hp-card"><span class="hp-icon">&#128176;</span><div class="hp-num">$19</div><div class="hp-lbl">Starting Price</div><div class="hp-body">15 to 25 percent of what agencies charge for the same work.</div></div>
-            <div class="hp-card"><span class="hp-icon">&#10022;</span><div class="hp-num">100%</div><div class="hp-lbl">Satisfaction Guaranteed</div><div class="hp-body">We revise every deliverable until you are proud to use it.</div></div>
+            <div class="hp-card"><span class="hp-icon">&#128230;</span><div class="hp-num">40+</div><div class="hp-lbl">${t('proof_svc_lbl')}</div><div class="hp-body">${t('proof_svc_body')}</div></div>
+            <div class="hp-card"><span class="hp-icon">&#9889;</span><div class="hp-num">36hrs</div><div class="hp-lbl">${t('proof_del_lbl')}</div><div class="hp-body">${t('proof_del_body')}</div></div>
+            <div class="hp-card"><span class="hp-icon">&#128176;</span><div class="hp-num">$19</div><div class="hp-lbl">${t('proof_price_lbl')}</div><div class="hp-body">${t('proof_price_body')}</div></div>
+            <div class="hp-card"><span class="hp-icon">&#10022;</span><div class="hp-num">100%</div><div class="hp-lbl">${t('proof_sat_lbl')}</div><div class="hp-body">${t('proof_sat_body')}</div></div>
           </div>
         </div>
         <div class="hero-right">
@@ -1527,11 +1621,11 @@ function renderHome(){
   <div class="trust-strip">
     <div class="container" style="padding:0">
       <div class="trust-inner">
-        <div class="trust-item"><div class="trust-icon">⚡</div><div class="trust-label">24-Hour Delivery</div><div class="trust-sub">Most services</div></div>
-        <div class="trust-item"><div class="trust-icon">👥</div><div class="trust-label">Specialist Team</div><div class="trust-sub">Right expert, every time</div></div>
-        <div class="trust-item"><div class="trust-icon">🌍</div><div class="trust-label">Global Clients</div><div class="trust-sub">Every country, every timezone</div></div>
-        <div class="trust-item"><div class="trust-icon">💰</div><div class="trust-label">Fixed Pricing</div><div class="trust-sub">No surprises, ever</div></div>
-        <div class="trust-item"><div class="trust-icon">✅</div><div class="trust-label">Satisfaction Guarantee</div><div class="trust-sub">We will fix it if needed</div></div>
+        <div class="trust-item"><div class="trust-icon">⚡</div><div class="trust-label">${t('trust_delivery')}</div><div class="trust-sub">${t('trust_delivery_sub')}</div></div>
+        <div class="trust-item"><div class="trust-icon">👥</div><div class="trust-label">${t('trust_team')}</div><div class="trust-sub">${t('trust_team_sub')}</div></div>
+        <div class="trust-item"><div class="trust-icon">🌍</div><div class="trust-label">${t('trust_global')}</div><div class="trust-sub">${t('trust_global_sub')}</div></div>
+        <div class="trust-item"><div class="trust-icon">💰</div><div class="trust-label">${t('trust_pricing')}</div><div class="trust-sub">${t('trust_pricing_sub')}</div></div>
+        <div class="trust-item"><div class="trust-icon">✅</div><div class="trust-label">${t('trust_guarantee')}</div><div class="trust-sub">${t('trust_guarantee_sub')}</div></div>
       </div>
     </div>
   </div>
@@ -1540,16 +1634,16 @@ function renderHome(){
   <section class="section-pad">
     <div class="container">
       <div class="sec-hdr">
-        <div class="eyebrow">Everything you need</div>
-        <h2>10 Categories of Professional Work</h2>
-        <p>From a $19 press release to a $149 marketplace prototype. Click any category to explore the full list.</p>
+        <div class="eyebrow">${t('sec_cats_eyebrow')}</div>
+        <h2>${t('sec_cats_h2')}</h2>
+        <p>${t('sec_cats_p')}</p>
       </div>
       <div class="cat-grid">
         ${CATS.filter(c=>c.id!=='all').map(c=>`
           <div class="cat-card" onclick="showPage('services');filterCat('${c.id}')">
             <div class="cat-icon">${c.icon}</div>
             <div class="cat-name">${c.label}</div>
-            <div class="cat-count">${SVCS.filter(s=>s.cat===c.id).length} services</div>
+            <div class="cat-count">${SVCS.filter(s=>s.cat===c.id).length} ${t('svc_label_plural')}</div>
           </div>
         `).join('')}
       </div>
@@ -1561,14 +1655,14 @@ function renderHome(){
     <div class="container">
       <div class="sec-hdr">
         <div class="eyebrow-white">Simple process</div>
-        <h2 style="color:#fff">Three steps. That is it.</h2>
-        <p style="color:rgba(255,255,255,.6)">No back-and-forth. No waiting. No uncertainty.</p>
+        <h2 style="color:#fff">${t('hiw_home_h2')}</h2>
+        <p style="color:rgba(255,255,255,.6)">${t('hiw_home_p')}</p>
       </div>
       <div class="steps">
-        ${[['01','Choose Your Service','Browse 40+ services across 10 categories. Each service shows exactly what you receive, who it is for, and what it costs. No hidden fees.'],['02','Submit Your Brief','Fill in the order form with your details and goals. Upload supporting files if needed. The more context you give, the better the result.'],['03','Receive Your Deliverable','Your specialist completes the work. It goes through review. You receive it in your inbox. Most orders arrive within 24 hours.']].map(([n,t,b])=>`
+        ${[[t('hiw_s1_title'),t('hiw_s1_body')],[t('hiw_s2_title'),t('hiw_s2_body')],[t('hiw_s3_title'),t('hiw_s3_body')]].map(([ti,b],idx)=>`
           <div class="step">
-            <div class="step-num">${n}</div>
-            <div class="step-title">${t}</div>
+            <div class="step-num">0${idx+1}</div>
+            <div class="step-title">${ti}</div>
             <div class="step-body">${b}</div>
           </div>
         `).join('')}
@@ -1580,13 +1674,13 @@ function renderHome(){
   <section class="section-pad" style="background:var(--bg-2)">
     <div class="container">
       <div class="sec-hdr">
-        <div class="eyebrow">Popular right now</div>
-        <h2>Services People Order Most</h2>
-        <p>From career documents to product prototypes. These are the services our clients come back for.</p>
+        <div class="eyebrow">${t('sec_feat_eyebrow')}</div>
+        <h2>${t('sec_feat_h2')}</h2>
+        <p>${t('sec_feat_p')}</p>
       </div>
       <div class="svcs-grid">${featured.map(s=>sCard(s)).join('')}</div>
       <div style="text-align:center;margin-top:48px">
-        <button class="btn btn-outline btn-lg" onclick="showPage('services')">View All 40+ Services</button>
+        <button class="btn btn-outline btn-lg" onclick="showPage('services')">${t('btn_view_all')}</button>
       </div>
     </div>
   </section>
@@ -1595,9 +1689,9 @@ function renderHome(){
   <section class="stats-dark">
     <div class="container" style="padding:96px 28px">
       <div class="sec-hdr">
-        <div class="eyebrow">The numbers behind the work</div>
-        <h2 style="color:#fff">Why professional quality matters</h2>
-        <p style="color:rgba(255,255,255,.4)">The difference between good and exceptional is measurable.</p>
+        <div class="eyebrow">${t('sec_stats_eyebrow')}</div>
+        <h2 style="color:#fff">${t('sec_stats_h2')}</h2>
+        <p style="color:rgba(255,255,255,.4)">${t('sec_stats_p')}</p>
       </div>
     </div>
     <div class="stat-grid">
@@ -1623,36 +1717,36 @@ function renderHome(){
   <section class="section-pad">
     <div class="container">
       <div class="sec-hdr">
-        <div class="eyebrow">Client experiences</div>
-        <h2>Real work. Real results.</h2>
+        <div class="eyebrow">${t('sec_test_eyebrow')}</div>
+        <h2>${t('sec_test_h2')}</h2>
       </div>
       <div class="t-grid">
         ${[
-          {t:'I submitted a brief on a Tuesday evening and had a complete, investor-ready business plan in my inbox by Wednesday afternoon. I have paid agencies $1,200 for less thorough work. The quality genuinely surprised me.',n:'Aisha K.',r:'Founder, Chicago',i:'AK'},
-          {t:'My LinkedIn profile had been the same for three years. Two weeks after the BriefCraft rewrite, I had four recruiter messages and two client inquiries from roles I actually wanted. Worth every cent of the $29.',n:'James O.',r:'Product Manager, London',i:'JO'},
-          {t:'We needed a grant proposal for a foundation we had been targeting for two years. The proposal BriefCraft produced was the most thorough one we have ever submitted. We got the grant.',n:'Dr. Maria L.',r:'Executive Director, Cape Town',i:'ML'},
-        ].map(t=>`
+          {tx:'I submitted a brief on a Tuesday evening and had a complete, investor-ready business plan in my inbox by Wednesday afternoon. I have paid agencies $1,200 for less thorough work. The quality genuinely surprised me.',n:'Aisha K.',r:'Founder, Chicago',i:'AK'},
+          {tx:'My LinkedIn profile had been the same for three years. Two weeks after the BriefCraft rewrite, I had four recruiter messages and two client inquiries from roles I actually wanted. Worth every cent of the $29.',n:'James O.',r:'Product Manager, London',i:'JO'},
+          {tx:'We needed a grant proposal for a foundation we had been targeting for two years. The proposal BriefCraft produced was the most thorough one we have ever submitted. We got the grant.',n:'Dr. Maria L.',r:'Executive Director, Cape Town',i:'ML'},
+        ].map(tm=>`
           <div class="t-card">
             <div class="t-quote-mark">"</div>
-            <div class="t-text">${t.t}</div>
+            <div class="t-text">${tm.tx}</div>
             <div class="t-author">
-              <div class="t-av">${t.i}</div>
-              <div><div class="t-name">${t.n}</div><div class="t-role">${t.r}</div><div class="t-stars">★★★★★</div></div>
+              <div class="t-av">${tm.i}</div>
+              <div><div class="t-name">${tm.n}</div><div class="t-role">${tm.r}</div><div class="t-stars">★★★★★</div></div>
             </div>
           </div>
         `).join('')}
       </div>
       <div class="t-grid-2">
         ${[
-          {t:'We had a promising SaaS idea and three weeks before an investor meeting. BriefCraft built us a fully clickable web app prototype in under 32 hours. We walked in with something investors could actually use. We closed a $250K pre-seed round.',n:'Marcus T.',r:'Co-Founder, Atlanta',i:'MT'},
-          {t:'I sent a BriefCraft interactive HTML proposal to a corporate client I had been chasing for six months. They called me the next morning. Said it was the most professional proposal they had received from any independent consultant. We signed the contract that Friday.',n:'Priya S.',r:'Strategy Consultant, Singapore',i:'PS'},
-        ].map(t=>`
+          {tx:'We had a promising SaaS idea and three weeks before an investor meeting. BriefCraft built us a fully clickable web app prototype in under 32 hours. We walked in with something investors could actually use. We closed a $250K pre-seed round.',n:'Marcus T.',r:'Co-Founder, Atlanta',i:'MT'},
+          {tx:'I sent a BriefCraft interactive HTML proposal to a corporate client I had been chasing for six months. They called me the next morning. Said it was the most professional proposal they had received from any independent consultant. We signed the contract that Friday.',n:'Priya S.',r:'Strategy Consultant, Singapore',i:'PS'},
+        ].map(tm=>`
           <div class="t-card">
             <div class="t-quote-mark">"</div>
-            <div class="t-text">${t.t}</div>
+            <div class="t-text">${tm.tx}</div>
             <div class="t-author">
-              <div class="t-av">${t.i}</div>
-              <div><div class="t-name">${t.n}</div><div class="t-role">${t.r}</div><div class="t-stars">★★★★★</div></div>
+              <div class="t-av">${tm.i}</div>
+              <div><div class="t-name">${tm.n}</div><div class="t-role">${tm.r}</div><div class="t-stars">★★★★★</div></div>
             </div>
           </div>
         `).join('')}
@@ -1666,8 +1760,8 @@ function renderHome(){
       <div class="g-box">
         <div class="g-icon">✦</div>
         <div>
-          <div class="g-title">Our Guarantee</div>
-          <div class="g-body">Every deliverable goes through specialist review before it reaches you. If it does not meet the standard described on the service page, contact us within 48 hours with specific feedback and we will revise it at no charge. Our goal is that you are proud to use what you receive.</div>
+          <div class="g-title">${t('sec_guar_title')}</div>
+          <div class="g-body">${t('sec_guar_body')}</div>
         </div>
       </div>
     </div>
@@ -1677,8 +1771,8 @@ function renderHome(){
   <section class="section-pad" id="faq-section">
     <div class="container">
       <div class="sec-hdr">
-        <div class="eyebrow">Common questions</div>
-        <h2>Frequently Asked Questions</h2>
+        <div class="eyebrow">${t('sec_faq_eyebrow')}</div>
+        <h2>${t('sec_faq_h2')}</h2>
       </div>
       <div class="faq-wrap">
         ${faqs.map((f,i)=>`
@@ -1696,9 +1790,9 @@ function renderHome(){
   <!-- CTA -->
   <section class="cta-band">
     <div class="container" style="position:relative;z-index:1">
-      <h2>Ready to get something done?</h2>
-      <p>Choose your service, submit your brief, and receive professional-grade work within 24 hours. From anywhere in the world.</p>
-      <button class="btn btn-white btn-lg" onclick="showPage('services')">Start a Brief Today</button>
+      <h2>${t('sec_cta_h2')}</h2>
+      <p>${t('sec_cta_p')}</p>
+      <button class="btn btn-white btn-lg" onclick="showPage('services')">${t('sec_cta_btn')}</button>
     </div>
   </section>`;
 }
@@ -1713,20 +1807,20 @@ function renderServices(){
   });
   document.getElementById('page-services').innerHTML=`
     <div class="page-hdr">
-      <span class="page-hdr-eye">40+ Professional Services</span>
-      <h1>Everything you need.<br>Done right.</h1>
-      <p>Browse by category. Click any service for full details, the data behind it, and an instant order form.</p>
+      <span class="page-hdr-eye">${t('svc_page_eyebrow')}</span>
+      <h1>${t('svc_page_h1')}</h1>
+      <p>${t('svc_page_p')}</p>
     </div>
     <section class="section-pad">
       <div class="container">
         <div class="filter-bar">
-          ${CATS.map(c=>`<button class="ftab ${c.id===curFilter?'active':''}" data-cat="${c.id}" onclick="filterCat('${c.id}')">${c.label}</button>`).join('')}
+          ${CATS.map(c=>`<button class="ftab ${c.id===curFilter?'active':''}" data-cat="${c.id}" onclick="filterCat('${c.id}')">${c.id==='all'?t('filter_all'):c.label}</button>`).join('')}
         </div>
         ${Object.entries(byCat).map(([catId,{label,svcs}])=>`
           <div class="cat-section" style="margin-bottom:48px">
             <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px;padding-bottom:16px;border-bottom:2px solid var(--border)">
               <h2 style="font-size:20px;font-weight:700;color:var(--text);letter-spacing:-.03em">${label}</h2>
-              <span style="font-family:'Outfit',sans-serif;font-size:12px;color:var(--text-4);margin-left:auto">${svcs.length} service${svcs.length>1?'s':''}</span>
+              <span style="font-family:'Outfit',sans-serif;font-size:12px;color:var(--text-4);margin-left:auto">${svcs.length} ${svcs.length>1?t('svc_label_plural'):t('svc_label_singular')}</span>
             </div>
             <div class="svcs-grid">${svcs.map(s=>sCard(s)).join('')}</div>
           </div>
@@ -1739,28 +1833,28 @@ function renderServices(){
 function renderHIW(){
   document.getElementById('page-how-it-works').innerHTML=`
     <div class="page-hdr">
-      <span class="page-hdr-eye">Simple. Clear. Fast.</span>
-      <h1>How BriefCraft Works</h1>
-      <p>From your first click to a finished deliverable. Here is exactly what happens.</p>
+      <span class="page-hdr-eye">${t('hiw_page_eyebrow')}</span>
+      <h1>${t('hiw_page_h1')}</h1>
+      <p>${t('hiw_page_p')}</p>
     </div>
     <section class="section-pad">
       <div class="container" style="max-width:780px;margin:0 auto">
         ${[
-          ['01','Choose Your Service','Browse 41 professional services across 10 categories. Every service page shows you exactly what you will receive, who it is for, and what it costs. The price shown is the price you pay.'],
-          ['02','Submit Your Brief','Fill in the order form with your goals, audience, context, and any specific requirements. You can paste text directly or upload supporting files including PDFs, Word documents, or existing drafts.'],
-          ['03','Your Specialist Gets to Work','The right specialist for that type of work begins immediately. Grant writers handle grants. Pitch deck strategists handle pitch decks. Product designers handle prototypes. You get the right expert, not a generalist.'],
-          ['04','Quality Review','Before anything reaches you, your deliverable goes through a specialist review for completeness, accuracy, tone, and whether it delivers on what you asked for. This step is non-negotiable.'],
-          ['05','Delivery to You','You receive your completed deliverable, typically within the stated turnaround time and often sooner. Documents arrive in editable formats. Prototypes arrive as single HTML files that open in any browser.'],
-          ['06','Revisions if Needed','If the deliverable does not match what was described, contact us within 48 hours with specific feedback and we will revise it. Our goal is that you are proud to use what you receive.'],
-        ].map(([n,t,p])=>`
+          [t('hiw_full_s1_title'),t('hiw_full_s1_body')],
+          [t('hiw_full_s2_title'),t('hiw_full_s2_body')],
+          [t('hiw_full_s3_title'),t('hiw_full_s3_body')],
+          [t('hiw_full_s4_title'),t('hiw_full_s4_body')],
+          [t('hiw_full_s5_title'),t('hiw_full_s5_body')],
+          [t('hiw_full_s6_title'),t('hiw_full_s6_body')],
+        ].map(([ti,p],idx)=>`
           <div class="hiw-step-wrap">
-            <div class="hiw-num">${n}</div>
-            <div class="hiw-content"><h3>${t}</h3><p>${p}</p></div>
+            <div class="hiw-num">0${idx+1}</div>
+            <div class="hiw-content"><h3>${ti}</h3><p>${p}</p></div>
           </div>
         `).join('')}
         <div style="text-align:center;margin-top:56px;padding-top:40px;border-top:1px solid var(--border)">
-          <h3 style="font-size:22px;font-weight:700;color:var(--text);margin-bottom:20px;letter-spacing:-.02em">Ready to start?</h3>
-          <button class="btn btn-green btn-lg" onclick="showPage('services')">Browse All Services</button>
+          <h3 style="font-size:22px;font-weight:700;color:var(--text);margin-bottom:20px;letter-spacing:-.02em">${t('hiw_ready')}</h3>
+          <button class="btn btn-green btn-lg" onclick="showPage('services')">${t('hiw_btn')}</button>
         </div>
       </div>
     </section>`;
@@ -2436,6 +2530,403 @@ if(btn && tooltip){
     tooltip.style.opacity='0';
     setTimeout(function(){ tooltip.style.display='none'; },400);
   });
+}
+</script>
+
+<!-- ═══════════════════════════════════════════════════════
+     BRIEFCRAFT LANGUAGE SYSTEM — 7 Languages
+     ═══════════════════════════════════════════════════════ -->
+<script>
+// ── LANGUAGE META ─────────────────────────────────────────────
+const LANG_META={
+  en:{name:'English',   code:'EN', flag:'🇬🇧', dir:'ltr'},
+  fr:{name:'Français',  code:'FR', flag:'🇫🇷', dir:'ltr'},
+  pt:{name:'Português', code:'PT', flag:'🇧🇷', dir:'ltr'},
+  es:{name:'Español',   code:'ES', flag:'🇪🇸', dir:'ltr'},
+  ar:{name:'العربية',   code:'AR', flag:'🇸🇦', dir:'rtl'},
+  de:{name:'Deutsch',   code:'DE', flag:'🇩🇪', dir:'ltr'},
+  ru:{name:'Русский',   code:'RU', flag:'🇷🇺', dir:'ltr'},
+};
+
+// ── TRANSLATION DATA ──────────────────────────────────────────
+const T={
+en:{
+  nav_home:'Home', nav_services:'Services', nav_hiw:'How It Works', nav_about:'About', nav_contact:'Contact',
+  nav_signin:'Sign In', nav_browse:'Browse Services', nav_dashboard:'Dashboard', nav_signout:'Sign Out',
+  hero_eyebrow:'Professional Services. 24-Hour Delivery.',
+  hero_line1:'Brief us.', hero_pre_em:"We'll ", hero_em:'craft', hero_line3:'the rest.',
+  hero_sub:'Business plans, pitch decks, grant proposals, resumes, research reports, audits, and product prototypes. Produced by our specialist team and delivered in 24 hours. Starting from $19.',
+  hero_btn_browse:'Browse All Services', hero_btn_hiw:'See How It Works',
+  proof_svc_lbl:'Professional Services', proof_svc_body:'From resumes to product prototypes. One specialist team handles it all.',
+  proof_del_lbl:'Average Delivery Time', proof_del_body:'Most orders arrive before your next business day. Guaranteed.',
+  proof_price_lbl:'Starting Price', proof_price_body:'15 to 25 percent of what agencies charge for the same work.',
+  proof_sat_lbl:'Satisfaction Guaranteed', proof_sat_body:'We revise every deliverable until you are proud to use it.',
+  trust_delivery:'24-Hour Delivery', trust_delivery_sub:'Most services',
+  trust_team:'Specialist Team', trust_team_sub:'Right expert, every time',
+  trust_global:'Global Clients', trust_global_sub:'Every country, every timezone',
+  trust_pricing:'Fixed Pricing', trust_pricing_sub:'No surprises, ever',
+  trust_guarantee:'Satisfaction Guarantee', trust_guarantee_sub:'We will fix it if needed',
+  sec_cats_eyebrow:'What we cover', sec_cats_h2:'Ten Categories. Forty-Plus Services.',
+  sec_cats_p:'Every type of professional document, research report, or digital asset your work demands.',
+  sec_feat_eyebrow:'Popular right now', sec_feat_h2:'Services People Order Most',
+  sec_feat_p:'From career documents to product prototypes. These are the services our clients come back for.',
+  btn_view_all:'View All 40+ Services', scard_view:'View', scard_delivery:'delivery',
+  hiw_home_h2:'Three steps. That is it.', hiw_home_p:'No back-and-forth. No waiting. No uncertainty.',
+  hiw_s1_title:'Choose Your Service', hiw_s1_body:'Browse 40+ services across 10 categories. Each service shows exactly what you receive, who it is for, and what it costs. No hidden fees.',
+  hiw_s2_title:'Submit Your Brief', hiw_s2_body:'Fill in the order form with your details and goals. Upload supporting files if needed. The more context you give, the better the result.',
+  hiw_s3_title:'Receive Your Deliverable', hiw_s3_body:'Your specialist completes the work. It goes through review. You receive it in your inbox. Most orders arrive within 24 hours.',
+  sec_stats_eyebrow:'The numbers behind the work', sec_stats_h2:'Why professional quality matters', sec_stats_p:'The difference between good and exceptional is measurable.',
+  sec_test_eyebrow:'Client experiences', sec_test_h2:'Real work. Real results.',
+  sec_guar_title:'Our Guarantee', sec_guar_body:'Every deliverable goes through specialist review before it reaches you. If it does not meet the standard described on the service page, contact us within 48 hours with specific feedback and we will revise it at no charge. Our goal is that you are proud to use what you receive.',
+  sec_faq_eyebrow:'Common questions', sec_faq_h2:'Frequently Asked Questions',
+  sec_cta_h2:'Ready to get something done?', sec_cta_p:'Choose your service, submit your brief, and receive professional-grade work within 24 hours. From anywhere in the world.', sec_cta_btn:'Start a Brief Today',
+  svc_page_eyebrow:'40+ Professional Services', svc_page_h1:'Everything you need.<br>Done right.', svc_page_p:'Browse by category. Click any service for full details, the data behind it, and an instant order form.',
+  filter_all:'All Services', svc_label_singular:'service', svc_label_plural:'services',
+  hiw_page_eyebrow:'Simple. Clear. Fast.', hiw_page_h1:'How BriefCraft Works', hiw_page_p:'From your first click to a finished deliverable. Here is exactly what happens.',
+  hiw_full_s1_title:'Choose Your Service', hiw_full_s1_body:'Browse 41 professional services across 10 categories. Every service page shows you exactly what you will receive, who it is for, and what it costs. The price shown is the price you pay.',
+  hiw_full_s2_title:'Submit Your Brief', hiw_full_s2_body:'Fill in the order form with your goals, audience, context, and any specific requirements. You can paste text directly or upload supporting files including PDFs, Word documents, or existing drafts.',
+  hiw_full_s3_title:'Your Specialist Gets to Work', hiw_full_s3_body:'The right specialist for that type of work begins immediately. Grant writers handle grants. Pitch deck strategists handle pitch decks. Product designers handle prototypes. You get the right expert, not a generalist.',
+  hiw_full_s4_title:'Quality Review', hiw_full_s4_body:'Before anything reaches you, your deliverable goes through a specialist review for completeness, accuracy, tone, and whether it delivers on what you asked for. This step is non-negotiable.',
+  hiw_full_s5_title:'Delivery to You', hiw_full_s5_body:'You receive your completed deliverable, typically within the stated turnaround time and often sooner. Documents arrive in editable formats. Prototypes arrive as single HTML files that open in any browser.',
+  hiw_full_s6_title:'Revisions if Needed', hiw_full_s6_body:'If the deliverable does not match what was described, contact us within 48 hours with specific feedback and we will revise it. Our goal is that you are proud to use what you receive.',
+  hiw_ready:'Ready to start?', hiw_btn:'Browse All Services',
+  modal_who:'Who This Is For', modal_supply:'What You Need to Supply', modal_delivery:'Delivery Time', modal_others_charge:'Others typically charge', modal_what_you_get:'What You Get Back',
+  modal_add_cart:'+ Add to Cart', modal_order_now:'Order Now',
+},
+
+fr:{
+  nav_home:'Accueil', nav_services:'Services', nav_hiw:'Comment ça marche', nav_about:'À propos', nav_contact:'Contact',
+  nav_signin:'Connexion', nav_browse:'Voir les services', nav_dashboard:'Tableau de bord', nav_signout:'Déconnexion',
+  hero_eyebrow:'Services professionnels. Livraison en 24 heures.',
+  hero_line1:'Briefez-nous.', hero_pre_em:'Nous allons ', hero_em:'créer', hero_line3:'le reste.',
+  hero_sub:"Plans d'affaires, pitch decks, demandes de subventions, CV, rapports de recherche, audits et prototypes. Produits par notre équipe de spécialistes et livrés en 24 heures. À partir de 19 $.",
+  hero_btn_browse:'Voir tous les services', hero_btn_hiw:'Comment ça marche',
+  proof_svc_lbl:'Services professionnels', proof_svc_body:"Des CV aux prototypes. Notre équipe de spécialistes gère tout.",
+  proof_del_lbl:'Délai de livraison moyen', proof_del_body:'La plupart des commandes arrivent avant votre prochain jour ouvrable.',
+  proof_price_lbl:'Prix de départ', proof_price_body:"15 à 25 % de ce que facturent les agences pour le même travail.",
+  proof_sat_lbl:'Satisfaction garantie', proof_sat_body:"Nous révisons chaque livrable jusqu'à ce que vous en soyez fier.",
+  trust_delivery:'Livraison en 24h', trust_delivery_sub:'La plupart des services',
+  trust_team:'Équipe de spécialistes', trust_team_sub:'Le bon expert, à chaque fois',
+  trust_global:'Clients mondiaux', trust_global_sub:'Chaque pays, chaque fuseau horaire',
+  trust_pricing:'Prix fixes', trust_pricing_sub:'Aucune surprise, jamais',
+  trust_guarantee:'Satisfaction garantie', trust_guarantee_sub:'Nous corrigerons si nécessaire',
+  sec_cats_eyebrow:'Ce que nous couvrons', sec_cats_h2:'Dix catégories. Plus de quarante services.',
+  sec_cats_p:"Chaque type de document professionnel, rapport de recherche ou actif numérique dont votre travail a besoin.",
+  sec_feat_eyebrow:'Populaires en ce moment', sec_feat_h2:'Services les plus commandés',
+  sec_feat_p:'Des documents de carrière aux prototypes. Ce sont les services pour lesquels nos clients reviennent.',
+  btn_view_all:'Voir tous les 40+ services', scard_view:'Voir', scard_delivery:'livraison',
+  hiw_home_h2:'Trois étapes. Voilà tout.', hiw_home_p:"Pas d'allers-retours. Pas d'attente. Pas d'incertitude.",
+  hiw_s1_title:'Choisissez votre service', hiw_s1_body:"Parcourez 40+ services en 10 catégories. Chaque service indique exactement ce que vous recevez, pour qui c'est et ce que ça coûte.",
+  hiw_s2_title:'Soumettez votre brief', hiw_s2_body:'Remplissez le formulaire avec vos objectifs et téléchargez des fichiers si nécessaire.',
+  hiw_s3_title:'Recevez votre livrable', hiw_s3_body:'Votre spécialiste complète le travail, il est révisé, puis livré. La plupart des commandes arrivent en 24 heures.',
+  sec_stats_eyebrow:'Les chiffres derrière le travail', sec_stats_h2:'Pourquoi la qualité professionnelle compte', sec_stats_p:'La différence entre bon et exceptionnel est mesurable.',
+  sec_test_eyebrow:'Expériences clients', sec_test_h2:'Travail réel. Résultats réels.',
+  sec_guar_title:'Notre garantie', sec_guar_body:"Chaque livrable passe par une révision spécialisée avant de vous parvenir. S'il ne répond pas à la norme décrite, contactez-nous dans les 48 heures avec des commentaires spécifiques et nous le réviserons sans frais.",
+  sec_faq_eyebrow:'Questions courantes', sec_faq_h2:'Foire aux questions',
+  sec_cta_h2:'Prêt à accomplir quelque chose ?', sec_cta_p:"Choisissez votre service, soumettez votre brief et recevez un travail professionnel en 24 heures. De n'importe où dans le monde.", sec_cta_btn:"Commencer un brief aujourd'hui",
+  svc_page_eyebrow:'40+ services professionnels', svc_page_h1:'Tout ce dont vous avez besoin.<br>Fait correctement.', svc_page_p:"Parcourez par catégorie. Cliquez sur n'importe quel service pour les détails et le formulaire de commande.",
+  filter_all:'Tous les services', svc_label_singular:'service', svc_label_plural:'services',
+  hiw_page_eyebrow:'Simple. Clair. Rapide.', hiw_page_h1:'Comment fonctionne BriefCraft', hiw_page_p:"De votre premier clic à un livrable terminé. Voici exactement ce qui se passe.",
+  hiw_full_s1_title:'Choisissez votre service', hiw_full_s1_body:"Parcourez 41 services professionnels en 10 catégories. Chaque page de service vous montre exactement ce que vous recevrez, pour qui c'est et ce que ça coûte.",
+  hiw_full_s2_title:'Soumettez votre brief', hiw_full_s2_body:"Remplissez le formulaire de commande avec vos objectifs, votre audience, le contexte et les exigences spécifiques. Vous pouvez coller du texte ou télécharger des fichiers.",
+  hiw_full_s3_title:'Votre spécialiste commence', hiw_full_s3_body:"Le bon spécialiste pour ce type de travail commence immédiatement. Rédacteurs de subventions, stratèges de pitch decks, concepteurs de produits — vous obtenez l'expert adéquat.",
+  hiw_full_s4_title:'Révision qualité', hiw_full_s4_body:"Avant de vous parvenir, votre livrable passe par une révision spécialisée pour la complétude, l'exactitude, le ton et la réponse à votre demande. Cette étape est non négociable.",
+  hiw_full_s5_title:'Livraison', hiw_full_s5_body:"Vous recevez votre livrable terminé, généralement dans le délai indiqué et souvent plus tôt. Les documents arrivent en formats modifiables. Les prototypes arrivent sous forme de fichiers HTML.",
+  hiw_full_s6_title:'Révisions si nécessaire', hiw_full_s6_body:"Si le livrable ne correspond pas à ce qui était décrit, contactez-nous dans les 48 heures avec des commentaires spécifiques et nous le réviserons.",
+  hiw_ready:'Prêt à commencer ?', hiw_btn:'Voir tous les services',
+  modal_who:"Pour qui c'est", modal_supply:'Ce que vous devez fournir', modal_delivery:'Délai de livraison', modal_others_charge:'Les autres facturent généralement', modal_what_you_get:'Ce que vous recevez',
+  modal_add_cart:'+ Ajouter au panier', modal_order_now:'Commander maintenant',
+},
+
+pt:{
+  nav_home:'Início', nav_services:'Serviços', nav_hiw:'Como funciona', nav_about:'Sobre', nav_contact:'Contato',
+  nav_signin:'Entrar', nav_browse:'Ver serviços', nav_dashboard:'Painel', nav_signout:'Sair',
+  hero_eyebrow:'Serviços profissionais. Entrega em 24 horas.',
+  hero_line1:'Nos dê um briefing.', hero_pre_em:'Nós vamos ', hero_em:'criar', hero_line3:'o restante.',
+  hero_sub:'Planos de negócios, pitch decks, propostas de financiamento, currículos, relatórios de pesquisa, auditorias e protótipos. Produzidos pela nossa equipa de especialistas e entregues em 24 horas. A partir de $19.',
+  hero_btn_browse:'Ver todos os serviços', hero_btn_hiw:'Veja como funciona',
+  proof_svc_lbl:'Serviços profissionais', proof_svc_body:'De currículos a protótipos. Uma equipe especializada cuida de tudo.',
+  proof_del_lbl:'Tempo médio de entrega', proof_del_body:'A maioria dos pedidos chega antes do próximo dia útil. Garantido.',
+  proof_price_lbl:'Preço inicial', proof_price_body:'15 a 25% do que as agências cobram pelo mesmo trabalho.',
+  proof_sat_lbl:'Satisfação garantida', proof_sat_body:'Revisamos cada entrega até que você se orgulhe de usá-la.',
+  trust_delivery:'Entrega em 24h', trust_delivery_sub:'A maioria dos serviços',
+  trust_team:'Equipe especializada', trust_team_sub:'Expert certo, sempre',
+  trust_global:'Clientes globais', trust_global_sub:'Todo país, todo fuso horário',
+  trust_pricing:'Preços fixos', trust_pricing_sub:'Sem surpresas, nunca',
+  trust_guarantee:'Garantia de satisfação', trust_guarantee_sub:'Corrigiremos se necessário',
+  sec_cats_eyebrow:'O que cobrimos', sec_cats_h2:'Dez categorias. Mais de quarenta serviços.',
+  sec_cats_p:'Todo tipo de documento profissional, relatório de pesquisa ou ativo digital que seu trabalho exige.',
+  sec_feat_eyebrow:'Populares agora', sec_feat_h2:'Serviços mais pedidos',
+  sec_feat_p:'De documentos de carreira a protótipos. Estes são os serviços para os quais nossos clientes voltam.',
+  btn_view_all:'Ver todos os 40+ serviços', scard_view:'Ver', scard_delivery:'entrega',
+  hiw_home_h2:'Três passos. Só isso.', hiw_home_p:'Sem idas e vindas. Sem espera. Sem incerteza.',
+  hiw_s1_title:'Escolha seu serviço', hiw_s1_body:'Navegue por 40+ serviços em 10 categorias. Cada serviço mostra exatamente o que você recebe e quanto custa.',
+  hiw_s2_title:'Envie seu briefing', hiw_s2_body:'Preencha o formulário com seus objetivos e faça upload de arquivos se necessário.',
+  hiw_s3_title:'Receba sua entrega', hiw_s3_body:'Seu especialista conclui o trabalho, é revisado, então entregue. A maioria chega em 24 horas.',
+  sec_stats_eyebrow:'Os números por trás do trabalho', sec_stats_h2:'Por que a qualidade profissional importa', sec_stats_p:'A diferença entre bom e excepcional é mensurável.',
+  sec_test_eyebrow:'Experiências dos clientes', sec_test_h2:'Trabalho real. Resultados reais.',
+  sec_guar_title:'Nossa garantia', sec_guar_body:'Cada entrega passa por revisão especializada antes de chegar a você. Se não atender ao padrão descrito, entre em contato em até 48 horas com feedback específico e revisaremos sem custo adicional.',
+  sec_faq_eyebrow:'Perguntas frequentes', sec_faq_h2:'Perguntas frequentes',
+  sec_cta_h2:'Pronto para fazer algo?', sec_cta_p:'Escolha seu serviço, envie seu briefing e receba um trabalho profissional em 24 horas. De qualquer lugar do mundo.', sec_cta_btn:'Começar um briefing hoje',
+  svc_page_eyebrow:'40+ serviços profissionais', svc_page_h1:'Tudo que você precisa.<br>Feito certo.', svc_page_p:'Navegue por categoria. Clique em qualquer serviço para todos os detalhes e o formulário de pedido.',
+  filter_all:'Todos os serviços', svc_label_singular:'serviço', svc_label_plural:'serviços',
+  hiw_page_eyebrow:'Simples. Claro. Rápido.', hiw_page_h1:'Como o BriefCraft funciona', hiw_page_p:'Do seu primeiro clique a uma entrega concluída. Aqui está exatamente o que acontece.',
+  hiw_full_s1_title:'Escolha seu serviço', hiw_full_s1_body:'Navegue por 41 serviços profissionais em 10 categorias. Cada página de serviço mostra exatamente o que você receberá e quanto custa.',
+  hiw_full_s2_title:'Envie seu briefing', hiw_full_s2_body:'Preencha o formulário de pedido com seus objetivos, audiência, contexto e requisitos. Você pode colar texto ou fazer upload de arquivos.',
+  hiw_full_s3_title:'Seu especialista começa', hiw_full_s3_body:'O especialista certo para esse tipo de trabalho começa imediatamente. Redatores de subsídios, estrategistas de pitch decks, designers de produtos.',
+  hiw_full_s4_title:'Revisão de qualidade', hiw_full_s4_body:'Antes de chegar a você, sua entrega passa por revisão especializada para integridade, precisão, tom e se atende ao que foi solicitado.',
+  hiw_full_s5_title:'Entrega para você', hiw_full_s5_body:'Você recebe sua entrega concluída, geralmente dentro do prazo indicado e muitas vezes antes. Documentos chegam em formatos editáveis.',
+  hiw_full_s6_title:'Revisões se necessário', hiw_full_s6_body:'Se a entrega não corresponder ao que foi descrito, entre em contato em 48 horas com feedback específico e revisaremos.',
+  hiw_ready:'Pronto para começar?', hiw_btn:'Ver todos os serviços',
+  modal_who:'Para quem é', modal_supply:'O que você precisa fornecer', modal_delivery:'Prazo de entrega', modal_others_charge:'Outros geralmente cobram', modal_what_you_get:'O que você recebe',
+  modal_add_cart:'+ Adicionar ao carrinho', modal_order_now:'Pedir agora',
+},
+
+es:{
+  nav_home:'Inicio', nav_services:'Servicios', nav_hiw:'Cómo funciona', nav_about:'Acerca de', nav_contact:'Contacto',
+  nav_signin:'Iniciar sesión', nav_browse:'Ver servicios', nav_dashboard:'Panel', nav_signout:'Cerrar sesión',
+  hero_eyebrow:'Servicios profesionales. Entrega en 24 horas.',
+  hero_line1:'Danos tu brief.', hero_pre_em:'Nosotros lo ', hero_em:'creamos', hero_line3:'para ti.',
+  hero_sub:'Planes de negocio, pitch decks, propuestas de subvenciones, currículums, informes de investigación, auditorías y prototipos. Producidos por nuestro equipo de especialistas y entregados en 24 horas. Desde $19.',
+  hero_btn_browse:'Ver todos los servicios', hero_btn_hiw:'Cómo funciona',
+  proof_svc_lbl:'Servicios profesionales', proof_svc_body:'De currículums a prototipos. Un equipo especialista lo gestiona todo.',
+  proof_del_lbl:'Tiempo de entrega promedio', proof_del_body:'La mayoría de los pedidos llegan antes de su próximo día hábil. Garantizado.',
+  proof_price_lbl:'Precio inicial', proof_price_body:'Del 15 al 25% de lo que cobran las agencias por el mismo trabajo.',
+  proof_sat_lbl:'Satisfacción garantizada', proof_sat_body:'Revisamos cada entrega hasta que estés orgulloso de usarla.',
+  trust_delivery:'Entrega en 24h', trust_delivery_sub:'La mayoría de servicios',
+  trust_team:'Equipo especialista', trust_team_sub:'El experto adecuado, siempre',
+  trust_global:'Clientes globales', trust_global_sub:'Cada país, cada zona horaria',
+  trust_pricing:'Precios fijos', trust_pricing_sub:'Sin sorpresas, nunca',
+  trust_guarantee:'Garantía de satisfacción', trust_guarantee_sub:'Lo corregiremos si es necesario',
+  sec_cats_eyebrow:'Lo que cubrimos', sec_cats_h2:'Diez categorías. Más de cuarenta servicios.',
+  sec_cats_p:'Cada tipo de documento profesional, informe de investigación o activo digital que su trabajo requiere.',
+  sec_feat_eyebrow:'Populares ahora', sec_feat_h2:'Los servicios más solicitados',
+  sec_feat_p:'De documentos de carrera a prototipos. Estos son los servicios a los que nuestros clientes regresan.',
+  btn_view_all:'Ver todos los 40+ servicios', scard_view:'Ver', scard_delivery:'entrega',
+  hiw_home_h2:'Tres pasos. Eso es todo.', hiw_home_p:'Sin idas y vueltas. Sin esperas. Sin incertidumbre.',
+  hiw_s1_title:'Elige tu servicio', hiw_s1_body:'Navega por 40+ servicios en 10 categorías. Cada servicio muestra exactamente lo que recibes y cuánto cuesta.',
+  hiw_s2_title:'Envía tu brief', hiw_s2_body:'Rellena el formulario con tus objetivos y sube archivos si es necesario.',
+  hiw_s3_title:'Recibe tu entrega', hiw_s3_body:'Tu especialista completa el trabajo, es revisado, luego entregado. La mayoría llega en 24 horas.',
+  sec_stats_eyebrow:'Los números detrás del trabajo', sec_stats_h2:'Por qué importa la calidad profesional', sec_stats_p:'La diferencia entre bueno y excepcional es medible.',
+  sec_test_eyebrow:'Experiencias de clientes', sec_test_h2:'Trabajo real. Resultados reales.',
+  sec_guar_title:'Nuestra garantía', sec_guar_body:'Cada entrega pasa por revisión especializada antes de llegar a usted. Si no cumple con el estándar descrito, contáctenos dentro de las 48 horas con comentarios específicos y lo revisaremos sin costo.',
+  sec_faq_eyebrow:'Preguntas comunes', sec_faq_h2:'Preguntas frecuentes',
+  sec_cta_h2:'¿Listo para hacer algo?', sec_cta_p:'Elija su servicio, envíe su brief y reciba trabajo profesional en 24 horas. Desde cualquier lugar del mundo.', sec_cta_btn:'Comenzar un brief hoy',
+  svc_page_eyebrow:'40+ servicios profesionales', svc_page_h1:'Todo lo que necesitas.<br>Hecho bien.', svc_page_p:'Navega por categoría. Haz clic en cualquier servicio para ver todos los detalles y el formulario de pedido.',
+  filter_all:'Todos los servicios', svc_label_singular:'servicio', svc_label_plural:'servicios',
+  hiw_page_eyebrow:'Simple. Claro. Rápido.', hiw_page_h1:'Cómo funciona BriefCraft', hiw_page_p:'Desde tu primer clic hasta una entrega completada. Esto es exactamente lo que pasa.',
+  hiw_full_s1_title:'Elige tu servicio', hiw_full_s1_body:'Navega por 41 servicios profesionales en 10 categorías. Cada página de servicio te muestra exactamente lo que recibirás y cuánto cuesta.',
+  hiw_full_s2_title:'Envía tu brief', hiw_full_s2_body:'Rellena el formulario de pedido con tus objetivos, audiencia, contexto y requisitos específicos. Puedes pegar texto o subir archivos.',
+  hiw_full_s3_title:'Tu especialista comienza', hiw_full_s3_body:'El especialista adecuado para ese tipo de trabajo comienza de inmediato. Redactores de subvenciones, estrategas de pitch decks, diseñadores de productos.',
+  hiw_full_s4_title:'Revisión de calidad', hiw_full_s4_body:'Antes de llegar a ti, tu entrega pasa por revisión especializada de integridad, precisión, tono y si cumple con lo solicitado.',
+  hiw_full_s5_title:'Entrega para ti', hiw_full_s5_body:'Recibes tu entrega completada, normalmente dentro del plazo indicado y a menudo antes. Los documentos llegan en formatos editables.',
+  hiw_full_s6_title:'Revisiones si es necesario', hiw_full_s6_body:'Si la entrega no corresponde a lo descrito, contáctanos en 48 horas con comentarios específicos y lo revisaremos.',
+  hiw_ready:'¿Listo para empezar?', hiw_btn:'Ver todos los servicios',
+  modal_who:'Para quién es esto', modal_supply:'Lo que necesitas proporcionar', modal_delivery:'Tiempo de entrega', modal_others_charge:'Otros suelen cobrar', modal_what_you_get:'Lo que recibes',
+  modal_add_cart:'+ Añadir al carrito', modal_order_now:'Pedir ahora',
+},
+
+ar:{
+  nav_home:'الرئيسية', nav_services:'الخدمات', nav_hiw:'كيف يعمل', nav_about:'من نحن', nav_contact:'اتصل بنا',
+  nav_signin:'تسجيل الدخول', nav_browse:'تصفح الخدمات', nav_dashboard:'لوحة التحكم', nav_signout:'تسجيل الخروج',
+  hero_eyebrow:'خدمات احترافية. تسليم خلال 24 ساعة.',
+  hero_line1:'أخبرنا بما تحتاج.', hero_pre_em:'سنقوم ', hero_em:'بإنجازه', hero_line3:'من أجلك.',
+  hero_sub:'خطط الأعمال، العروض التقديمية، مقترحات المنح، السير الذاتية، تقارير البحث، عمليات التدقيق والنماذج الأولية. يُنتجها فريقنا المتخصص ويُسلّمها خلال 24 ساعة. ابتداءً من 19 دولارًا.',
+  hero_btn_browse:'تصفح جميع الخدمات', hero_btn_hiw:'شاهد كيف يعمل',
+  proof_svc_lbl:'خدمة احترافية', proof_svc_body:'من السير الذاتية إلى النماذج الأولية. فريق متخصص واحد يتولى كل شيء.',
+  proof_del_lbl:'متوسط وقت التسليم', proof_del_body:'معظم الطلبات تصل قبل يوم عملك التالي. مضمون.',
+  proof_price_lbl:'السعر الابتدائي', proof_price_body:'15 إلى 25 بالمئة من رسوم الوكالات لنفس العمل.',
+  proof_sat_lbl:'رضا مضمون', proof_sat_body:'نراجع كل تسليم حتى تكون فخورًا باستخدامه.',
+  trust_delivery:'تسليم خلال 24 ساعة', trust_delivery_sub:'معظم الخدمات',
+  trust_team:'فريق متخصص', trust_team_sub:'الخبير المناسب في كل مرة',
+  trust_global:'عملاء عالميون', trust_global_sub:'كل دولة، كل منطقة زمنية',
+  trust_pricing:'أسعار ثابتة', trust_pricing_sub:'لا مفاجآت أبدًا',
+  trust_guarantee:'ضمان الرضا', trust_guarantee_sub:'سنصلح إذا لزم الأمر',
+  sec_cats_eyebrow:'ما نغطيه', sec_cats_h2:'عشر فئات. أكثر من أربعين خدمة.',
+  sec_cats_p:'كل نوع من المستندات المهنية والتقارير والأصول الرقمية التي يتطلبها عملك.',
+  sec_feat_eyebrow:'الأكثر شيوعًا الآن', sec_feat_h2:'الخدمات الأكثر طلبًا',
+  sec_feat_p:'من وثائق المسيرة المهنية إلى النماذج الأولية. هذه الخدمات التي يعود إليها عملاؤنا.',
+  btn_view_all:'عرض جميع الخدمات 40+', scard_view:'عرض', scard_delivery:'تسليم',
+  hiw_home_h2:'ثلاث خطوات. هذا كل شيء.', hiw_home_p:'لا ذهاب وإياب. لا انتظار. لا غموض.',
+  hiw_s1_title:'اختر خدمتك', hiw_s1_body:'تصفح أكثر من 40 خدمة في 10 فئات. كل خدمة تُظهر بالضبط ما ستحصل عليه وكم تكلف.',
+  hiw_s2_title:'أرسل ملخصك', hiw_s2_body:'أكمل النموذج بأهدافك وارفع الملفات إذا لزم الأمر.',
+  hiw_s3_title:'استلم تسليمك', hiw_s3_body:'يكمل متخصصك العمل، يُراجع ثم يُسلَّم. معظم الطلبات تصل في 24 ساعة.',
+  sec_stats_eyebrow:'الأرقام خلف العمل', sec_stats_h2:'لماذا تهم الجودة الاحترافية', sec_stats_p:'الفرق بين الجيد والاستثنائي قابل للقياس.',
+  sec_test_eyebrow:'تجارب العملاء', sec_test_h2:'عمل حقيقي. نتائج حقيقية.',
+  sec_guar_title:'ضماننا', sec_guar_body:'يمر كل تسليم بمراجعة متخصصة قبل وصوله إليك. إذا لم يلبِّ المعيار المحدد، تواصل معنا خلال 48 ساعة بملاحظات محددة وسنراجعه مجانًا.',
+  sec_faq_eyebrow:'أسئلة شائعة', sec_faq_h2:'الأسئلة الشائعة',
+  sec_cta_h2:'هل أنت مستعد للإنجاز؟', sec_cta_p:'اختر خدمتك، أرسل ملخصك، واستلم عملًا احترافيًا خلال 24 ساعة. من أي مكان في العالم.', sec_cta_btn:'ابدأ ملخصك اليوم',
+  svc_page_eyebrow:'أكثر من 40 خدمة احترافية', svc_page_h1:'كل ما تحتاجه.<br>منجز بشكل صحيح.', svc_page_p:'تصفح حسب الفئة. انقر على أي خدمة للحصول على جميع التفاصيل ونموذج الطلب.',
+  filter_all:'جميع الخدمات', svc_label_singular:'خدمة', svc_label_plural:'خدمات',
+  hiw_page_eyebrow:'بسيط. واضح. سريع.', hiw_page_h1:'كيف يعمل BriefCraft', hiw_page_p:'من نقرتك الأولى إلى التسليم النهائي. إليك بالضبط ما يحدث.',
+  hiw_full_s1_title:'اختر خدمتك', hiw_full_s1_body:'تصفح 41 خدمة احترافية في 10 فئات. كل صفحة خدمة تُظهر بالضبط ما ستحصل عليه وكم تكلف.',
+  hiw_full_s2_title:'أرسل ملخصك', hiw_full_s2_body:'أكمل نموذج الطلب بأهدافك وجمهورك والسياق والمتطلبات. يمكنك لصق النص أو رفع الملفات.',
+  hiw_full_s3_title:'يبدأ متخصصك', hiw_full_s3_body:'المتخصص المناسب لهذا النوع من العمل يبدأ فورًا. كتّاب منح، استراتيجيو pitch decks، مصممو منتجات.',
+  hiw_full_s4_title:'مراجعة الجودة', hiw_full_s4_body:'قبل وصوله إليك، يمر تسليمك بمراجعة متخصصة للاكتمال والدقة والنبرة. هذه الخطوة غير قابلة للتفاوض.',
+  hiw_full_s5_title:'التسليم إليك', hiw_full_s5_body:'تستلم تسليمك المكتمل، عادةً ضمن الوقت المحدد وكثيرًا قبله. المستندات تصل بتنسيقات قابلة للتحرير.',
+  hiw_full_s6_title:'مراجعات إذا لزم', hiw_full_s6_body:'إذا لم يطابق التسليم ما تم وصفه، تواصل معنا في 48 ساعة بملاحظات محددة وسنراجعه.',
+  hiw_ready:'مستعد للبدء؟', hiw_btn:'تصفح جميع الخدمات',
+  modal_who:'لمن هذا', modal_supply:'ما تحتاج إلى تقديمه', modal_delivery:'وقت التسليم', modal_others_charge:'ما يتقاضاه الآخرون عادةً', modal_what_you_get:'ما ستحصل عليه',
+  modal_add_cart:'+ أضف إلى السلة', modal_order_now:'اطلب الآن',
+},
+
+de:{
+  nav_home:'Startseite', nav_services:'Leistungen', nav_hiw:'So funktioniert es', nav_about:'Über uns', nav_contact:'Kontakt',
+  nav_signin:'Anmelden', nav_browse:'Leistungen ansehen', nav_dashboard:'Dashboard', nav_signout:'Abmelden',
+  hero_eyebrow:'Professionelle Dienstleistungen. Lieferung in 24 Stunden.',
+  hero_line1:'Briefen Sie uns.', hero_pre_em:'Wir ', hero_em:'gestalten', hero_line3:'den Rest.',
+  hero_sub:'Businesspläne, Pitch Decks, Förderanträge, Lebensläufe, Forschungsberichte, Audits und Prototypen. Erstellt von unserem Spezialistenteam und innerhalb von 24 Stunden geliefert. Ab 19 $.',
+  hero_btn_browse:'Alle Leistungen ansehen', hero_btn_hiw:'So funktioniert es',
+  proof_svc_lbl:'Professionelle Leistungen', proof_svc_body:'Von Lebensläufen bis Prototypen. Ein Spezialistenteam kümmert sich um alles.',
+  proof_del_lbl:'Durchschnittliche Lieferzeit', proof_del_body:'Die meisten Bestellungen kommen vor dem nächsten Werktag an. Garantiert.',
+  proof_price_lbl:'Startpreis', proof_price_body:'15 bis 25 % dessen, was Agenturen für dieselbe Arbeit verlangen.',
+  proof_sat_lbl:'Zufriedenheit garantiert', proof_sat_body:'Wir überarbeiten jede Lieferung, bis Sie stolz darauf sind, sie zu verwenden.',
+  trust_delivery:'24h-Lieferung', trust_delivery_sub:'Die meisten Leistungen',
+  trust_team:'Spezialistenteam', trust_team_sub:'Der richtige Experte, jedes Mal',
+  trust_global:'Globale Kunden', trust_global_sub:'Jedes Land, jede Zeitzone',
+  trust_pricing:'Fixpreise', trust_pricing_sub:'Keine Überraschungen, nie',
+  trust_guarantee:'Zufriedenheitsgarantie', trust_guarantee_sub:'Wir korrigieren es bei Bedarf',
+  sec_cats_eyebrow:'Was wir abdecken', sec_cats_h2:'Zehn Kategorien. Über vierzig Leistungen.',
+  sec_cats_p:'Jede Art von professionellem Dokument, Forschungsbericht oder digitalem Asset, den Ihre Arbeit erfordert.',
+  sec_feat_eyebrow:'Gerade beliebt', sec_feat_h2:'Meistbestellte Leistungen',
+  sec_feat_p:'Von Karrieredokumenten bis Prototypen. Das sind die Leistungen, zu denen unsere Kunden immer wiederkehren.',
+  btn_view_all:'Alle 40+ Leistungen ansehen', scard_view:'Ansehen', scard_delivery:'Lieferung',
+  hiw_home_h2:'Drei Schritte. Das war es.', hiw_home_p:'Kein Hin und Her. Kein Warten. Keine Unsicherheit.',
+  hiw_s1_title:'Wählen Sie Ihre Leistung', hiw_s1_body:'Durchsuchen Sie 40+ Leistungen in 10 Kategorien. Jede Leistung zeigt genau, was Sie erhalten und was es kostet.',
+  hiw_s2_title:'Reichen Sie Ihren Brief ein', hiw_s2_body:'Füllen Sie das Formular mit Ihren Zielen aus und laden Sie bei Bedarf Dateien hoch.',
+  hiw_s3_title:'Erhalten Sie Ihre Lieferung', hiw_s3_body:'Ihr Spezialist schließt die Arbeit ab, sie wird überprüft und dann geliefert. Die meisten Bestellungen kommen in 24 Stunden an.',
+  sec_stats_eyebrow:'Die Zahlen hinter der Arbeit', sec_stats_h2:'Warum professionelle Qualität wichtig ist', sec_stats_p:'Der Unterschied zwischen gut und außergewöhnlich ist messbar.',
+  sec_test_eyebrow:'Kundenerfahrungen', sec_test_h2:'Echte Arbeit. Echte Ergebnisse.',
+  sec_guar_title:'Unsere Garantie', sec_guar_body:'Jede Lieferung durchläuft eine Fachprüfung, bevor sie Sie erreicht. Wenn sie nicht dem beschriebenen Standard entspricht, kontaktieren Sie uns innerhalb von 48 Stunden mit spezifischem Feedback, und wir überarbeiten es kostenlos.',
+  sec_faq_eyebrow:'Häufige Fragen', sec_faq_h2:'Häufig gestellte Fragen',
+  sec_cta_h2:'Bereit, etwas zu erledigen?', sec_cta_p:'Wählen Sie Ihre Leistung, reichen Sie Ihren Brief ein und erhalten Sie professionelle Arbeit innerhalb von 24 Stunden. Von überall auf der Welt.', sec_cta_btn:'Heute einen Brief starten',
+  svc_page_eyebrow:'40+ professionelle Leistungen', svc_page_h1:'Alles, was Sie brauchen.<br>Richtig gemacht.', svc_page_p:'Nach Kategorie durchsuchen. Klicken Sie auf eine Leistung für alle Details und das Bestellformular.',
+  filter_all:'Alle Leistungen', svc_label_singular:'Leistung', svc_label_plural:'Leistungen',
+  hiw_page_eyebrow:'Einfach. Klar. Schnell.', hiw_page_h1:'So funktioniert BriefCraft', hiw_page_p:'Von Ihrem ersten Klick bis zur fertigen Lieferung. Hier ist genau, was passiert.',
+  hiw_full_s1_title:'Wählen Sie Ihre Leistung', hiw_full_s1_body:'Durchsuchen Sie 41 professionelle Leistungen in 10 Kategorien. Jede Seite zeigt genau, was Sie erhalten und was es kostet.',
+  hiw_full_s2_title:'Reichen Sie Ihren Brief ein', hiw_full_s2_body:'Füllen Sie das Bestellformular mit Ihren Zielen, Ihrer Zielgruppe, dem Kontext und spezifischen Anforderungen aus. Sie können Text einfügen oder Dateien hochladen.',
+  hiw_full_s3_title:'Ihr Spezialist beginnt', hiw_full_s3_body:'Der richtige Spezialist für diese Art von Arbeit beginnt sofort. Förderantragschreiber, Pitch-Deck-Strategen, Produktdesigner.',
+  hiw_full_s4_title:'Qualitätsprüfung', hiw_full_s4_body:'Bevor es Sie erreicht, durchläuft Ihre Lieferung eine fachliche Überprüfung auf Vollständigkeit, Genauigkeit und Ton. Dieser Schritt ist unverhandelbar.',
+  hiw_full_s5_title:'Lieferung an Sie', hiw_full_s5_body:'Sie erhalten Ihre fertige Lieferung, in der Regel innerhalb der angegebenen Zeit und oft früher. Dokumente kommen in bearbeitbaren Formaten an.',
+  hiw_full_s6_title:'Überarbeitungen bei Bedarf', hiw_full_s6_body:'Wenn die Lieferung nicht dem Beschriebenen entspricht, kontaktieren Sie uns innerhalb von 48 Stunden mit spezifischem Feedback und wir überarbeiten es.',
+  hiw_ready:'Bereit anzufangen?', hiw_btn:'Alle Leistungen ansehen',
+  modal_who:'Für wen das ist', modal_supply:'Was Sie angeben müssen', modal_delivery:'Lieferzeit', modal_others_charge:'Andere verlangen normalerweise', modal_what_you_get:'Was Sie zurückbekommen',
+  modal_add_cart:'+ In den Warenkorb', modal_order_now:'Jetzt bestellen',
+},
+
+ru:{
+  nav_home:'Главная', nav_services:'Услуги', nav_hiw:'Как это работает', nav_about:'О нас', nav_contact:'Контакты',
+  nav_signin:'Войти', nav_browse:'Смотреть услуги', nav_dashboard:'Панель', nav_signout:'Выйти',
+  hero_eyebrow:'Профессиональные услуги. Доставка за 24 часа.',
+  hero_line1:'Дайте нам бриф.', hero_pre_em:'Мы ', hero_em:'создадим', hero_line3:'всё остальное.',
+  hero_sub:'Бизнес-планы, питч-деки, заявки на гранты, резюме, исследовательские отчёты, аудиты и прототипы. Создаются нашей командой специалистов и доставляются за 24 часа. От 19 $.',
+  hero_btn_browse:'Посмотреть все услуги', hero_btn_hiw:'Как это работает',
+  proof_svc_lbl:'Профессиональных услуг', proof_svc_body:'От резюме до прототипов. Одна команда специалистов решает всё.',
+  proof_del_lbl:'Среднее время доставки', proof_del_body:'Большинство заказов приходят до следующего рабочего дня. Гарантировано.',
+  proof_price_lbl:'Начальная цена', proof_price_body:'От 15 до 25% от того, что берут агентства за ту же работу.',
+  proof_sat_lbl:'Гарантия качества', proof_sat_body:'Мы дорабатываем каждый результат, пока вы не будете им гордиться.',
+  trust_delivery:'Доставка за 24ч', trust_delivery_sub:'Большинство услуг',
+  trust_team:'Команда специалистов', trust_team_sub:'Правильный эксперт каждый раз',
+  trust_global:'Клиенты по всему миру', trust_global_sub:'Любая страна, любой часовой пояс',
+  trust_pricing:'Фиксированные цены', trust_pricing_sub:'Никаких сюрпризов',
+  trust_guarantee:'Гарантия удовлетворённости', trust_guarantee_sub:'Исправим при необходимости',
+  sec_cats_eyebrow:'Что мы охватываем', sec_cats_h2:'Десять категорий. Более сорока услуг.',
+  sec_cats_p:'Каждый тип профессионального документа, исследовательского отчёта или цифрового актива, который нужен вашей работе.',
+  sec_feat_eyebrow:'Популярное сейчас', sec_feat_h2:'Самые заказываемые услуги',
+  sec_feat_p:'От карьерных документов до прототипов. Эти услуги заказывают снова и снова.',
+  btn_view_all:'Все 40+ услуг', scard_view:'Смотреть', scard_delivery:'доставка',
+  hiw_home_h2:'Три шага. Вот и всё.', hiw_home_p:'Никаких переговоров. Никакого ожидания. Никакой неопределённости.',
+  hiw_s1_title:'Выберите услугу', hiw_s1_body:'Просматривайте 40+ услуг в 10 категориях. Каждая услуга показывает ровно то, что вы получите и сколько это стоит.',
+  hiw_s2_title:'Отправьте бриф', hiw_s2_body:'Заполните форму с вашими целями и загрузите файлы при необходимости.',
+  hiw_s3_title:'Получите результат', hiw_s3_body:'Ваш специалист завершает работу, она проверяется, затем доставляется. Большинство заказов приходят за 24 часа.',
+  sec_stats_eyebrow:'Цифры за работой', sec_stats_h2:'Почему важно профессиональное качество', sec_stats_p:'Разница между хорошим и исключительным измерима.',
+  sec_test_eyebrow:'Отзывы клиентов', sec_test_h2:'Реальная работа. Реальные результаты.',
+  sec_guar_title:'Наша гарантия', sec_guar_body:'Каждый результат проходит проверку специалиста перед отправкой. Если он не соответствует описанию, свяжитесь с нами в течение 48 часов с конкретными замечаниями, и мы исправим бесплатно.',
+  sec_faq_eyebrow:'Частые вопросы', sec_faq_h2:'Часто задаваемые вопросы',
+  sec_cta_h2:'Готовы сделать дело?', sec_cta_p:'Выберите услугу, отправьте бриф и получите профессиональный результат за 24 часа. Из любой точки мира.', sec_cta_btn:'Начать бриф сегодня',
+  svc_page_eyebrow:'40+ профессиональных услуг', svc_page_h1:'Всё что нужно.<br>Сделано правильно.', svc_page_p:'Просматривайте по категориям. Нажмите на любую услугу для деталей и формы заказа.',
+  filter_all:'Все услуги', svc_label_singular:'услуга', svc_label_plural:'услуг',
+  hiw_page_eyebrow:'Просто. Понятно. Быстро.', hiw_page_h1:'Как работает BriefCraft', hiw_page_p:'От первого клика до готового результата. Вот именно то, что происходит.',
+  hiw_full_s1_title:'Выберите услугу', hiw_full_s1_body:'Просматривайте 41 профессиональную услугу в 10 категориях. Каждая страница показывает что именно вы получите и сколько это стоит.',
+  hiw_full_s2_title:'Отправьте бриф', hiw_full_s2_body:'Заполните форму заказа с вашими целями, аудиторией, контекстом и конкретными требованиями. Можно вставить текст или загрузить файлы.',
+  hiw_full_s3_title:'Ваш специалист начинает', hiw_full_s3_body:'Подходящий специалист для этого типа работы начинает немедленно. Авторы грантов, стратеги питч-деков, дизайнеры продуктов.',
+  hiw_full_s4_title:'Проверка качества', hiw_full_s4_body:'Перед отправкой ваш результат проходит специализированную проверку полноты, точности и тона. Этот шаг обязателен.',
+  hiw_full_s5_title:'Доставка вам', hiw_full_s5_body:'Вы получаете завершённый результат, обычно в срок или раньше. Документы приходят в редактируемых форматах.',
+  hiw_full_s6_title:'Правки при необходимости', hiw_full_s6_body:'Если результат не соответствует описанному, свяжитесь с нами в течение 48 часов с конкретными замечаниями и мы исправим.',
+  hiw_ready:'Готовы начать?', hiw_btn:'Смотреть все услуги',
+  modal_who:'Для кого это', modal_supply:'Что нужно предоставить', modal_delivery:'Время доставки', modal_others_charge:'Обычно другие берут', modal_what_you_get:'Что вы получаете',
+  modal_add_cart:'+ В корзину', modal_order_now:'Заказать сейчас',
+},
+}; // end T
+
+// ── TRANSLATION HELPER ────────────────────────────────────────
+// curLang already set by early-init script; upgrade t() to use full T
+window.T = T;
+window.t = function(key){
+  return (T[window.curLang] && T[window.curLang][key]) || T.en[key] || key;
+};
+
+// ── BUILD LANGUAGE DROPDOWN ───────────────────────────────────
+function buildLangDropdown(){
+  const dd=document.getElementById('langDropdown');
+  if(!dd)return;
+  dd.innerHTML=Object.entries(LANG_META).map(([code,m])=>`
+    <div class="lang-opt${curLang===code?' active':''}" onclick="setLang('${code}')">
+      <span class="lang-opt-flag">${m.flag}</span>
+      <span class="lang-opt-name">${m.name}</span>
+      <span class="lang-opt-code">${m.code}</span>
+    </div>`).join('');
+}
+
+// ── TOGGLE DROPDOWN ───────────────────────────────────────────
+function toggleLangMenu(e){
+  e&&e.stopPropagation();
+  const dd=document.getElementById('langDropdown');
+  dd.classList.toggle('open');
+}
+document.addEventListener('click',function(e){
+  const wrap=document.getElementById('langWrap');
+  if(wrap&&!wrap.contains(e.target)){
+    const dd=document.getElementById('langDropdown');
+    if(dd)dd.classList.remove('open');
+  }
+});
+
+// ── SET LANGUAGE ──────────────────────────────────────────────
+function setLang(code){
+  if(!T[code])return;
+  window.curLang=code;
+  localStorage.setItem('bc_lang',code);
+  // RTL support for Arabic
+  document.documentElement.dir=LANG_META[code].dir;
+  document.documentElement.lang=code;
+  // Update globe button label
+  const lc=document.getElementById('langCode');
+  if(lc)lc.textContent=LANG_META[code].code;
+  // Update all static data-i18n elements (nav, mobile menu)
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    el.textContent=t(el.getAttribute('data-i18n'));
+  });
+  // Rebuild dropdown to show active state
+  buildLangDropdown();
+  // Re-render current page
+  const renders={home:renderHome,services:renderServices,'how-it-works':renderHIW,about:renderAbout,contact:renderContact,dashboard:renderDashboard};
+  if(renders[curPage])renders[curPage]();
+}
+
+// ── INIT: BUILD DROPDOWN + APPLY SAVED LANG ───────────────────
+buildLangDropdown();
+if(window.curLang!=='en'){
+  document.documentElement.dir=LANG_META[window.curLang].dir;
+  document.documentElement.lang=window.curLang;
+  const lc=document.getElementById('langCode');
+  if(lc)lc.textContent=LANG_META[window.curLang].code;
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    el.textContent=t(el.getAttribute('data-i18n'));
+  });
+  renderHome();
+} else {
+  buildLangDropdown();
 }
 </script>
 
