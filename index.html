@@ -1695,6 +1695,12 @@ function renderOrderModal(){
 }
 
 function openOrder(){
+  if(!getUser()){
+    _pendingAction = function(){ openOrder(); };
+    closeModal('serviceModal');
+    openLogin('order');
+    return;
+  }
   closeModal('serviceModal');
   if(!curSvc)return;
   renderOrderModal();
@@ -2456,6 +2462,12 @@ function toggleCartBrief(id) {
 function proceedToCheckout() {
   const cart = getCart();
   if(cart.length === 0) return;
+  if(!getUser()){
+    _pendingAction = function(){ proceedToCheckout(); };
+    closeCart();
+    openLogin('checkout');
+    return;
+  }
   const user = getUser();
   document.getElementById('cartHdrTitle').textContent = t('checkout_title');
   document.getElementById('cartSubtitle').textContent = cart.length + ' ' + (cart.length > 1 ? t('cart_svc_plural') : t('cart_svc_singular')) + ' &middot; $' + cartTotal();
@@ -2617,12 +2629,30 @@ function renderLoginModal(){
   if(g('loginContinueBtn'))g('loginContinueBtn').textContent=t('login_btn');
   if(g('loginNoteText'))g('loginNoteText').textContent=t('login_note');
 }
-function openLogin() {
+let _pendingAction = null;
+
+function openLogin(context) {
   renderLoginModal();
   const el = document.getElementById('loginOverlay');
   if(!el) return;
   document.getElementById('loginName').value = '';
   document.getElementById('loginEmail').value = '';
+  // Show context message if redirected from order or checkout
+  const subText = document.getElementById('loginSubText');
+  if(subText) {
+    if(context === 'order') {
+      subText.textContent = 'Sign in to place your order. It only takes a moment.';
+      subText.style.color = '#D4500A';
+      subText.style.fontWeight = '600';
+    } else if(context === 'checkout') {
+      subText.textContent = 'Sign in to complete your checkout. Your cart is saved.';
+      subText.style.color = '#D4500A';
+      subText.style.fontWeight = '600';
+    } else {
+      subText.style.color = '';
+      subText.style.fontWeight = '';
+    }
+  }
   el.classList.add('open');
   document.body.style.overflow = 'hidden';
   setTimeout(() => document.getElementById('loginName').focus(), 100);
@@ -2634,6 +2664,7 @@ function closeLoginOverlay(e) {
 function closeLogin() {
   document.getElementById('loginOverlay').classList.remove('open');
   document.body.style.overflow = '';
+  _pendingAction = null;
 }
 function submitLogin() {
   const name = document.getElementById('loginName').value.trim();
@@ -2644,7 +2675,14 @@ function submitLogin() {
   updateNavUser();
   closeLogin();
   showToast('Welcome, ' + name.split(' ')[0] + '. Your dashboard is ready.');
-  showPage('dashboard');
+  // If redirected from order or checkout, continue automatically
+  if(_pendingAction) {
+    const action = _pendingAction;
+    _pendingAction = null;
+    setTimeout(action, 300);
+  } else {
+    showPage('dashboard');
+  }
 }
 function updateNavUser() {
   const user = getUser();
@@ -6418,7 +6456,7 @@ if(window.curLang!=='en'){
 </script>
 
 <script>
-/* ── BriefCraft V23: Searchable Country Dropdown ── */
+/* ── BriefCraft V24: Searchable Country Dropdown ── */
 const COUNTRY_LIST = [
   "Afghanistan","Albania","Algeria","Andorra","Angola","Antigua and Barbuda","Argentina","Armenia","Australia","Austria",
   "Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bhutan",
