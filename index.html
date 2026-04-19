@@ -1651,8 +1651,8 @@ function renderHome(){
         ${CATS.filter(c=>c.id!=='all').map(c=>`
           <div class="cat-card" onclick="showPage('services');filterCat('${c.id}')">
             <div class="cat-icon">${c.icon}</div>
-            <div class="cat-name">${c.label}</div>
-            <div class="cat-count">${SVCS.filter(s=>s.cat===c.id).length} ${t('svc_label_plural')}</div>
+            <div class="cat-name">${t('cat_'+c.id)}</div>
+            <div class="cat-count">${SVCS.filter(s=>s.cat===c.id).length} ${SVCS.filter(s=>s.cat===c.id).length===1?t('svc_label_singular'):t('svc_label_plural')}</div>
           </div>
         `).join('')}
       </div>
