@@ -144,8 +144,10 @@ img{max-width:100%}
 .svc-icon{width:40px;height:40px;border-radius:var(--r);background:var(--green-lt);display:flex;align-items:center;justify-content:center;color:var(--green);flex-shrink:0;transition:.2s}
 .svc-icon svg{width:18px;height:18px}
 .svc:hover .svc-icon{background:var(--green);color:#fff}
-.svc-price{font-family:'Unbounded',sans-serif;font-size:22px;font-weight:800;color:var(--text);letter-spacing:-.03em}
-.svc-price sup{font-size:13px;vertical-align:top;margin-top:5px;font-family:'Outfit',sans-serif;font-weight:600}
+.svc-price-wrap{display:flex;flex-direction:column;align-items:flex-end;gap:1px}
+.svc-was{font-family:'Outfit',sans-serif;font-size:11px;font-weight:400;color:#b0b8cc;text-decoration:line-through;letter-spacing:0;line-height:1}
+.svc-price{font-family:'Unbounded',sans-serif;font-size:22px;font-weight:800;color:var(--text);letter-spacing:-.03em;line-height:1}
+.svc-price sup{font-size:13px;vertical-align:top;margin-top:4px;font-family:'Outfit',sans-serif;font-weight:600}
 .svc-name{font-family:'Unbounded',sans-serif;font-size:14px;font-weight:700;color:var(--text);margin-bottom:8px;letter-spacing:-.02em;line-height:1.35}
 .svc-tag{font-family:'Outfit',sans-serif;font-size:13px;color:var(--text-2);line-height:1.6}
 .svc-foot{padding:12px 24px;border-top:1px solid var(--border);background:var(--bg-2);display:flex;align-items:center;justify-content:space-between}
@@ -1434,12 +1436,17 @@ function submitOrder(){
 }
 
 // CARD TEMPLATE
-function sCard(s){return`
+function sCard(s){
+  const was=Math.round(s.p*1.5);
+  return`
 <div class="svc" data-scat="${s.cat}" onclick="openSvc('${s.id}')">
   <div class="svc-top">
     <div class="svc-row">
       <div class="svc-icon">${s.icon}</div>
-      <div class="svc-price"><sup>$</sup>${s.p}</div>
+      <div class="svc-price-wrap">
+        <span class="svc-was">$${was}</span>
+        <div class="svc-price"><sup>$</sup>${s.p}</div>
+      </div>
     </div>
     <div class="svc-name">${s.n}</div>
     <div class="svc-tag">${s.tag}</div>
@@ -1496,16 +1503,19 @@ function renderHome(){
           <div class="hc hc-1">
             <div class="hc-cat">Business Formation</div>
             <div class="hc-name">Full Business Plan</div>
+            <div style="margin-bottom:2px;font-family:'Outfit',sans-serif;font-size:10px;color:#b0b8cc;text-decoration:line-through;text-align:right">$119</div>
             <div class="hc-row"><span class="hc-price">$79</span><span class="hc-pill">24 hours</span></div>
           </div>
           <div class="hc hc-2">
             <div class="hc-cat">Functional Prototype</div>
             <div class="hc-name">SaaS Web App Prototype</div>
+            <div style="margin-bottom:2px;font-family:'Outfit',sans-serif;font-size:10px;color:#b0b8cc;text-decoration:line-through;text-align:right">$149</div>
             <div class="hc-row"><span class="hc-price">$99</span><span class="hc-pill">Interactive HTML</span></div>
           </div>
           <div class="hc hc-3">
             <div class="hc-cat">Business Intelligence</div>
             <div class="hc-name">Competitor Intelligence Report</div>
+            <div style="margin-bottom:2px;font-family:'Outfit',sans-serif;font-size:10px;color:#b0b8cc;text-decoration:line-through;text-align:right">$74</div>
             <div class="hc-row"><span class="hc-price">$49</span><span class="hc-pill">Live research</span></div>
           </div>
         </div>
