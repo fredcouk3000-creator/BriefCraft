@@ -880,6 +880,8 @@ html { overflow-x: hidden; }
 .cvg-sec-content{font-family:'Outfit',sans-serif;font-size:13px;color:rgba(255,255,255,0.55);line-height:1.8;}
 .cvg-sec-content p{margin-bottom:10px;}
 .cvg-sec-content p:last-child{margin-bottom:0;}
+.cvg-comp-grid{display:flex;flex-wrap:wrap;gap:6px 8px;margin-top:4px;}
+.cvg-comp-item{font-family:'Outfit',sans-serif;font-size:11.5px;font-weight:600;color:rgba(255,220,190,0.9);background:rgba(255,140,66,0.10);border:1px solid rgba(255,140,66,0.25);border-radius:6px;padding:4px 11px;letter-spacing:0.01em;}
 .cvg-job{margin-bottom:18px;padding-bottom:18px;border-bottom:1px solid rgba(255,255,255,0.04);}
 .cvg-job:last-child{margin-bottom:0;padding-bottom:0;border-bottom:none;}
 .cvg-job-title{font-family:'Unbounded',sans-serif;font-size:13px;font-weight:700;color:#fff;margin-bottom:3px;letter-spacing:-.01em;}
@@ -7184,24 +7186,14 @@ function renderCVGenerator(){
       '<div class="cvg-step active" id="cvg-step-1">' +
         '<div class="cvg-shdr"><div class="cvg-eyebrow-step">'+t('cvg_s1ey')+'</div><h2 class="cvg-stitle">'+t('cvg_s1h')+'</h2><p class="cvg-ssub">'+t('cvg_s1s')+'</p></div>' +
         '<div class="cvg-grid"><div class="cvg-field"><label>'+t('cvg_name')+' *</label><input class="cvg-inp" id="cvg-p-name" type="text" placeholder="e.g. Amara Okonkwo"></div><div class="cvg-field"><label>'+t('cvg_ptitle')+' *</label><input class="cvg-inp" id="cvg-p-title" type="text" placeholder="e.g. Senior Civil Engineer"></div></div>' +
-        '<div class="cvg-grid"><div class="cvg-field"><label>'+t('cvg_email')+' *</label><input class="cvg-inp" id="cvg-p-email" type="email" placeholder="you@company.com"></div><div class="cvg-field"><label>'+t('cvg_phone')+'</label><input class="cvg-inp" id="cvg-p-phone" type="tel" placeholder="+234 801 234 5678"></div></div>' +
-        '<div class="cvg-grid">' +
-          '<div class="cvg-field"><label>'+t('cvg_country')+' *</label>' +
-            '<div class="cvg-cs" id="cvg-cs-country">' +
-              '<input type="text" class="cvg-cs-inp" id="cvg-cs-country-disp" placeholder="'+t('cvg_sel_c')+'" readonly>' +
-              '<span class="cvg-cs-arr">&#9660;</span>' +
-              '<div class="cvg-cs-dd" id="cvg-cs-country-dd"><div class="cvg-cs-srch"><input type="text" id="cvg-cs-country-srch" placeholder="Search..."></div><div class="cvg-cs-opts" id="cvg-cs-country-opts"></div></div>' +
-              '<input type="hidden" id="cvg-p-country">' +
-            '</div></div>' +
-          '<div class="cvg-field"><label>'+t('cvg_city')+' *</label>' +
-            '<div class="cvg-cs" id="cvg-cs-city">' +
-              '<input type="text" class="cvg-cs-inp" id="cvg-cs-city-disp" placeholder="'+t('cvg_sel_ci')+'">' +
-              '<span class="cvg-cs-arr">&#9660;</span>' +
-              '<div class="cvg-cs-dd" id="cvg-cs-city-dd"><div class="cvg-cs-srch"><input type="text" id="cvg-cs-city-srch" placeholder="Search..."></div><div class="cvg-cs-opts" id="cvg-cs-city-opts"></div></div>' +
-              '<input type="hidden" id="cvg-p-city">' +
-            '</div></div>' +
-        '</div>' +
-        '<div class="cvg-grid"><div class="cvg-field"><label>'+t('cvg_linkedin')+'</label><input class="cvg-inp" id="cvg-p-linkedin" type="text" placeholder="linkedin.com/in/yourname"></div><div class="cvg-field"><label>'+t('cvg_website')+'</label><input class="cvg-inp" id="cvg-p-website" type="text" placeholder="yoursite.com"></div></div>' +
+        '<div class="cvg-grid"><div class="cvg-field"><label>'+t('cvg_email')+' *</label><input class="cvg-inp" id="cvg-p-email" type="email" placeholder="you@company.com"></div>' +
+        '<div class="cvg-field"><label>'+t('cvg_country')+' *</label>' +
+          '<div class="cvg-cs" id="cvg-cs-country">' +
+            '<input type="text" class="cvg-cs-inp" id="cvg-cs-country-disp" placeholder="'+t('cvg_sel_c')+'" readonly>' +
+            '<span class="cvg-cs-arr">&#9660;</span>' +
+            '<div class="cvg-cs-dd" id="cvg-cs-country-dd"><div class="cvg-cs-srch"><input type="text" id="cvg-cs-country-srch" placeholder="Search..."></div><div class="cvg-cs-opts" id="cvg-cs-country-opts"></div></div>' +
+            '<input type="hidden" id="cvg-p-country">' +
+          '</div></div></div>' +
         '<div class="cvg-snav"><div></div><button class="cvg-next-btn" onclick="cvgNext(1)">'+t('cvg_next')+' &#8594;</button></div>' +
       '</div>' +
 
@@ -7209,7 +7201,6 @@ function renderCVGenerator(){
         '<div class="cvg-shdr"><div class="cvg-eyebrow-step">'+t('cvg_s2ey')+'</div><h2 class="cvg-stitle">'+t('cvg_s2h')+'</h2><p class="cvg-ssub">'+t('cvg_s2s')+'</p></div>' +
         '<div class="cvg-tip"><div class="cvg-tip-icon">&#9888;</div><div class="cvg-tip-text"><strong>'+t('cvg_ats_tip_h')+':</strong> '+t('cvg_ats_tip_b')+'</div></div>' +
         '<div class="cvg-grid"><div class="cvg-field"><label>'+t('cvg_jobtitle')+' *</label><input class="cvg-inp" id="cvg-t-jobtitle" type="text" placeholder="e.g. Head of Operations"></div><div class="cvg-field"><label>'+t('cvg_industry')+' *</label><select class="cvg-sel" id="cvg-t-industry"><option value="">'+t('cvg_sel_i')+'</option>'+indOpts+'</select></div></div>' +
-        '<div class="cvg-grid"><div class="cvg-field"><label>'+t('cvg_years')+'</label><select class="cvg-sel" id="cvg-t-years">'+yrsOpts+'</select></div><div class="cvg-field"><label>'+t('cvg_level')+'</label><select class="cvg-sel" id="cvg-t-level">'+lvlOpts+'</select></div></div>' +
         '<div class="cvg-grid full"><div class="cvg-field"><label>'+t('cvg_jd')+'</label><textarea class="cvg-ta" id="cvg-t-jd" style="min-height:120px;" placeholder="Copy and paste the full job description here. The AI will extract key terms and embed them naturally into your CV..."></textarea></div></div>' +
         '<div class="cvg-grid full"><div class="cvg-field"><label>'+t('cvg_achieve')+' *</label><textarea class="cvg-ta" id="cvg-t-achieve" placeholder="e.g. Led a team of 18 engineers to deliver a $4.2M project 3 weeks ahead of schedule, reducing costs by 14%..."></textarea></div></div>' +
         '<div class="cvg-snav"><button class="cvg-back-btn" onclick="cvgPrev(2)">&#8592; '+t('cvg_back')+'</button><button class="cvg-next-btn" onclick="cvgNext(2)">'+t('cvg_next')+' &#8594;</button></div>' +
@@ -7227,10 +7218,8 @@ function renderCVGenerator(){
         '<div class="cvg-shdr"><div class="cvg-eyebrow-step">'+t('cvg_s4ey')+'</div><h2 class="cvg-stitle">'+t('cvg_s4h')+'</h2><p class="cvg-ssub">'+t('cvg_s4s')+'</p></div>' +
         '<div id="cvg-edu-container"></div>' +
         '<button class="cvg-add-btn" onclick="cvgAddEdu()" style="margin-bottom:22px;">'+t('cvg_add_edu')+'</button>' +
-        '<div class="cvg-grid full"><div class="cvg-field"><label>'+t('cvg_tech')+' *</label><textarea class="cvg-ta" id="cvg-sk-tech" placeholder="e.g. Financial Modelling, SQL, Python, Risk Analysis..."></textarea></div></div>' +
-        '<div class="cvg-grid"><div class="cvg-field"><label>'+t('cvg_tools')+'</label><textarea class="cvg-ta" style="min-height:65px;" id="cvg-sk-tools" placeholder="e.g. Excel, PowerPoint, Salesforce, AutoCAD, SAP..."></textarea></div><div class="cvg-field"><label>'+t('cvg_soft')+'</label><textarea class="cvg-ta" style="min-height:65px;" id="cvg-sk-soft" placeholder="e.g. Leadership, Strategic Thinking, Stakeholder Management..."></textarea></div></div>' +
-        '<div class="cvg-grid"><div class="cvg-field"><label>'+t('cvg_certs')+'</label><textarea class="cvg-ta" style="min-height:65px;" id="cvg-sk-certs" placeholder="e.g. PMP (2023), CFA Level II, AWS Solutions Architect..."></textarea></div><div class="cvg-field"><label>'+t('cvg_langs')+'</label><textarea class="cvg-ta" style="min-height:65px;" id="cvg-sk-langs" placeholder="e.g. English (Native), French (Professional)..."></textarea></div></div>' +
-        '<div class="cvg-grid full"><div class="cvg-field"><label>'+t('cvg_extras')+'</label><textarea class="cvg-ta" style="min-height:65px;" id="cvg-sk-extras" placeholder="e.g. Forbes 30 Under 30 Africa (2022) | Published in Journal of Applied Engineering..."></textarea></div></div>' +
+        '<div class="cvg-grid full"><div class="cvg-field"><label>'+t('cvg_tech')+' *</label><textarea class="cvg-ta" id="cvg-sk-tech" style="min-height:100px;" placeholder="List everything: skills, tools, software, certifications. e.g. Financial Modelling, Excel, Python, PMP (2023), Leadership, Stakeholder Management..."></textarea></div></div>' +
+        '<div class="cvg-grid full"><div class="cvg-field"><label>'+t('cvg_langs')+'</label><textarea class="cvg-ta" style="min-height:55px;" id="cvg-sk-langs" placeholder="e.g. English (Native), French (Professional), Arabic (Conversational)..."></textarea></div></div>' +
         '<div class="cvg-snav"><button class="cvg-back-btn" onclick="cvgPrev(4)">&#8592; '+t('cvg_back')+'</button><button class="cvg-gen-btn" onclick="cvgGenerate()">&#9998; &nbsp;'+t('cvg_gen')+'</button></div>' +
       '</div>' +
     '</div>' +
@@ -7299,7 +7288,7 @@ function renderCVGenerator(){
   document.getElementById('cvg-pdf-btn').onclick=cvgDownloadPDF;
   cvgInitDropdown();
   cvgExpCount=0; cvgEduCount=0;
-  cvgAddExp(); cvgAddExp();
+  cvgAddExp();
   cvgAddEdu();
   cvgUpdateProg(1);
 }
@@ -7311,8 +7300,8 @@ function cvgInitDropdown(){
   opts.addEventListener('click',e=>{const o=e.target.closest('.cvg-cs-opt');if(o)cvgSelectCountry(o.dataset.val);});
   document.getElementById('cvg-cs-country-srch').addEventListener('input',function(){cvgFilterOpts(this.value,'cvg-cs-country-opts');});
   document.getElementById('cvg-cs-country-disp').addEventListener('click',()=>cvgToggleDD('cvg-cs-country'));
-  document.getElementById('cvg-cs-city-disp').addEventListener('click',()=>{if(document.getElementById('cvg-p-country').value)cvgToggleDD('cvg-cs-city');});
-  document.getElementById('cvg-cs-city-srch').addEventListener('input',function(){cvgFilterOpts(this.value,'cvg-cs-city-opts');});
+  const _ccd=document.getElementById('cvg-cs-city-disp');if(_ccd)_ccd.addEventListener('click',()=>{if(document.getElementById('cvg-p-country').value)cvgToggleDD('cvg-cs-city');});
+  const _ccs=document.getElementById('cvg-cs-city-srch');if(_ccs)_ccs.addEventListener('input',function(){cvgFilterOpts(this.value,'cvg-cs-city-opts');});
   document.addEventListener('click',e=>{if(!e.target.closest('.cvg-cs'))document.querySelectorAll('.cvg-cs.open').forEach(w=>w.classList.remove('open'));});
 }
 function cvgToggleDD(id){
@@ -7348,14 +7337,14 @@ function cvgAddExp(){
   cvgExpCount++;const n=cvgExpCount;
   const c=document.getElementById('cvg-exp-container');
   const d=document.createElement('div');d.className='cvg-card';d.id='cvg-exp-'+n;
-  d.innerHTML='<div class="cvg-card-hdr"><div class="cvg-card-lbl">'+t('cvg_pos')+' '+n+'</div>'+(n>1?'<button class="cvg-remove-btn" onclick="cvgRemove(\'cvg-exp-'+n+'\')">'+t('cvg_remove')+'</button>':'')+'</div>'+
+  const rb=n>1?'<button class="cvg-remove-btn" onclick="cvgRemove(\'cvg-exp-'+n+'\')">'+ t('cvg_remove')+'</button>':'';
+  d.innerHTML='<div class="cvg-card-hdr"><div class="cvg-card-lbl">'+t('cvg_pos')+' '+n+'</div>'+rb+'</div>'+
     '<div class="cvg-grid"><div class="cvg-field"><label>'+t('cvg_jobt')+' *</label><input class="cvg-inp" id="cvge'+n+'t" placeholder="e.g. Operations Manager"></div>'+
     '<div class="cvg-field"><label>'+t('cvg_co')+' *</label><input class="cvg-inp" id="cvge'+n+'c" placeholder="e.g. Meridian Holdings Ltd"></div></div>'+
-    '<div class="cvg-grid three"><div class="cvg-field"><label>'+t('cvg_loc')+'</label><input class="cvg-inp" id="cvge'+n+'l" placeholder="e.g. Lagos, Nigeria"></div>'+
-    '<div class="cvg-field"><label>'+t('cvg_from')+'</label><input class="cvg-inp" id="cvge'+n+'f" placeholder="March 2021"></div>'+
-    '<div class="cvg-field"><label>'+t('cvg_to')+'</label><input class="cvg-inp" id="cvge'+n+'o" placeholder="Present"></div></div>'+
+    '<div class="cvg-grid full"><div class="cvg-field"><label>'+t('cvg_from')+' – '+t('cvg_to')+'</label>'+
+    '<input class="cvg-inp" id="cvge'+n+'f" placeholder="e.g. Jan 2020 – Present"></div></div>'+
     '<div class="cvg-grid full"><div class="cvg-field"><label>'+t('cvg_desc')+' *</label>'+
-    '<textarea class="cvg-ta" id="cvge'+n+'d" style="min-height:90px;" placeholder="Describe what you did and what you achieved. Include numbers. e.g. Managed 3 warehouses, reduced costs by 22%, built a team of 14..."></textarea></div></div>';
+    '<textarea class="cvg-ta" id="cvge'+n+'d" style="min-height:85px;" placeholder="What did you do and what did you achieve? Include numbers where possible."></textarea></div></div>';
   c.appendChild(d);
 }
 function cvgAddEdu(){
@@ -7391,24 +7380,25 @@ function cvgUpdateProg(step){
 }
 function cvgValidate(step){
   const req={1:['cvg-p-name','cvg-p-title','cvg-p-email'],2:['cvg-t-jobtitle','cvg-t-industry','cvg-t-achieve'],3:[],4:['cvg-sk-tech']};
-  let ok=true;
-  (req[step]||[]).forEach(id=>{
-    const el=document.getElementById(id);
-    if(!el||!el.value.trim()){if(el){el.style.borderColor='#ef4444';setTimeout(()=>{el.style.borderColor='';},2200);}ok=false;}
-  });
-  if(step===1&&!document.getElementById('cvg-p-country').value){
-    const d=document.getElementById('cvg-cs-country-disp');
-    if(d){d.style.borderColor='#ef4444';setTimeout(()=>{d.style.borderColor='';},2200);}ok=false;
-  }
+  let ok=true;let firstFail=null;
+  function hilite(el){if(!el)return;el.style.borderColor='#ef4444';el.style.boxShadow='0 0 0 3px rgba(239,68,68,.18)';setTimeout(()=>{el.style.borderColor='';el.style.boxShadow='';},3000);if(!firstFail)firstFail=el;}
+  (req[step]||[]).forEach(id=>{const el=document.getElementById(id);if(!el||!el.value.trim()){hilite(el);ok=false;}});
+  if(step===1&&!document.getElementById('cvg-p-country').value){hilite(document.getElementById('cvg-cs-country-disp'));ok=false;}
   if(step===3){
-    let has=false;
+    let has=false;let badEl=null;
     document.querySelectorAll('[id^="cvg-exp-"]').forEach(card=>{
-      const tid=card.querySelector('[id$="t"]'),did=card.querySelector('[id$="d"]');
-      if(tid&&tid.value.trim()&&did&&did.value.trim())has=true;
+      const cid=card.id.replace('cvg-exp-','');
+      const tid=document.getElementById('cvge'+cid+'t');
+      const did=document.getElementById('cvge'+cid+'d');
+      if(tid&&did&&tid.value.trim()&&did.value.trim()){has=true;}
+      else if(!badEl){badEl=(!tid||!tid.value.trim())?tid:did;}
     });
-    if(!has){showToast(t('cvg_miss'),t('cvg_miss_s'));ok=false;}
+    if(!has){hilite(badEl);showToast(t('cvg_miss'),t('cvg_miss_s'));ok=false;}
   }
-  if(!ok&&step!==3)showToast(t('cvg_miss'),t('cvg_miss_s'));
+  if(!ok){
+    if(firstFail)setTimeout(()=>firstFail.scrollIntoView({behavior:'smooth',block:'center'}),100);
+    if(step!==3)showToast(t('cvg_miss'),t('cvg_miss_s'));
+  }
   return ok;
 }
 function cvgG(id){return(document.getElementById(id)||{}).value||'';}
@@ -7422,49 +7412,44 @@ async function cvgGenerate(){
 
   const exps=Array.from(document.querySelectorAll('[id^="cvg-exp-"]')).map(card=>{
     const n=card.id.replace('cvg-exp-','');
-    return {title:cvgG('cvge'+n+'t'),co:cvgG('cvge'+n+'c'),loc:cvgG('cvge'+n+'l'),from:cvgG('cvge'+n+'f'),to:cvgG('cvge'+n+'o'),desc:cvgG('cvge'+n+'d')};
+    return {title:cvgG('cvge'+n+'t'),co:cvgG('cvge'+n+'c'),period:cvgG('cvge'+n+'f'),desc:cvgG('cvge'+n+'d')};
   }).filter(e=>e.title&&e.desc);
   const edus=Array.from(document.querySelectorAll('[id^="cvg-edu-"]')).map(card=>{
     const n=card.id.replace('cvg-edu-','');
     return {deg:cvgG('cvged'+n+'d'),field:cvgG('cvged'+n+'f'),inst:cvgG('cvged'+n+'i'),yr:cvgG('cvged'+n+'y')};
   }).filter(e=>e.deg&&e.inst);
 
-  const name=cvgG('cvg-p-name'),ptitle=cvgG('cvg-p-title'),email=cvgG('cvg-p-email'),phone=cvgG('cvg-p-phone');
-  const country=cvgG('cvg-p-country'),city=cvgG('cvg-p-city'),linkedin=cvgG('cvg-p-linkedin'),website=cvgG('cvg-p-website');
-  const jobtitle=cvgG('cvg-t-jobtitle'),industry=cvgG('cvg-t-industry'),years=cvgG('cvg-t-years'),level=cvgG('cvg-t-level');
+  const name=cvgG('cvg-p-name'),ptitle=cvgG('cvg-p-title'),email=cvgG('cvg-p-email');
+  const country=cvgG('cvg-p-country');
+  const jobtitle=cvgG('cvg-t-jobtitle'),industry=cvgG('cvg-t-industry');
   const jd=cvgG('cvg-t-jd'),achieve=cvgG('cvg-t-achieve');
-  const sktech=cvgG('cvg-sk-tech'),sktools=cvgG('cvg-sk-tools'),sksoft=cvgG('cvg-sk-soft');
-  const certs=cvgG('cvg-sk-certs'),langs=cvgG('cvg-sk-langs'),extras=cvgG('cvg-sk-extras');
-  const loc=[city,country].filter(Boolean).join(', ');
+  const sktech=cvgG('cvg-sk-tech'),langs=cvgG('cvg-sk-langs');
+  const loc=country||'';
 
-  const expBlock=exps.map((e,i)=>'POSITION '+(i+1)+':\nTitle: '+e.title+'\nCompany: '+e.co+(e.loc?'\nLocation: '+e.loc:'')+(e.from?'\nDates: '+e.from+' to '+(e.to||'Present'):'')+'\nKey points: '+e.desc).join('\n\n');
+  const expBlock=exps.map((e,i)=>'POSITION '+(i+1)+':\nTitle: '+e.title+'\nCompany: '+e.co+(e.period?'\nPeriod: '+e.period:'')+'\nKey points: '+e.desc).join('\n\n');
   const eduBlock=edus.map(e=>e.deg+(e.field?' in '+e.field:'')+', '+e.inst+(e.yr?', '+e.yr:'')).join('\n');
 
   const langName = window.LANG_META && window.LANG_META[window.curLang] ? window.LANG_META[window.curLang].name : 'English';
   const promptParts=[
     'You are an expert CV writer. Write a complete ATS-optimised curriculum vitae for the person below. Adapt all language precisely to the '+industry+' sector.',
     '','CANDIDATE:','Name: '+name,'Title: '+ptitle,'Location: '+loc,
-    email?'Email: '+email:null,phone?'Phone: '+phone:null,
-    linkedin?'LinkedIn: '+linkedin:null,website?'Website: '+website:null,
-    '','TARGET ROLE: '+jobtitle,'Industry: '+industry,'Experience: '+years+', '+level,
+    (email?'Email: '+email:null),
+    '','TARGET ROLE: '+jobtitle,'Industry: '+industry,
     '','KEY ACHIEVEMENT:\n'+achieve,
     '','WORK HISTORY:\n'+expBlock,
     '','EDUCATION:\n'+eduBlock,
     '','SKILLS:',
-    sktech?'Technical: '+sktech:null,
-    sktools?'Tools: '+sktools:null,
-    sksoft?'Soft skills: '+sksoft:null,
-    certs?'\nCERTIFICATIONS:\n'+certs:null,
+    sktech?'Skills, tools and certifications: '+sktech:null,
     langs?'\nLANGUAGES:\n'+langs:null,
-    extras?'\nADDITIONAL:\n'+extras:null,
     jd?'\nJOB DESCRIPTION (embed keywords naturally):\n'+jd.substring(0,1500):null,
     '\nWrite the CV with these EXACT section headers on their own line:',
-    '\nPROFESSIONAL SUMMARY\nWORK EXPERIENCE\nEDUCATION\nSKILLS',
+    '\nPROFESSIONAL SUMMARY\nCORE COMPETENCIES\nWORK EXPERIENCE\nEDUCATION\nSKILLS',
     certs?'CERTIFICATIONS':null,langs?'LANGUAGES':null,extras?'ADDITIONAL':null,
     '\nRULES:',
     '- Adapt all language to the '+industry+' sector.',
     '- Flowing prose for PROFESSIONAL SUMMARY. No bullets there.',
-    '- WORK EXPERIENCE: one header line per role: [Job Title] | [Company] | [Location] | [Dates], then 3-5 bullet points starting with *',
+    '- CORE COMPETENCIES: list exactly 12 terms separated by  |  on a SINGLE LINE. Pull terms directly from the job description and experience.',
+    '- WORK EXPERIENCE: one header line per role: [Job Title] | [Company] | [Dates], then 4-5 bullet points starting with *',
     '- Quantify achievements wherever possible.',
     '- SKILLS section: Technical: [list] | Tools: [list] | Soft Skills: [list]',
     '- No markdown, no bold markers, no pound signs. Plain text only.',
@@ -7482,8 +7467,8 @@ async function cvgGenerate(){
     const text=data.candidates?.[0]?.content?.parts?.[0]?.text||'';
     if(!text)throw new Error('No content returned');
     cvgState.cvText=text;
-    cvgState.parsed={name,ptitle,email,phone,loc,linkedin,website,exps,edus};
-    cvgRenderOutput(text,name,ptitle,email,phone,loc,linkedin,website);
+    cvgState.parsed={name,ptitle,email,loc,exps,edus};
+    cvgRenderOutput(text,name,ptitle,email,loc);
     cvgShowScreen('output');
     window.scrollTo({top:0,behavior:'smooth'});
   }catch(err){
@@ -7496,12 +7481,12 @@ async function cvgGenerate(){
   }
 }
 
-function cvgRenderOutput(text,name,ptitle,email,phone,loc,linkedin,website){
+function cvgRenderOutput(text,name,ptitle,email,loc){
   document.getElementById('cvg-doc-name').textContent=name;
   document.getElementById('cvg-doc-role').textContent=ptitle;
-  const contacts=[email,phone,loc,linkedin,website].filter(Boolean);
+  const contacts=[email,loc].filter(Boolean);
   document.getElementById('cvg-doc-contacts').innerHTML=contacts.map(c=>'<div class="cvg-doc-pill"><span class="dot"></span>'+c+'</div>').join('');
-  const SECTIONS=['PROFESSIONAL SUMMARY','WORK EXPERIENCE','EDUCATION','SKILLS','CERTIFICATIONS','LANGUAGES','ADDITIONAL'];
+  const SECTIONS=['PROFESSIONAL SUMMARY','CORE COMPETENCIES','WORK EXPERIENCE','EDUCATION','SKILLS','CERTIFICATIONS','LANGUAGES','ADDITIONAL'];
   const lines=text.split('\n');const sections=[];let cur=null;
   lines.forEach(line=>{
     const tt=line.trim(),up=tt.toUpperCase();
@@ -7517,7 +7502,22 @@ function cvgRenderOutput(text,name,ptitle,email,phone,loc,linkedin,website){
     const cb=document.createElement('button');cb.className='cvg-sec-scopy';cb.textContent='copy';
     cb.onclick=()=>{navigator.clipboard.writeText(sec.lines.join('\n')).then(()=>{cb.textContent='copied';setTimeout(()=>{cb.textContent='copy';},2000);});};
     hdr.appendChild(document.createTextNode(sec.title));hdr.appendChild(cb);div.appendChild(hdr);
-    if(sec.title.toUpperCase().includes('WORK EXPERIENCE')){
+    if(sec.title.toUpperCase().includes('CORE COMPETENCIES')){
+      const grid=document.createElement('div');grid.className='cvg-comp-grid';
+      sec.lines.forEach(line=>{
+        const terms=line.split('|').map(t=>t.trim()).filter(Boolean);
+        if(terms.length>1){
+          terms.forEach(term=>{
+            const pill=document.createElement('div');pill.className='cvg-comp-item';
+            pill.textContent=term;grid.appendChild(pill);
+          });
+        }else if(line.trim()){
+          const pill=document.createElement('div');pill.className='cvg-comp-item';
+          pill.textContent=line.trim();grid.appendChild(pill);
+        }
+      });
+      div.appendChild(grid);
+    }else if(sec.title.toUpperCase().includes('WORK EXPERIENCE')){
       const content=document.createElement('div');content.className='cvg-sec-content';
       let jobDiv=null;
       sec.lines.forEach(line=>{
@@ -7567,8 +7567,8 @@ async function cvgDownloadWord(){
   try{
     const {Document,Packer,Paragraph,TextRun,AlignmentType,BorderStyle}=docx;
     const p=cvgState.parsed,name=p.name||'Name',ptitle=p.ptitle||'';
-    const contact=[p.email,p.phone,p.loc,p.linkedin].filter(Boolean).join('  |  ');
-    const SECTIONS=['PROFESSIONAL SUMMARY','WORK EXPERIENCE','EDUCATION','SKILLS','CERTIFICATIONS','LANGUAGES','ADDITIONAL'];
+    const contact=[p.email,p.loc].filter(Boolean).join('  |  ');
+    const SECTIONS=['PROFESSIONAL SUMMARY','CORE COMPETENCIES','WORK EXPERIENCE','EDUCATION','SKILLS','CERTIFICATIONS','LANGUAGES','ADDITIONAL'];
     const lines=cvgState.cvText.split('\n').filter(l=>l.trim());
     const children=[];
     children.push(new Paragraph({children:[new TextRun({text:name.toUpperCase(),bold:true,size:44,color:'1C2B4A',font:'Calibri'})],spacing:{before:0,after:40}}));
@@ -7605,7 +7605,7 @@ async function cvgDownloadPDF(){
     const {jsPDF}=window.jspdf;
     const doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
     const p=cvgState.parsed,name=p.name||'Name',ptitle=p.ptitle||'';
-    const contact=[p.email,p.phone,p.loc,p.linkedin].filter(Boolean).join('  |  ');
+    const contact=[p.email,p.loc].filter(Boolean).join('  |  ');
     const pageW=doc.internal.pageSize.getWidth(),pageH=doc.internal.pageSize.getHeight();
     const margin=16,cW=pageW-margin*2;let y=0;
     doc.setFillColor(28,43,74);doc.rect(0,0,pageW,42,'F');
